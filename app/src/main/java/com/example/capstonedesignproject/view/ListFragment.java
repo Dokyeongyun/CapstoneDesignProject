@@ -7,59 +7,92 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import com.example.capstonedesignproject.Adapter.CityAdapter;
+import com.example.capstonedesignproject.Adapter.ProvinceAdapter;
+import com.example.capstonedesignproject.Data.CityData;
+import com.example.capstonedesignproject.Data.ProvinceData;
 import com.example.capstonedesignproject.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ListFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class ListFragment extends Fragment {
+    static ArrayList<ProvinceData> provinceList = new ArrayList<>();
+    static ArrayList<CityData> cityList = new ArrayList<>();
 
     public ListFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ListFragment newInstance(String param1, String param2) {
-        ListFragment fragment = new ListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_list, container, false);
+
+        Init();
+
+        ListView provinceListView = v.findViewById(R.id.province_listView);
+        final ProvinceAdapter provinceAdapter = new ProvinceAdapter(getContext(), provinceList);
+        provinceListView.setAdapter(provinceAdapter);
+
+        final ListView cityListView = v.findViewById(R.id.city_listView);
+
+        // 클릭 리스너
+        provinceListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id){
+                // TODO 선택한 시/도 의 세분류 리스트뷰 표시 (어댑터 변경)
+
+                cityList = provinceList.get(position).getCityList();
+                CityAdapter cityAdapter = new CityAdapter(getContext(), cityList);
+                cityListView.setAdapter(cityAdapter);
+            }
+        });
+
+        cityListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id){
+                // TODO 선택한 지역의 차박지 리스트 보여주는 액티비티로 이동
+            }
+        });
+
+        return v;
+    }
+
+    // 샘플 데이터
+    static void Init(){
+        cityInit();
+        provinceList.add(new ProvinceData("강원", cityList));
+        provinceList.add(new ProvinceData("서울", new ArrayList<CityData>()));
+        provinceList.add(new ProvinceData("경기", new ArrayList<CityData>()));
+        provinceList.add(new ProvinceData("인천", new ArrayList<CityData>()));
+        provinceList.add(new ProvinceData("제주", new ArrayList<CityData>()));
+        provinceList.add(new ProvinceData("대전", new ArrayList<CityData>()));
+        provinceList.add(new ProvinceData("충북", new ArrayList<CityData>()));
+        provinceList.add(new ProvinceData("충남", new ArrayList<CityData>()));
+        provinceList.add(new ProvinceData("부산", new ArrayList<CityData>()));
+        provinceList.add(new ProvinceData("울산", new ArrayList<CityData>()));
+
+    }
+
+    // 샘플 데이터
+    static void cityInit(){
+        cityList.add(new CityData("춘천/강촌"));
+        cityList.add(new CityData("원주"));
+        cityList.add(new CityData("경포대/사천/주문진/정동진"));
+        cityList.add(new CityData("강릉역/교동/옥계"));
+        cityList.add(new CityData("영월/정선"));
+        cityList.add(new CityData("속초/양양/고성"));
+        cityList.add(new CityData("동해/삼척/태박"));
+        cityList.add(new CityData("평창"));
+        cityList.add(new CityData("홍청/횡성"));
+        cityList.add(new CityData("화천/철원/인제/양구"));
     }
 }
