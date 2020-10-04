@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home_menu"
+        android:icon="@android:drawable/ic_menu_call"
+        android:title="home_menu" />
+
+    <item
+        android:id="@+id/list_menu"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="list_menu" />
+
+    <item
+        android:id="@+id/congestion_menu"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="congestion_menu" />
+
+    <item
+        android:id="@+id/board_menu"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="board_menu" />
+
+    <item
+        android:id="@+id/myPage_menu"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="myPage_menu" />
+</menu>

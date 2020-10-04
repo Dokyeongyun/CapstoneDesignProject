@@ -24,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void Login(View view) {
         // TODO 로그인 정보 확인하기
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     public void Join(View view) {
