@@ -46,7 +46,7 @@ public class ProvinceAdapter extends BaseAdapter {
         View view = mLayoutInflater.inflate(R.layout.province_view, null);
         TextView provinceName = view.findViewById(R.id.provinceName);
         provinceName.setText(provinceList.get(position).getProvince());
-        provinceName.setHeight(150);
+        provinceName.setHeight(120);
         return view;
     }
 }

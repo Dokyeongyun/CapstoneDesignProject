@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.capstonedesignproject"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -33,5 +33,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.2.0-alpha02'
+
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 }

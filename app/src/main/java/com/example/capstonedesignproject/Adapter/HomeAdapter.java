@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +16,7 @@ import com.example.capstonedesignproject.R;
 import java.util.ArrayList;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
-    private ArrayList<HomeData> mDataset;
+    private static ArrayList<HomeData> mDataset;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageButton mImageButton;

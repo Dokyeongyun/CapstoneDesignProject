@@ -43,7 +43,7 @@ public class CityAdapter extends BaseAdapter {
         View view = mLayoutInflater.inflate(R.layout.province_view, null);
         TextView cityName = view.findViewById(R.id.provinceName);
         cityName.setText(cityList.get(position).getCity());
-        cityName.setHeight(150);
+        cityName.setHeight(120);
         return view;
     }
 
