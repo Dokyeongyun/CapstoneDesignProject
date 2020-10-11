@@ -15,7 +15,7 @@ public class HomeActivity extends AppCompatActivity {
     private FragmentManager fragmentManager = getSupportFragmentManager();
 
     private HomeFragment homeFragment = new HomeFragment();
-    private ListFragment listFragment = new ListFragment();
+    private RegionChoiceFragment regionChoiceFragment = new RegionChoiceFragment();
     private CongestionFragment congestionFragment = new CongestionFragment();
     private BoardFragment boardFragment = new BoardFragment();
     private MyPageFragment myPageFragment = new MyPageFragment();
@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.list_menu: {
-                        transaction.replace(R.id.fragment_frame, listFragment).commitAllowingStateLoss();
+                        transaction.replace(R.id.fragment_frame, regionChoiceFragment).commitAllowingStateLoss();
                         break;
                     }
                     case R.id.congestion_menu: {

@@ -27,6 +27,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:text="차박러 모여라"
+                android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -52,8 +53,42 @@
             android:id="@+id/border1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#BCBCBC"
+            android:background="#111"
             android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/BT_regionChoice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_border"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_border"
+                android:text="필터 설정"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

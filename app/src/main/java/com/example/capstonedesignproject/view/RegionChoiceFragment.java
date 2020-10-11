@@ -1,5 +1,6 @@
 package com.example.capstonedesignproject.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,11 +19,11 @@ import com.example.capstonedesignproject.R;
 
 import java.util.ArrayList;
 
-public class ListFragment extends Fragment {
+public class RegionChoiceFragment extends Fragment {
     static ArrayList<ProvinceData> provinceList = new ArrayList<>();
     static ArrayList<CityData> cityList = new ArrayList<>();
 
-    public ListFragment() {
+    public RegionChoiceFragment() {
     }
 
     @Override
@@ -34,7 +35,7 @@ public class ListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_region_choice, container, false);
 
         Init();
 
@@ -60,6 +61,10 @@ public class ListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 // TODO 선택한 지역의 차박지 리스트 보여주는 액티비티로 이동
+                // 선택한 지역명을 인텐트에 넣어 보내고, ListActivity에서 받아 해당 지역 데이터를 불러와 보여줌
+                Intent intent = new Intent(getActivity(), ListActivity.class);
+                intent.putExtra("Region", cityList.get(position).getCity());
+                startActivity(intent);
             }
         });
 
@@ -69,6 +74,7 @@ public class ListFragment extends Fragment {
     // 샘플 데이터
     static void Init(){
         cityInit();
+        provinceList = new ArrayList<>();
         provinceList.add(new ProvinceData("강원", cityList));
         provinceList.add(new ProvinceData("서울", new ArrayList<CityData>()));
         provinceList.add(new ProvinceData("경기", new ArrayList<CityData>()));
@@ -84,6 +90,7 @@ public class ListFragment extends Fragment {
 
     // 샘플 데이터
     static void cityInit(){
+        cityList = new ArrayList<>();
         cityList.add(new CityData("춘천/강촌"));
         cityList.add(new CityData("원주"));
         cityList.add(new CityData("경포대/사천/주문진/정동진"));
