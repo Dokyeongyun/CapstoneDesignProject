@@ -3,6 +3,7 @@ package com.example.capstonedesignproject.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.capstonedesignproject.Adapter.BoardAdapter;
 import com.example.capstonedesignproject.Data.PostData;
@@ -20,11 +22,15 @@ import com.example.capstonedesignproject.R;
 import com.google.android.material.tabs.TabLayout;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BoardFragment extends Fragment {
     static LinearLayout LL_board, LL_notification;
     static ArrayList<PostData> postList = new ArrayList<>();
+    static boolean check = false;
 
     public BoardFragment() { }
 
@@ -65,7 +71,9 @@ public class BoardFragment extends Fragment {
         });
 
         // 샘플 데이터
-        Init();
+        if(!check){
+            Init(); // 초기 한번만 실행되도록
+        }
         // 리스트뷰에 어댑터 설정
         ListView boardListView = v.findViewById(R.id.LV_board);
         final BoardAdapter boardAdapter = new BoardAdapter(getContext(), postList);
@@ -93,7 +101,7 @@ public class BoardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), WritePostActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -115,10 +123,31 @@ public class BoardFragment extends Fragment {
     }
 
     /* 게시글 리스트에 (샘플) 데이터 삽입 */
-    static void Init(){
+    private static void Init(){
+        check = true;
         postList.add(new PostData("10월 4일 20:49", "도경윤", "차박지 정보 공유 게시판입니다", "게시판 글 내용", R.drawable.pic1));
         postList.add(new PostData("10월 5일 21:15", "도112", "오늘 저녁 메뉴는?", "레오펍", R.drawable.pic2));
         postList.add(new PostData("10월 6일 22:49", "도경윤", "내일 무슨 요일?", "화요일", R.drawable.pic3));
         postList.add(new PostData("10월 7일 23:59", "도경윤", "오늘 하루 공부한 게 없다", "ㅋㅋㅋㅋㅋ", R.drawable.pic4));
+    }
+
+    // DB 삽입대신 테스트하기 위해 작성함
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1){
+            if(resultCode==1){
+
+                String title = data.getStringExtra("title");
+                String content = data.getStringExtra("content");
+                String writer = data.getStringExtra("writer");
+                long date = data.getLongExtra("date", 0);
+                int picture = data.getIntExtra("picture", 0);
+                SimpleDateFormat sdf = new SimpleDateFormat ( "MM월 dd일 HH:mm");
+                String stringDate = sdf.format(new Date(date));
+
+                postList.add(new PostData(stringDate, writer, title, content, picture));
+            }
+        }
     }
 }
