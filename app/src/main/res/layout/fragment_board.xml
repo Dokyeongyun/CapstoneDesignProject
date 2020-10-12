@@ -79,6 +79,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
+
+            <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
+                android:id="@+id/FAB_writePost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="20dp"
+                android:fallbackLineSpacing="true"
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:text="글쓰기"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#050505"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="#CDFFD54B"
+                app:fabIcon="@drawable/pencil_black_24dp"
+                app:fabIconColor="#000000"
+                app:fabSize="normal"
+                app:fabType="roundedSquare" />
         </FrameLayout>
 
     </LinearLayout>

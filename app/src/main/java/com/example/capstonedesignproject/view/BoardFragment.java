@@ -18,6 +18,7 @@ import com.example.capstonedesignproject.Adapter.BoardAdapter;
 import com.example.capstonedesignproject.Data.PostData;
 import com.example.capstonedesignproject.R;
 import com.google.android.material.tabs.TabLayout;
+import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -85,6 +86,17 @@ public class BoardFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        // FAB 클릭 리스너
+        FloatingActionButton fab = v.findViewById(R.id.FAB_writePost);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WritePostActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return v;
     }
 

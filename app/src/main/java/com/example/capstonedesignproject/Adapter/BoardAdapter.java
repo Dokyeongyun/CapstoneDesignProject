@@ -46,6 +46,7 @@ public class BoardAdapter extends BaseAdapter {
 
         TextView postTitle = view.findViewById(R.id.TV_postTitle);
         TextView postDetail = view.findViewById(R.id.TV_postDetail);
+        TextView postContent = view.findViewById(R.id.TV_postContent);
         ImageView postPicture = view.findViewById(R.id.IV_postPicture);
 
         PostData post = postList.get(position);
@@ -53,6 +54,7 @@ public class BoardAdapter extends BaseAdapter {
         String detail = post.getWriter() + "  " + post.getDate();
 
         postTitle.setText(post.getTitle());
+        postContent.setText(post.getContent()); // TODO 최대글자수 제한해야 함
         postDetail.setText(detail);
         postPicture.setImageResource(post.getPicture());
 
