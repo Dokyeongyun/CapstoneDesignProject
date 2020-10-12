@@ -1,12 +1,15 @@
 package com.example.capstonedesignproject.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -65,6 +68,21 @@ public class BoardFragment extends Fragment {
         final BoardAdapter boardAdapter = new BoardAdapter(getContext(), postList);
         boardListView.setAdapter(boardAdapter);
 
+        // 리스트뷰 클릭 리스너
+        boardListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO 해당 게시글 정보 넣어 ShowPostActivity start
+                Intent intent = new Intent(getActivity(), ShowPostActivity.class);
+                intent. putExtra("postWriter", postList.get(position).getWriter());
+                intent. putExtra("postID", postList.get(position).getpID());
+                intent. putExtra("postTitle", postList.get(position).getTitle());
+                intent. putExtra("postPicture", postList.get(position).getPicture());
+                intent. putExtra("postDate", postList.get(position).getDate());
+                intent. putExtra("postContent", postList.get(position).getContent());
+                startActivity(intent);
+            }
+        });
         return v;
     }
 
