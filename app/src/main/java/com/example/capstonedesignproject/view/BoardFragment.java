@@ -3,6 +3,7 @@ package com.example.capstonedesignproject.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Parcelable;
@@ -37,6 +38,7 @@ public class BoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_board, container, false);
 
+        // TabLayout
         TabLayout tabLayout = v.findViewById(R.id.boardTabLayout) ;
         LL_board = v.findViewById(R.id.LL_board);
         LL_notification = v.findViewById(R.id.LL_notification);

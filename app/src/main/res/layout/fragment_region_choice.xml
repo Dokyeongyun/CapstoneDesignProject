@@ -12,34 +12,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/LL_topMenu"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/TV_listTitle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:gravity="center|left"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="지역"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <ImageButton
-                android:id="@+id/BT_search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#00FFFFFF"
-                android:src="@drawable/search_24dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/border1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
