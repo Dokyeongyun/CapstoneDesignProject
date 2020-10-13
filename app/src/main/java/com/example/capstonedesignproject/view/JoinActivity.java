@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 
 public class JoinActivity extends AppCompatActivity {
 
-    static EditText ET_email, ET_password, ET_nick;
+    EditText ET_email, ET_password, ET_nick;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,7 @@ public class JoinActivity extends AppCompatActivity {
         if(email.equals("") && password.equals("") && nick.equals("")){
             Toast.makeText(this, "입력되지 않은 값이 있습니다. 다시 확인해주세요", Toast.LENGTH_SHORT).show();
         }else{
-            String result = new Task().execute("Join", email, password, nick).get();
+            String result = new Task().execute("member/insertTest.do", email, password, nick).get();
 
             if(result.equals("Join_OK")){
                 Toast.makeText(this, "회원가입에 성공했습니다. 환영합니다!", Toast.LENGTH_SHORT).show();
