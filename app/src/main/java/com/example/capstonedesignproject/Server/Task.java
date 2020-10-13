@@ -12,8 +12,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class Task extends AsyncTask<String, Void, String> {
-    private static String ip = "x.x.x.x"; // IP
-    private String serverip = "http://"+ip+"/index.jsp"; // JSP 주소
+    private static String ip = "211.222.234.14"; // IP
+    private String serverip = "http://"+ip+":8080/"; // JSP 주소
     private String sendMsg, receiveMsg;
 
     Task(String sendmsg) {
@@ -24,17 +24,21 @@ public class Task extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String[] strings) {
+    protected String doInBackground(String... strings) {
         try {
             String str;
-            URL url = new URL(serverip);
+            URL url = new URL(serverip += "member/insertTest.do");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setDoOutput(true);
             conn.setRequestMethod("POST"); // 데이터를 POST방식으로 전송
             OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
 
             // 매개변수로 주어진 String[] 배열의 값을 sendMsg에 POST 방식으로 저장
             // ex) sendMsg = "type=" + strings[0] + "&userNo=" + strings[1];
+            if(strings[0].equals("Join")){
+                sendMsg = "id=" + strings[1] + "&nickName=" + strings[2] +  "&pw=" + strings[3];
+            }
 
             osw.write(sendMsg);
             osw.flush();
