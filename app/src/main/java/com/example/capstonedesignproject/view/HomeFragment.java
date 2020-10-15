@@ -93,6 +93,17 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        Button ImageTest = v.findViewById(R.id.button3);
+        ImageTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HttpImageTest.class);
+                startActivity(intent);
+            }
+        });
+
+
         return v;
     }
 

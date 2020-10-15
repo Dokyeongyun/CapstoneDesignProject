@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.Server.FileDownloadTask;
 import com.example.capstonedesignproject.Server.FileUploadTask;
 import com.example.capstonedesignproject.Server.Task;
 
@@ -75,11 +76,13 @@ public class WritePostActivity extends AppCompatActivity {
                 map.put("createTime", createTime);
 
                 String result = "";
+                String result2 ="";
 
                 try{
                     if(photoUri!=null){ // 이미지 첨부하여 게시글 작성 시
                         File file = new File(getPathFromUri(photoUri));
-                        result = new FileUploadTask().execute("article/write.do", id, title, content, file, createTime).get();
+                       // result = new FileUploadTask().execute("article/write.do", id, title, content, file, createTime).get();
+                        result2 = new FileDownloadTask().execute("gy.do").get();
                     }else { // 이미지 첨부 없이 게시글 작성 시
                         result = new Task().execute("article/write.do", id, title, content, "", createTime).get();
                     }
@@ -87,12 +90,14 @@ public class WritePostActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if(result != null && !result.equals("") && result.equals("WritePost_OK")){
-                    finish();
-                    Toast.makeText(this, "결과: "+ result + "  게시글이 성공적으로 작성되었습니다.", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(this, "결과: "+ result + "  잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(this, result2, Toast.LENGTH_SHORT).show();
+
+//                if(result != null && !result.equals("") && result.equals("WritePost_OK")){
+//                    finish();
+//                    Toast.makeText(this, "결과: "+ result + "  게시글이 성공적으로 작성되었습니다.", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    Toast.makeText(this, "결과: "+ result + "  잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+//                }
             }else{
                 Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
             }

@@ -40,7 +40,7 @@ public class FileUploadTask extends AsyncTask<Object, Void, String> {
 
     public String sendMultiPart(File file, Map<String, String> map) {
         try {
-            URL url = new URL("http://192.168.43.128:8082/FileUploadTest");
+            URL url = new URL("http://211.222.234.14:8080/article/test.do");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestProperty("Content-Type", "multipart/form-data;charset=" + charset + ";boundary=" + boundary);
