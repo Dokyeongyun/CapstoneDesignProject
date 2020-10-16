@@ -29,6 +29,7 @@ public class MyPageFragment extends Fragment {
 
 
 
+
         return v;
     }
 }
