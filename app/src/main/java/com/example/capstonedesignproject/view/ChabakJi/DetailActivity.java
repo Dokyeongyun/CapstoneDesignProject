@@ -1,4 +1,4 @@
-package com.example.capstonedesignproject.view;
+package com.example.capstonedesignproject.view.ChabakJi;
 
 import androidx.appcompat.app.AppCompatActivity;
 

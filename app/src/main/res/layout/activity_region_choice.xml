@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.RegionChoiceActivity">
+    tools:context=".view.Filter.RegionChoiceActivity">
 
     <fragment
         android:id="@+id/fragment2"
-        android:name="com.example.capstonedesignproject.view.RegionChoiceFragment"
+        android:name="com.example.capstonedesignproject.view.Filter.RegionChoiceFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,10 +1,9 @@
-package com.example.capstonedesignproject.view;
+package com.example.capstonedesignproject.view.ChabakJi;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +17,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.Adapter.HomeAdapter;
-import com.example.capstonedesignproject.MainActivity;
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.view.Board.HttpImageTest;
+import com.example.capstonedesignproject.view.Filter.RegionChoiceActivity;
 
 import java.util.ArrayList;
 

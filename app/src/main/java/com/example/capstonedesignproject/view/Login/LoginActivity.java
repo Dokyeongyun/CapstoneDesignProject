@@ -1,4 +1,4 @@
-package com.example.capstonedesignproject.view;
+package com.example.capstonedesignproject.view.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

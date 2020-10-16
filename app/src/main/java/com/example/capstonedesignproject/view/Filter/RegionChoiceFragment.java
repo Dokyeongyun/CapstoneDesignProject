@@ -1,4 +1,4 @@
-package com.example.capstonedesignproject.view;
+package com.example.capstonedesignproject.view.Filter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import com.example.capstonedesignproject.Adapter.ProvinceAdapter;
 import com.example.capstonedesignproject.Data.CityData;
 import com.example.capstonedesignproject.Data.ProvinceData;
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 
 import java.util.ArrayList;
 

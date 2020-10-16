@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
     android:isScrollContainer="true"
-    tools:context=".view.DetailActivity">
+    tools:context=".view.ChabakJi.DetailActivity">
 
     <ScrollView
         android:layout_width="match_parent"

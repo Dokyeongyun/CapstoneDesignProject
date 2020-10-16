@@ -1,4 +1,4 @@
-package com.example.capstonedesignproject.view;
+package com.example.capstonedesignproject.view.ETC;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +13,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.view.Board.BoardFragment;
+import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
+import com.example.capstonedesignproject.view.Congestion.CongestionFragment;
+import com.example.capstonedesignproject.view.Filter.RegionChoiceFragment;
+import com.example.capstonedesignproject.view.MyPage.MyPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
