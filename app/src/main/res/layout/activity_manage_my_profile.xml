@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ECECEC"
+    tools:context=".view.MyPage.ManageMyProfile">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/Toolbar_mmp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionButtonStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Toolbar_mmp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/LL_myPageTop"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#FFF154"
+                android:orientation="horizontal"
+                tools:visibility="visible">
+
+                <ImageButton
+                    android:id="@+id/IV_profile"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="#00FFFFFF"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher_foreground" />
+
+                <TextView
+                    android:id="@+id/TV_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:autoText="false"
+                    android:gravity="center|left"
+                    android:paddingStart="10dp"
+                    android:paddingTop="30dp"
+                    android:paddingEnd="10dp"
+                    android:text="도경윤 님 \n\n닉네임"
+                    android:textColor="#000000"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/BT_logout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="#00FFFFFF"
+                    android:src="@drawable/ic_vpn_key_black_24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#FFFFFF"
+                    android:gravity="bottom|center|left"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="회원정보 관리"
+                    android:textColor="#000000" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/LL_ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#FFFFFF"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="아이디"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="9"
+                        android:gravity="center|left"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="아이디_" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LL_nickName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#FFFFFF"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="닉네임"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:gravity="center|left"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="닉네임_" />
+
+                    <Button
+                        android:id="@+id/BT_changeNick"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:background="#00FFFFFF"
+                        android:gravity="center|right"
+                        android:paddingEnd="30dp"
+                        android:text="수정하기"
+                        android:textColor="#FF9E9E"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LL_changeNick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/LL_changeNick2"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="#FFFFFF"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center|left"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="닉네임"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/ET_changeNick"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="5"
+                            android:background="@drawable/border_underline"
+                            android:ems="10"
+                            android:hint="새 닉네임 입력"
+                            android:inputType="textPassword"
+                            android:paddingStart="20dp"
+                            android:stateListAnimator="@null"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/BT_duplicateChk"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_weight="4"
+                            android:background="@drawable/button_border"
+                            android:backgroundTint="#00FFFFFF"
+                            android:gravity="clip_horizontal|center|right"
+                            android:paddingRight="30dp"
+                            android:stateListAnimator="@null"
+                            android:text="중복확인"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/BT_changeNickOK"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_border"
+                            android:backgroundTint="#B1E3CA"
+                            android:elevation="0dp"
+                            android:stateListAnimator="@null"
+                            android:text="완료" />
+
+                        <Button
+                            android:id="@+id/BT_changeNickCancel"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_border"
+                            android:backgroundTint="#E6E6E6"
+                            android:elevation="0dp"
+                            android:stateListAnimator="@null"
+                            android:text="취소" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LL_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#FFFFFF"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="비밀번호"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:gravity="center|left"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="**********" />
+
+                    <Button
+                        android:id="@+id/BT_changePw"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:background="#00FFFFFF"
+                        android:gravity="center|right"
+                        android:paddingEnd="30dp"
+                        android:text="수정하기"
+                        android:textColor="#FF9E9E"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LL_change"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/LL_changePw"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="#FFFFFF"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center|left"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="비밀번호"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/ET_changePw"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="9"
+                            android:background="@drawable/border_underline"
+                            android:ems="10"
+                            android:hint="새 비밀번호 입력"
+                            android:inputType="textPassword"
+                            android:paddingStart="20dp"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/LL_changePwChk"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="#FFFFFF"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center|left"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp" />
+
+                        <EditText
+                            android:id="@+id/ET_changePwChk"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="9"
+                            android:background="@drawable/border_underline"
+                            android:ems="10"
+                            android:hint="새 비밀번호 확인"
+                            android:inputType="textPassword"
+                            android:paddingStart="20dp"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/LL_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/BT_changeOK"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_border"
+                            android:backgroundTint="#B1E3CA"
+                            android:elevation="0dp"
+                            android:stateListAnimator="@null"
+                            android:text="완료" />
+
+                        <Button
+                            android:id="@+id/BT_changeCancel"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_border"
+                            android:backgroundTint="#E6E6E6"
+                            android:elevation="0dp"
+                            android:stateListAnimator="@null"
+                            android:text="취소" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#FFFFFF"
+                    android:gravity="bottom|center|left"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="회원 탈퇴"
+                    android:textColor="#000000" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#FFFFFF"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/BT_withdraw"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:gravity="center"
+                        android:text="회원 탈퇴하기"
+                        android:textColor="#FB5252"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
