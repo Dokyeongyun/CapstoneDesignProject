@@ -26,7 +26,7 @@ public class SearchActivity extends AppCompatActivity {
     EditText ET_searchMessage;
     TableLayout TL_hotKeyword;
 
-    String searchType = "지역"; // Default 검색타입
+    String searchType = "Region"; // Default 검색타입
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
