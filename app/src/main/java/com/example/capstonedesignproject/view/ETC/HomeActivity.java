@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
 import com.example.capstonedesignproject.view.Congestion.CongestionFragment;
 import com.example.capstonedesignproject.view.Filter.RegionChoiceFragment;
 import com.example.capstonedesignproject.view.MyPage.MyPageFragment;
+import com.example.capstonedesignproject.view.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -93,8 +95,8 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.app_bar_search:
-               // Intent intent = new Intent(this, SearchActivity.class);
-                Toast.makeText(this, "검색버튼 클릭됨", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
