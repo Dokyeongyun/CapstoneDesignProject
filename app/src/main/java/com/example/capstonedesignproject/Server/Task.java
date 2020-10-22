@@ -38,8 +38,8 @@ public class Task extends AsyncTask<String, Void, String> {
 
             // 매개변수로 주어진 String[] 배열의 값을 sendMsg에 POST 방식으로 저장
             // ex) sendMsg = "type=" + strings[0] + "&userNo=" + strings[1];
-            if(strings[0].equals("member/insertTest.do")){
-                sendMsg = "id=" + strings[1] + "&nickName=" + strings[2] + "&pw=" + strings[3];
+            if(strings[0].equals("member/insert.do")){
+                sendMsg = "id=" + strings[1] + "&nickName=" + strings[2] + "&password=" + strings[3];
             }else if(strings[0].equals("article/write.do")){
                 sendMsg = "id=" + strings[1] + "&title=" + strings[2] + "&content=" + strings[3]
                             + "&image=" + strings[4] + "&createTime=" + strings[5];

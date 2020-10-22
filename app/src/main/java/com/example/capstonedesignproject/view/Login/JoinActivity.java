@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.Task;
 
+import org.json.JSONObject;
+
 import java.util.concurrent.ExecutionException;
 
 public class JoinActivity extends AppCompatActivity {
@@ -111,7 +113,7 @@ public class JoinActivity extends AppCompatActivity {
     }
 
     // 입력된 정보로 회원가입 수행
-    public void doJoin(View view) {
+    public void doJoin(View view)  {
         // TODO DB에 데이터 삽입, 회원가입 완료 메시지, 메인페이지로 이동
         // TODO password와 passwordChk 값 일치여부 확인
 
@@ -129,21 +131,25 @@ public class JoinActivity extends AppCompatActivity {
             return;
         }
 
+        try{
+            if (password.equals("") || nick.equals("") || email.equals("")) {
+                Toast.makeText(this, "입력되지 않은 값이 있습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+            } else if(!password.equals(passwordChk)){
+                Toast.makeText(this, "비밀번호가 일치하지 않습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+            } else {
+                String result = new Task().execute("member/insert.do", email, nick, password).get();
 
-        if (password.equals("") || nick.equals("") || email.equals("")) {
-            Toast.makeText(this, "입력되지 않은 값이 있습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
-        } else if(!password.equals(passwordChk)){
-            Toast.makeText(this, "비밀번호가 일치하지 않습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
-/*            String result = new Task().execute("member/insertTest.do", email, password, nick).get();
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
 
-            if(result.equals("Join_OK")){
-                Toast.makeText(this, "회원가입에 성공했습니다. 환영합니다!", Toast.LENGTH_SHORT).show();
-                finish();
-            }else{
-                Toast.makeText(this, "실패! 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            }*/
+                if(result.equals("\"success\"")){
+                    Toast.makeText(this, "회원가입에 성공했습니다. 환영합니다!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    Toast.makeText(this, "실패! 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e){
+            Toast.makeText(this, "서버 연결이 불안정합니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
         }
     }
 

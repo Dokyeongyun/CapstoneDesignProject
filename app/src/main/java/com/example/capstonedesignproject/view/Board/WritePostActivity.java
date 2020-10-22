@@ -82,7 +82,7 @@ public class WritePostActivity extends AppCompatActivity {
                     if(photoUri!=null){ // 이미지 첨부하여 게시글 작성 시
                         File file = new File(getPathFromUri(photoUri));
                        // result = new FileUploadTask().execute("article/write.do", id, title, content, file, createTime).get();
-                        result2 = new FileDownloadTask().execute("gy.do").get();
+                      //  result2 = new FileDownloadTask().execute("gy.do").get();
                     }else { // 이미지 첨부 없이 게시글 작성 시
                         result = new Task().execute("article/write.do", id, title, content, "", createTime).get();
                     }

@@ -2,16 +2,25 @@ package com.example.capstonedesignproject.view.ChabakJi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
+import com.example.capstonedesignproject.Data.ChabakjiDAO;
+import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
+
+import java.net.URL;
+import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -25,13 +34,16 @@ public class DetailActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         // TODO 사용자 정보를 불러온 후 유저가 해당 차박지를 찜했으면 SunLike 메서드 실행
+        Intent intent = getIntent();
+        ChabakjiDAO chabakjiData = (ChabakjiDAO) intent.getSerializableExtra("Chabakji");
 
+        // Map
         MapView mapView = new MapView(this);
 
         ViewGroup mapViewContainer = findViewById(R.id.mapView2);
 
         // 마커
-        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.175136, 128.208954); // TODO 차박지 경위도
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(chabakjiData.getLatitude(), chabakjiData.getLongitude()); // TODO 차박지 경위도
         mapView.setMapCenterPoint(mapPoint, true);
         mapViewContainer.addView(mapView);
 

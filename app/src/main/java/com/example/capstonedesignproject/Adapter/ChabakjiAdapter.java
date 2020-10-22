@@ -1,31 +1,31 @@
 package com.example.capstonedesignproject.Adapter;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
 
 import java.util.ArrayList;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
-    private static ArrayList<HomeData> mDataset;
+public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.ViewHolder> {
+    private static ArrayList<ChabakjiData> mDataset;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageButton mImageButton;
-        public TextView text1;
-        public TextView text2;
-        public TextView text3;
-        public TextView text4;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageButton mImageButton;
+        TextView text1;
+        TextView text2;
+        TextView text3;
+        TextView text4;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mImageButton = view.findViewById(R.id.imageButton);
             text1 = view.findViewById(R.id.name);
@@ -35,11 +35,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
     }
 
-    public HomeAdapter (ArrayList<HomeData> myDataset) { mDataset = myDataset; }
+    public ChabakjiAdapter(ArrayList<ChabakjiData> myDataset) {
+        mDataset = myDataset;
+    }
 
     @NonNull
     @Override
-    public HomeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChabakjiAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // ViewHolder 에 넣어줄 view 정의 후 inflate
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview, parent, false);
 
@@ -50,35 +52,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     /**
      * RecyclerView에 item이 셋팅될 때 + 스크롤될 때 호출
-     * */
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.text1.setText(mDataset.get(position).text1);
         holder.text2.setText(mDataset.get(position).text2);
         holder.text3.setText(mDataset.get(position).text3);
         holder.text4.setText(mDataset.get(position).text4);
-        holder.mImageButton.setImageResource(mDataset.get(position).img);
+        holder.mImageButton.setImageBitmap(mDataset.get(position).img);
     }
 
     @Override
-    public int getItemCount() { return mDataset.size(); }
-
-
-    public static class HomeData{
-        public String text1;
-        public String text2;
-        public String text3;
-        public String text4;
-        public int img;
-
-        public HomeData(String text1, String text2, String text3, String text4, int img){
-            this.text1 = text1;
-            this.text2 = text2;
-            this.text3 = text3;
-            this.text4 = text4;
-            this.img = img;
-        }
+    public int getItemCount() {
+        return mDataset.size();
     }
-
-
 }
