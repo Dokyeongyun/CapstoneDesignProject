@@ -51,6 +51,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+
+        Bundle bundle = getArguments();
+        final String memberID = bundle.getString("memberID");
+
         mRecyclerView = v.findViewById(R.id.home_recyclerView);
         mRecyclerView.setHasFixedSize(true);
 
@@ -108,6 +112,7 @@ public class HomeFragment extends Fragment {
                 // TODO CardView 아이템 클릭시 해당 차박지 상세정보 띄우기
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("Chabakji", list.get(position));
+                intent.putExtra("memberID", memberID);
                 startActivity(intent);
             }
 

@@ -18,6 +18,7 @@ import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.FileDownloadTask;
+import com.example.capstonedesignproject.Server.Task;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -25,9 +26,11 @@ import net.daum.mf.map.api.MapView;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class DetailActivity extends AppCompatActivity {
 
+    static String memberID;
     static boolean like = false;
     TextView TV_ChabakjiTitle, TV_ChabakjiAddress, TV_ChabakjiAddress2;
     ViewGroup mapViewContainer;
@@ -74,6 +77,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void Init(){
+        memberID = getIntent().getStringExtra("memberID");
+
         TV_ChabakjiTitle = findViewById(R.id.TV_ChabakjiTitle);
         TV_ChabakjiAddress = findViewById(R.id.TV_ChabakjiAddress);
         TV_ChabakjiAddress2 = findViewById(R.id.TV_ChabakjiAddress2);
@@ -94,16 +99,20 @@ public class DetailActivity extends AppCompatActivity {
         return null;
     }
 
-    public void SunLike(View view) {
+    public void SunLike(View view) throws ExecutionException, InterruptedException {
         ImageButton sun = findViewById(R.id.BT_sun);
         if(like){
             like = false;
-            sun.setImageResource(R.drawable.sun_yellow_24dp);
-            // TODO DB에 저장
-        }else{
-            like = true;
             sun.setImageResource(R.drawable.sun_white_24dp);
             // TODO DB에 저장
+            String result = new Task().execute("member/jjim.undo", memberID, chabakjiData.getPlace_name()).get();
+            Toast.makeText(this, result+ " " +memberID+" "+chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
+        }else{
+            like = true;
+            sun.setImageResource(R.drawable.sun_yellow_24dp);
+            // TODO DB에 저장
+            String result = new Task().execute("member/jjim.do", memberID, chabakjiData.getPlace_name()).get();
+            Toast.makeText(this, result+ " " +memberID+" "+chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
         }
     }
 

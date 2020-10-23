@@ -30,7 +30,7 @@ public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>>
 
     public List<ChabakjiDAO> getChabak() {
         try {
-            URL url = new URL("http://211.222.234.14:8080/chabak/get");
+            URL url = new URL("http://211.222.234.14:8080/chabak/get.do");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setDoOutput(true);

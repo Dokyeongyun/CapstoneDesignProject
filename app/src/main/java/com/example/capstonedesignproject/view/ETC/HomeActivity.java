@@ -31,10 +31,16 @@ public class HomeActivity extends AppCompatActivity {
     private BoardFragment boardFragment = new BoardFragment();
     private MyPageFragment myPageFragment = new MyPageFragment();
 
+    static String memberID;
+    Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent = getIntent();
+        memberID = intent.getStringExtra("memberID");
+        Toast.makeText(this, memberID, Toast.LENGTH_SHORT).show();
 
         // Toolbar
         final Toolbar mToolbar = findViewById(R.id.homeToolbar);
@@ -44,6 +50,9 @@ public class HomeActivity extends AppCompatActivity {
         // BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        bundle = new Bundle();
+        bundle.putString("memberID", memberID);
+        homeFragment.setArguments(bundle);
         transaction.replace(R.id.fragment_frame, homeFragment).commitAllowingStateLoss();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,8 +61,11 @@ public class HomeActivity extends AppCompatActivity {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 switch (item.getItemId()) {
                     case R.id.home_menu: {
-                        transaction.replace(R.id.fragment_frame, homeFragment).commitAllowingStateLoss();
                         mToolbar.setTitle("차박러 모여라");
+                        bundle = new Bundle();
+                        bundle.putString("memberID", memberID);
+                        homeFragment.setArguments(bundle);
+                        transaction.replace(R.id.fragment_frame, homeFragment).commitAllowingStateLoss();
                         break;
                     }
                     case R.id.list_menu: {
