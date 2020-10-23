@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
         }
 
         // 차박지 사진 filePath 에 접근하여 파일을 Bitmap 으로 가져오기
-        Bitmap[] imageArr = new Bitmap[list.size()];
+        final Bitmap[] imageArr = new Bitmap[list.size()];
         for(int i=0; i<imageArr.length; i++){
             String filePath = list.get(i).getFilePath();
             try{

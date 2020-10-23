@@ -3,17 +3,21 @@ package com.example.capstonedesignproject.view.ChabakJi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.Server.FileDownloadTask;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -25,6 +29,12 @@ import java.util.ArrayList;
 public class DetailActivity extends AppCompatActivity {
 
     static boolean like = false;
+    TextView TV_ChabakjiTitle, TV_ChabakjiAddress, TV_ChabakjiAddress2;
+    ViewGroup mapViewContainer;
+    ImageButton BT_ChabakjiImage;
+    Bitmap chabakjiImage;
+    ChabakjiDAO chabakjiData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,20 +45,24 @@ public class DetailActivity extends AppCompatActivity {
 
         // TODO 사용자 정보를 불러온 후 유저가 해당 차박지를 찜했으면 SunLike 메서드 실행
         Intent intent = getIntent();
-        ChabakjiDAO chabakjiData = (ChabakjiDAO) intent.getSerializableExtra("Chabakji");
+        chabakjiData = (ChabakjiDAO) intent.getSerializableExtra("Chabakji");
+
+        Init();
+
+        TV_ChabakjiTitle.setText(chabakjiData.getPlace_name()); // 차박지 이름
+        TV_ChabakjiAddress.setText(chabakjiData.getAddress()); // 차박지 주소
+        TV_ChabakjiAddress2.setText(chabakjiData.getAddress()); // 차박지 주소
+        BT_ChabakjiImage.setImageBitmap(chabakjiImage); // 차박지 사진
 
         // Map
         MapView mapView = new MapView(this);
-
-        ViewGroup mapViewContainer = findViewById(R.id.mapView2);
-
         // 마커
-        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(chabakjiData.getLatitude(), chabakjiData.getLongitude()); // TODO 차박지 경위도
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(chabakjiData.getLatitude(), chabakjiData.getLongitude());
         mapView.setMapCenterPoint(mapPoint, true);
         mapViewContainer.addView(mapView);
 
         MapPOIItem marker = new MapPOIItem();
-        marker.setItemName("의림지"); // TODO 차박지 이름
+        marker.setItemName(chabakjiData.getPlace_name());
         marker.setTag(0);
         marker.setMapPoint(mapPoint);
 
@@ -57,6 +71,27 @@ public class DetailActivity extends AppCompatActivity {
         // 마커를 클릭했을때 RedPin
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
         mapView.addPOIItem(marker);
+    }
+
+    public void Init(){
+        TV_ChabakjiTitle = findViewById(R.id.TV_ChabakjiTitle);
+        TV_ChabakjiAddress = findViewById(R.id.TV_ChabakjiAddress);
+        TV_ChabakjiAddress2 = findViewById(R.id.TV_ChabakjiAddress2);
+        mapViewContainer = findViewById(R.id.mapView2);
+        BT_ChabakjiImage = findViewById(R.id.BT_ChabakjiImage);
+
+        chabakjiImage = getImage(chabakjiData.getFilePath());
+    }
+
+    public Bitmap getImage(String filePath){
+        Bitmap image;
+        try{
+            image = new FileDownloadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,filePath).get();
+            return image;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void SunLike(View view) {
