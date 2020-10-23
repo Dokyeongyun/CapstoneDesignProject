@@ -43,6 +43,8 @@ public class Task extends AsyncTask<String, Void, String> {
             }else if(strings[0].equals("article/write.do")){
                 sendMsg = "id=" + strings[1] + "&title=" + strings[2] + "&content=" + strings[3]
                             + "&image=" + strings[4] + "&createTime=" + strings[5];
+            }else if(strings[0].equals("member/login.do")){
+                sendMsg = "id=" + strings[1] + "&password=" + strings[2];
             }
 
             bw.write(sendMsg);
