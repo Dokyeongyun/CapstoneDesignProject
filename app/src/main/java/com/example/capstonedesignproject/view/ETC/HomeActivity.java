@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
     private BoardFragment boardFragment = new BoardFragment();
     private MyPageFragment myPageFragment = new MyPageFragment();
 
-    static String memberID;
+    public static String memberID;
     Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +79,9 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.board_menu: {
+                        bundle = new Bundle();
+                        bundle.putString("memberID", memberID);
+                        homeFragment.setArguments(bundle);
                         transaction.replace(R.id.fragment_frame, boardFragment).commitAllowingStateLoss();
                         mToolbar.setTitle("게시판");
                         break;

@@ -19,6 +19,7 @@ import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.FileDownloadTask;
 import com.example.capstonedesignproject.Server.FileUploadTask;
 import com.example.capstonedesignproject.Server.Task;
+import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.io.File;
 import java.io.InputStream;
@@ -60,37 +61,37 @@ public class WritePostActivity extends AppCompatActivity {
     // 게시글 작성 완료
     public void writeComplete(View view) {
         // TODO 글 쓰기 완료 -> DB 에 저장 및 액티비티 종료
-        if(ET_title.getText()!=null && !ET_title.getText().toString().equals("")){
-            if(ET_content.getText()!=null && !ET_content.getText().toString().equals("")){
+        if (ET_title.getText() != null && !ET_title.getText().toString().equals("")) {
+            if (ET_content.getText() != null && !ET_content.getText().toString().equals("")) {
                 // DB 삽입
 
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
                 String createTime = format.format(new Date());
-                String id = "익명";
+                String id = HomeActivity.memberID;
                 String title = ET_title.getText().toString();
                 String content = ET_content.getText().toString();
-                Map<String, String> map = new HashMap<>();
-                map.put("id", id);
-                map.put("title", title);
-                map.put("content", content);
-                map.put("createTime", createTime);
+                long fileName = new Date().getTime();
 
                 String result = "";
-                String result2 ="";
 
-                try{
-                    if(photoUri!=null){ // 이미지 첨부하여 게시글 작성 시
+                try {
+                    if (photoUri != null) { // 이미지 첨부하여 게시글 작성 시
                         File file = new File(getPathFromUri(photoUri));
-                       // result = new FileUploadTask().execute("article/write.do", id, title, content, file, createTime).get();
-                      //  result2 = new FileDownloadTask().execute("gy.do").get();
-                    }else { // 이미지 첨부 없이 게시글 작성 시
-                        result = new Task().execute("article/write.do", id, title, content, "", createTime).get();
+                        result = new Task().execute("article/insert.do", id, title, content, "true", String.valueOf(fileName), createTime).get();
+                        result = new FileUploadTask().execute(id, file).get();
+                    } else { // 이미지 첨부 없이 게시글 작성 시
+                        result = new Task().execute("article/insert.do", id, title, content, "", "", createTime).get();
                     }
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                Toast.makeText(this, result2, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+                if (result.equals("\"success\"")) {
+/*                    Intent intent = new Intent(this, ShowPostActivity.class);
+
+                    startActivity(intent);*/
+                }
 
 //                if(result != null && !result.equals("") && result.equals("WritePost_OK")){
 //                    finish();
@@ -98,17 +99,17 @@ public class WritePostActivity extends AppCompatActivity {
 //                }else{
 //                    Toast.makeText(this, "결과: "+ result + "  잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
 //                }
-            }else{
+            } else {
                 Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
         }
     }
 
     /* Uri를 입력받아 파일의 절대경로를 리턴하는 메서드 */
-    public String getPathFromUri(Uri uri){
-        String[] proj = { MediaStore.Images.Media.DATA };
+    public String getPathFromUri(Uri uri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
         cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
@@ -127,7 +128,7 @@ public class WritePostActivity extends AppCompatActivity {
                     InputStream in = getContentResolver().openInputStream(data.getData());
                     Bitmap img = BitmapFactory.decodeStream(in);
                     in.close();
-                    if(img!=null){
+                    if (img != null) {
                         // TODO setImageBitmap 했을 때 사진이 90도 회전되어 첨부되는 현상 수정하기
                         IB_photo.setVisibility(View.VISIBLE);
                         IB_photo.setImageBitmap(img);

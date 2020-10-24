@@ -31,16 +31,13 @@ public class FileUploadTask extends AsyncTask<Object, Void, String> {
     @Override
     protected String doInBackground(Object... objects) {
         Map<String, String> map = new HashMap<>();
-        map.put("id", (String) objects[1]);
-        map.put("title",(String)  objects[2]);
-        map.put("content",(String)  objects[3]);
-        map.put("createTime", (String) objects[5]);
-        return sendMultiPart((File)objects[4], map);
+        map.put("id", (String) objects[0]);
+        return sendMultiPart((File)objects[1], map);
     }
 
     public String sendMultiPart(File file, Map<String, String> map) {
         try {
-            URL url = new URL("http://211.222.234.14:8080/article/test.do");
+            URL url = new URL("http://211.222.234.14:8080/file/upload.do");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestProperty("Content-Type", "multipart/form-data;charset=" + charset + ";boundary=" + boundary);
