@@ -8,18 +8,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.capstonedesignproject.Data.PostData;
-import com.example.capstonedesignproject.Data.ProvinceData;
+import com.example.capstonedesignproject.Data.ArticleData;
 import com.example.capstonedesignproject.R;
 
 import java.util.ArrayList;
 
 public class BoardAdapter extends BaseAdapter {
     LayoutInflater mLayoutInflater = null;
-    ArrayList<PostData> postList;
+    ArrayList<ArticleData> postList;
     Context mContext = null;
 
-    public BoardAdapter(Context context, ArrayList<PostData> data) {
+    public BoardAdapter(Context context, ArrayList<ArticleData> data) {
         mContext = context;
         postList = data;
         mLayoutInflater = LayoutInflater.from(mContext);
@@ -31,7 +30,7 @@ public class BoardAdapter extends BaseAdapter {
     }
 
     @Override
-    public PostData getItem(int position) {
+    public ArticleData getItem(int position) {
         return postList.get(position);
     }
 
@@ -49,14 +48,14 @@ public class BoardAdapter extends BaseAdapter {
         TextView postContent = view.findViewById(R.id.TV_postContent);
         ImageView postPicture = view.findViewById(R.id.IV_postPicture);
 
-        PostData post = postList.get(position);
+        ArticleData post = postList.get(position);
 
-        String detail = post.getWriter() + "  " + post.getDate();
+        String detail = post.getMemberId() + "  " + post.getCreateTime();
 
         postTitle.setText(post.getTitle());
         postContent.setText(post.getContent()); // TODO 최대글자수 제한해야 함
         postDetail.setText(detail);
-        postPicture.setImageResource(post.getPicture());
+        postPicture.setImageBitmap(post.getImage());
 
         return view;
     }

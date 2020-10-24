@@ -42,9 +42,9 @@ public class Task extends AsyncTask<String, Void, String> {
             // ex) sendMsg = "type=" + strings[0] + "&userNo=" + strings[1];
             if (strings[0].equals("member/insert.do")) {
                 sendMsg = "id=" + strings[1] + "&nickName=" + strings[2] + "&password=" + strings[3];
-            } else if (strings[0].equals("article/write.do")) {
+            } else if (strings[0].equals("article/insert.do")) {
                 sendMsg = "id=" + strings[1] + "&title=" + strings[2] + "&content=" + strings[3]
-                        + "&image=" + strings[4] + "&createTime=" + strings[5];
+                        + "&isAttached=" + strings[4] + "&fileName=" + strings[5] + "&createTime=" + strings[6];
             } else if (strings[0].equals("member/login.do")) {
                 sendMsg = "id=" + strings[1] + "&password=" + strings[2];
             } else if (strings[0].equals("member/jjim.do")) {
