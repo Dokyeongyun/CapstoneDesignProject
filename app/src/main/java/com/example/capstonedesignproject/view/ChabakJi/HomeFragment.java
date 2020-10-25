@@ -52,9 +52,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Bundle bundle = getArguments();
-        final String memberID = bundle.getString("memberID");
-
         mRecyclerView = v.findViewById(R.id.home_recyclerView);
         mRecyclerView.setHasFixedSize(true);
 
@@ -76,11 +73,11 @@ public class HomeFragment extends Fragment {
 
         // 차박지 사진 filePath 에 접근하여 파일을 Bitmap 으로 가져오기
         final Bitmap[] imageArr = new Bitmap[list.size()];
-        for(int i=0; i<imageArr.length; i++){
+        for (int i = 0; i < imageArr.length; i++) {
             String filePath = list.get(i).getFilePath();
-            try{
-                imageArr[i] = new FileDownloadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,filePath).get();
-            }catch (Exception e){
+            try {
+                imageArr[i] = new FileDownloadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, filePath).get();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -90,7 +87,7 @@ public class HomeFragment extends Fragment {
         } else {
             for (int i = 0; i < list.size(); i++) {
                 ChabakjiDAO temp = list.get(i);
-                myDataset.add(new ChabakjiData(temp.getPlace_name(), temp.getAddress(), temp.getUtility(), temp.getIntroduce(), imageArr[i]));
+                myDataset.add(new ChabakjiData(temp.getPlace_name(), temp.getAddress(), temp.getUtility(), temp.getIntroduce(), "3.5", imageArr[i]));
             }
         }
         /*
@@ -108,11 +105,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 ChabakjiData data = myDataset.get(position);
-                Toast.makeText(getActivity(), data.text1 + " " + data.text2, Toast.LENGTH_SHORT).show();
                 // TODO CardView 아이템 클릭시 해당 차박지 상세정보 띄우기
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("Chabakji", list.get(position));
-                intent.putExtra("memberID", memberID);
                 startActivity(intent);
             }
 

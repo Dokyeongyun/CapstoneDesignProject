@@ -32,9 +32,11 @@
                 <ImageButton
                     android:id="@+id/BT_ChabakjiImage"
                     android:layout_width="match_parent"
-                    android:layout_height="350dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
                     android:background="#00FFFFFF"
                     android:onClick="showTotalImage"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/pic3" />
 
                 <LinearLayout

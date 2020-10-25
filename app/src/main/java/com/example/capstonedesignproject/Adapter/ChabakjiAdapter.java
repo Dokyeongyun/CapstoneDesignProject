@@ -1,6 +1,5 @@
 package com.example.capstonedesignproject.Adapter;
 
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +18,21 @@ public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.ViewHo
     private static ArrayList<ChabakjiData> mDataset;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageButton mImageButton;
-        TextView text1;
-        TextView text2;
-        TextView text3;
-        TextView text4;
+        ImageButton BT_chabakjiImage;
+        TextView TV_chabakjiName;
+        TextView TV_chabakjiAddr;
+        TextView TV_chabakjiUtil;
+        TextView TV_chabakjiIntro;
+        TextView TV_chabakjiRating;
 
         ViewHolder(View view) {
             super(view);
-            mImageButton = view.findViewById(R.id.imageButton);
-            text1 = view.findViewById(R.id.name);
-            text2 = view.findViewById(R.id.address);
-            text3 = view.findViewById(R.id.convi);
-            text4 = view.findViewById(R.id.character);
+            BT_chabakjiImage = view.findViewById(R.id.BT_chabakjiImage);
+            TV_chabakjiName = view.findViewById(R.id.TV_chabakjiName);
+            TV_chabakjiAddr = view.findViewById(R.id.TV_chabakjiAddr);
+            TV_chabakjiUtil = view.findViewById(R.id.TV_chabakjiUtil);
+            TV_chabakjiIntro = view.findViewById(R.id.TV_chabakjiIntro);
+            TV_chabakjiRating = view.findViewById(R.id.TV_chabakjiRating);
         }
     }
 
@@ -44,22 +45,20 @@ public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.ViewHo
     public ChabakjiAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // ViewHolder 에 넣어줄 view 정의 후 inflate
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview, parent, false);
-
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
-
 
     /**
      * RecyclerView에 item이 셋팅될 때 + 스크롤될 때 호출
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.text1.setText(mDataset.get(position).text1);
-        holder.text2.setText(mDataset.get(position).text2);
-        holder.text3.setText(mDataset.get(position).text3);
-        holder.text4.setText(mDataset.get(position).text4);
-        holder.mImageButton.setImageBitmap(mDataset.get(position).img);
+        holder.TV_chabakjiName.setText(mDataset.get(position).chabakjiName);
+        holder.TV_chabakjiAddr.setText(mDataset.get(position).chabakjiAddr);
+        holder.TV_chabakjiUtil.setText(mDataset.get(position).chabakjiUtil);
+        holder.TV_chabakjiIntro.setText(mDataset.get(position).chabakjiIntro);
+        holder.TV_chabakjiRating.setText(mDataset.get(position).chabakjiRating);
+        holder.BT_chabakjiImage.setImageBitmap(mDataset.get(position).chabakjiImage);
     }
 
     @Override

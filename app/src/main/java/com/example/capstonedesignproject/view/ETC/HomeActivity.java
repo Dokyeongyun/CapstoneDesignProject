@@ -50,9 +50,6 @@ public class HomeActivity extends AppCompatActivity {
         // BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        bundle = new Bundle();
-        bundle.putString("memberID", memberID);
-        homeFragment.setArguments(bundle);
         transaction.replace(R.id.fragment_frame, homeFragment).commitAllowingStateLoss();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,9 +59,6 @@ public class HomeActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.home_menu: {
                         mToolbar.setTitle("차박러 모여라");
-                        bundle = new Bundle();
-                        bundle.putString("memberID", memberID);
-                        homeFragment.setArguments(bundle);
                         transaction.replace(R.id.fragment_frame, homeFragment).commitAllowingStateLoss();
                         break;
                     }
@@ -79,9 +73,6 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.board_menu: {
-                        bundle = new Bundle();
-                        bundle.putString("memberID", memberID);
-                        homeFragment.setArguments(bundle);
                         transaction.replace(R.id.fragment_frame, boardFragment).commitAllowingStateLoss();
                         mToolbar.setTitle("게시판");
                         break;
