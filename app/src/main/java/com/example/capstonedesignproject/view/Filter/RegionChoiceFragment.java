@@ -13,7 +13,6 @@ import android.widget.ListView;
 
 import com.example.capstonedesignproject.Adapter.CityAdapter;
 import com.example.capstonedesignproject.Adapter.ProvinceAdapter;
-import com.example.capstonedesignproject.Data.CityData;
 import com.example.capstonedesignproject.Data.ProvinceData;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 
 public class RegionChoiceFragment extends Fragment {
     static ArrayList<ProvinceData> provinceList = new ArrayList<>();
-    static ArrayList<CityData> cityList = new ArrayList<>();
+    static ArrayList<String> cityList = new ArrayList<>();
 
     public RegionChoiceFragment() {
     }
@@ -64,7 +63,7 @@ public class RegionChoiceFragment extends Fragment {
                 // TODO 선택한 지역의 차박지 리스트 보여주는 액티비티로 이동
                 // 선택한 지역명을 인텐트에 넣어 보내고, ListActivity에서 받아 해당 지역 데이터를 불러와 보여줌
                 Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("Region", cityList.get(position).getCity());
+                intent.putExtra("Region", cityList.get(position));
                 startActivity(intent);
             }
         });
@@ -77,30 +76,30 @@ public class RegionChoiceFragment extends Fragment {
         cityInit();
         provinceList = new ArrayList<>();
         provinceList.add(new ProvinceData("강원", cityList));
-        provinceList.add(new ProvinceData("서울", new ArrayList<CityData>()));
-        provinceList.add(new ProvinceData("경기", new ArrayList<CityData>()));
-        provinceList.add(new ProvinceData("인천", new ArrayList<CityData>()));
-        provinceList.add(new ProvinceData("제주", new ArrayList<CityData>()));
-        provinceList.add(new ProvinceData("대전", new ArrayList<CityData>()));
-        provinceList.add(new ProvinceData("충북", new ArrayList<CityData>()));
-        provinceList.add(new ProvinceData("충남", new ArrayList<CityData>()));
-        provinceList.add(new ProvinceData("부산", new ArrayList<CityData>()));
-        provinceList.add(new ProvinceData("울산", new ArrayList<CityData>()));
+        provinceList.add(new ProvinceData("서울", new ArrayList<String>()));
+        provinceList.add(new ProvinceData("경기", new ArrayList<String>()));
+        provinceList.add(new ProvinceData("인천", new ArrayList<String>()));
+        provinceList.add(new ProvinceData("제주", new ArrayList<String>()));
+        provinceList.add(new ProvinceData("대전", new ArrayList<String>()));
+        provinceList.add(new ProvinceData("충북", new ArrayList<String>()));
+        provinceList.add(new ProvinceData("충남", new ArrayList<String>()));
+        provinceList.add(new ProvinceData("부산", new ArrayList<String>()));
+        provinceList.add(new ProvinceData("울산", new ArrayList<String>()));
 
     }
 
     // 샘플 데이터
     static void cityInit(){
         cityList = new ArrayList<>();
-        cityList.add(new CityData("춘천/강촌"));
-        cityList.add(new CityData("원주"));
-        cityList.add(new CityData("경포대/사천/주문진/정동진"));
-        cityList.add(new CityData("강릉역/교동/옥계"));
-        cityList.add(new CityData("영월/정선"));
-        cityList.add(new CityData("속초/양양/고성"));
-        cityList.add(new CityData("동해/삼척/태박"));
-        cityList.add(new CityData("평창"));
-        cityList.add(new CityData("홍청/횡성"));
-        cityList.add(new CityData("화천/철원/인제/양구"));
+        cityList.add("춘천/강촌");
+        cityList.add("원주");
+        cityList.add("경포대/사천/주문진/정동진");
+        cityList.add("강릉역/교동/옥계");
+        cityList.add("영월/정선");
+        cityList.add("속초/양양/고성");
+        cityList.add("동해/삼척/태박");
+        cityList.add("평창");
+        cityList.add("홍청/횡성");
+        cityList.add("화천/철원/인제/양구");
     }
 }

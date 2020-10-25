@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class ProvinceData {
     public String province;
-    public ArrayList<CityData> cityList;
+    public ArrayList<String> cityList;
 
-    public ProvinceData(String province, ArrayList<CityData> cityList){
+    public ProvinceData(String province, ArrayList<String> cityList){
         this.province = province;
         this.cityList = cityList;
     }
@@ -15,7 +15,7 @@ public class ProvinceData {
         return province;
     }
 
-    public ArrayList<CityData> getCityList() {
+    public ArrayList<String> getCityList() {
         return cityList;
     }
 }

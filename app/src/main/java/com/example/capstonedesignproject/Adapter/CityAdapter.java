@@ -7,17 +7,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.capstonedesignproject.Data.CityData;
 import com.example.capstonedesignproject.R;
 
 import java.util.ArrayList;
 
 public class CityAdapter extends BaseAdapter {
     LayoutInflater mLayoutInflater = null;
-    ArrayList<CityData> cityList;
+    ArrayList<String> cityList;
     Context mContext = null;
 
-    public CityAdapter(Context context, ArrayList<CityData> data) {
+    public CityAdapter(Context context, ArrayList<String> data) {
         mContext = context;
         cityList = data;
         mLayoutInflater = LayoutInflater.from(mContext);
@@ -29,7 +28,7 @@ public class CityAdapter extends BaseAdapter {
     }
 
     @Override
-    public CityData getItem(int position) {
+    public String getItem(int position) {
         return cityList.get(position);
     }
 
@@ -42,7 +41,7 @@ public class CityAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = mLayoutInflater.inflate(R.layout.province_view, null);
         TextView cityName = view.findViewById(R.id.provinceName);
-        cityName.setText(cityList.get(position).getCity());
+        cityName.setText(cityList.get(position));
         cityName.setHeight(120);
         return view;
     }
