@@ -67,12 +67,6 @@ public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>>
                     String notify = obj.getString("notify");
                     String introduce = obj.getString("introduce");
                     String filePath = obj.getString("filePath");
-
-                    Bitmap imageFile = null;
-                    if(!filePath.equals("")){
-                        //imageFile = new FileDownloadTask().execute(filePath).get();
-                    }
-
                     int jjim = obj.getInt("jjim");
                     double latitude = obj.getDouble("latitude");
                     double longitude = obj.getDouble("longitude");

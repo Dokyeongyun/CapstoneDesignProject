@@ -8,20 +8,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.capstonedesignproject.Data.ArticleData;
 import com.example.capstonedesignproject.R;
 
 import java.util.ArrayList;
 
 public class BoardAdapter extends BaseAdapter {
-    LayoutInflater mLayoutInflater = null;
-    ArrayList<ArticleData> postList;
-    Context mContext = null;
+    private LayoutInflater mLayoutInflater = null;
+    private ArrayList<ArticleData> postList;
 
     public BoardAdapter(Context context, ArrayList<ArticleData> data) {
-        mContext = context;
         postList = data;
-        mLayoutInflater = LayoutInflater.from(mContext);
+        mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -48,14 +47,16 @@ public class BoardAdapter extends BaseAdapter {
         TextView postContent = view.findViewById(R.id.TV_postContent);
         ImageView postPicture = view.findViewById(R.id.IV_postPicture);
 
-        ArticleData post = postList.get(position);
-
-        String detail = post.getMemberId() + "  " + post.getCreateTime();
-
-        postTitle.setText(post.getTitle());
-        postContent.setText(post.getContent()); // TODO 최대글자수 제한해야 함
+        ArticleData articleData = postList.get(position);
+        String detail = articleData.getMemberId() + "  " + articleData.getCreateTime();
+        postTitle.setText(articleData.getTitle());
+        postContent.setText(articleData.getContent()); // TODO 최대글자수 제한해야 함
         postDetail.setText(detail);
-        postPicture.setImageBitmap(post.getImage());
+
+        Glide.with(parent.getContext())
+                .load("http://211.222.234.14:8080/"+articleData.getFilePath())
+                .fitCenter()
+                .into(postPicture);
 
         return view;
     }

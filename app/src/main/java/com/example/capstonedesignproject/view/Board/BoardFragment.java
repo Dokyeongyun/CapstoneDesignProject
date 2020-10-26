@@ -1,5 +1,6 @@
 package com.example.capstonedesignproject.view.Board;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.capstonedesignproject.Adapter.BoardAdapter;
 import com.example.capstonedesignproject.Data.ArticleData;
@@ -30,10 +32,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class BoardFragment extends Fragment {
+    private static Context context;
     private LinearLayout LL_board, LL_notification;
     private static ArrayList<ArticleData> postList = new ArrayList<>();
     private static boolean check = false;
-    static Bitmap[] imageArr;
+
     public BoardFragment() { }
 
     @Override
@@ -46,6 +49,8 @@ public class BoardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_board, container, false);
+
+        context = getActivity();
 
         // TabLayout
         TabLayout tabLayout = v.findViewById(R.id.boardTabLayout);
@@ -127,53 +132,14 @@ public class BoardFragment extends Fragment {
     private static void Init() throws ExecutionException, InterruptedException {
         check = true;
         getArticleList(1);
-/*
-        postList.add(new ArticleData("10월 4일 20:49", "도경윤", "차박지 정보 공유 게시판입니다", "게시판 글 내용", R.drawable.pic1));
-        postList.add(new ArticleData("10월 5일 21:15", "도112", "오늘 저녁 메뉴는?", "레오펍", R.drawable.pic2));
-        postList.add(new ArticleData("10월 6일 22:49", "도경윤", "내일 무슨 요일?", "화요일", R.drawable.pic3));
-        postList.add(new ArticleData("10월 7일 23:59", "도경윤", "오늘 하루 공부한 게 없다", "ㅋㅋㅋㅋㅋ", R.drawable.pic4));
-*/
     }
 
     private static void getArticleList(int num) throws ExecutionException, InterruptedException {
         List<ArticleData> articleData = new GetArticleTask().execute("article/get.do", num).get();
-
-        // 차박지 사진 filePath 에 접근하여 파일을 Bitmap 으로 가져오기
-        imageArr = new Bitmap[articleData.size()];
-        for(int i=0; i<imageArr.length; i++){
-            String filePath = articleData.get(i).getUrlPath();
-            System.out.println(filePath);
-            try{
-                imageArr[i] = new FileDownloadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,filePath).get();
-                for(int j=0; j<imageArr.length; j++){
-                    if(imageArr[j]!=null){
-                        articleData.get(j).setImage(imageArr[j]);
-                    }
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        if(articleData==null){
+            Toast.makeText(context, "게시글을 불러오는 데 실패했습니다.\n잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+        }else{
+             postList.addAll(articleData);
         }
-        postList.addAll(articleData);
     }
-
-/*    // DB 삽입대신 테스트하기 위해 작성함
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == 1) {
-
-                String title = data.getStringExtra("title");
-                String content = data.getStringExtra("content");
-                String writer = data.getStringExtra("writer");
-                long date = data.getLongExtra("date", 0);
-                int picture = data.getIntExtra("picture", 0);
-                SimpleDateFormat sdf = new SimpleDateFormat("MM월 dd일 HH:mm");
-                String stringDate = sdf.format(new Date(date));
-
-               // postList.add(new ArticleData(stringDate, writer, title, content, picture));
-            }
-        }
-    }*/
 }

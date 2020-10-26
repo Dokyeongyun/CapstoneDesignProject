@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.Data.ChabakjiData;
@@ -36,7 +37,6 @@ public class DetailActivity extends AppCompatActivity {
     TextView TV_ChabakjiTitle, TV_ChabakjiAddress, TV_ChabakjiAddress2;
     ViewGroup mapViewContainer;
     ImageButton BT_ChabakjiImage;
-    Bitmap chabakjiImage;
     ChabakjiDAO chabakjiData;
 
     @Override
@@ -56,7 +56,11 @@ public class DetailActivity extends AppCompatActivity {
         TV_ChabakjiTitle.setText(chabakjiData.getPlace_name()); // 차박지 이름
         TV_ChabakjiAddress.setText(chabakjiData.getAddress()); // 차박지 주소
         TV_ChabakjiAddress2.setText(chabakjiData.getAddress()); // 차박지 주소
-        BT_ChabakjiImage.setImageBitmap(chabakjiImage); // 차박지 사진
+        Glide.with(this)
+                .load("http://211.222.234.14:8080/"+chabakjiData.getFilePath())
+                .centerCrop()
+                .placeholder(R.drawable.button_border_gray)
+                .into(BT_ChabakjiImage);
 
         // Map
         MapView mapView = new MapView(this);
@@ -85,19 +89,6 @@ public class DetailActivity extends AppCompatActivity {
         TV_ChabakjiAddress2 = findViewById(R.id.TV_ChabakjiAddress2);
         mapViewContainer = findViewById(R.id.mapView2);
         BT_ChabakjiImage = findViewById(R.id.BT_ChabakjiImage);
-
-        chabakjiImage = getImage(chabakjiData.getFilePath());
-    }
-
-    public Bitmap getImage(String filePath) {
-        Bitmap image;
-        try {
-            image = new FileDownloadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, filePath).get();
-            return image;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public void SunLike(View view) throws ExecutionException, InterruptedException {

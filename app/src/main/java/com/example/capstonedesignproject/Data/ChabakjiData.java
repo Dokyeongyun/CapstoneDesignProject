@@ -8,16 +8,17 @@ public class ChabakjiData {
     public String chabakjiUtil;
     public String chabakjiIntro;
     public String chabakjiRating;
-    public Bitmap chabakjiImage;
+    public String filePath; // 사진 파일 경로
+
 
     public ChabakjiData(String chabakjiName, String chabakjiAddr, String chabakjiUtil, String chabakjiIntro,
-                        String chabakjiRating, Bitmap chabakjiImage) {
+                        String chabakjiRating, String filePath) {
         this.chabakjiName = chabakjiName;
         this.chabakjiAddr = chabakjiAddr;
         this.chabakjiUtil = chabakjiUtil;
         this.chabakjiIntro = chabakjiIntro;
         this.chabakjiRating = chabakjiRating;
-        this.chabakjiImage = chabakjiImage;
+        this.filePath = filePath;
     }
 }
 

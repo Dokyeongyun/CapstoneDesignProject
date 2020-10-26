@@ -128,18 +128,34 @@
                 android:background="?android:attr/listDivider" />
         </LinearLayout>
 
+        <View
+            android:id="@+id/divider11"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="30dp"
+            android:background="?android:attr/listDivider" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="300dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/button_border"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-            <ImageView
-                android:id="@+id/IV_postPicture"
+            <ImageButton
+                android:id="@+id/BT_postImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_launcher_foreground" />
+                android:background="#00FFFFFF" />
         </LinearLayout>
+
+        <View
+            android:id="@+id/divider12"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

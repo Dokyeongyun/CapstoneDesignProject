@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.Board.BoardFragment;
@@ -40,7 +39,6 @@ public class HomeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         memberID = intent.getStringExtra("memberID");
-        Toast.makeText(this, memberID, Toast.LENGTH_SHORT).show();
 
         // Toolbar
         final Toolbar mToolbar = findViewById(R.id.homeToolbar);

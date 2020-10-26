@@ -10,17 +10,17 @@ public class ArticleData {
     private String memberId;
     private String title;
     private String content;
-    private String urlPath;
+    private String filePath;
     private String createTime;
 
     private Bitmap image;
 
-    public ArticleData(int articleId, String memberId, String title, String content, String urlPath, String createTime) {
+    public ArticleData(int articleId, String memberId, String title, String content, String filePath, String createTime) {
         this.articleId = articleId;
         this.memberId = memberId;
         this.title = title;
         this.content = content;
-        this.urlPath = urlPath;
+        this.filePath = filePath;
         this.createTime = createTime;
     }
 
@@ -56,12 +56,12 @@ public class ArticleData {
         this.content = content;
     }
 
-    public String getUrlPath() {
-        return urlPath;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setUrlPath(String urlPath) {
-        this.urlPath = urlPath;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     public String getCreateTime() {

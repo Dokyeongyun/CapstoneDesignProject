@@ -2,7 +2,6 @@ package com.example.capstonedesignproject.view.ChabakJi;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,11 +22,9 @@ import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.ChabakjiInfoTask;
-import com.example.capstonedesignproject.Server.FileDownloadTask;
 import com.example.capstonedesignproject.view.Board.HttpImageTest;
 import com.example.capstonedesignproject.view.Filter.RegionChoiceActivity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,40 +67,19 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        // 차박지 사진 filePath 에 접근하여 파일을 Bitmap 으로 가져오기
-        final Bitmap[] imageArr = new Bitmap[list.size()];
-        for (int i = 0; i < imageArr.length; i++) {
-            String filePath = list.get(i).getFilePath();
-            try {
-                imageArr[i] = new FileDownloadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, filePath).get();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
         if (list == null) {
             Toast.makeText(getActivity(), "차박지 데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
         } else {
             for (int i = 0; i < list.size(); i++) {
                 ChabakjiDAO temp = list.get(i);
-                myDataset.add(new ChabakjiData(temp.getPlace_name(), temp.getAddress(), temp.getUtility(), temp.getIntroduce(), "3.5", imageArr[i]));
+                myDataset.add(new ChabakjiData(temp.getPlace_name(), temp.getAddress(), temp.getUtility(), temp.getIntroduce(), "3.5", temp.getFilePath()));
             }
         }
-        /*
-
-         */
-        /* 샘플 데이터 *//*
-
-        myDataset.add(new HomeAdapter.HomeData("강릉 인근 해수욕장", "강릉시 강릉동 198-1", "개수시설, 편의점", "없음", R.drawable.search_24dp));
-        myDataset.add(new HomeAdapter.HomeData("강릉 인근 해수욕장", "강릉시 강릉동 198-1", "개수시설, 편의점", "없음", R.drawable.search_24dp));
-        myDataset.add(new HomeAdapter.HomeData("강릉 인근 해수욕장", "강릉시 강릉동 198-1", "개수시설, 편의점", "없음", R.drawable.search_24dp));
-*/
 
         // CardView 아이템 클릭 리스너
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                ChabakjiData data = myDataset.get(position);
                 // TODO CardView 아이템 클릭시 해당 차박지 상세정보 띄우기
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("Chabakji", list.get(position));
@@ -116,7 +91,6 @@ public class HomeFragment extends Fragment {
 
             }
         }));
-
 
         // BT_regionChoice ClickListener
         Button regionChoice = v.findViewById(R.id.BT_regionChoice);
@@ -137,7 +111,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
 
         return v;
     }

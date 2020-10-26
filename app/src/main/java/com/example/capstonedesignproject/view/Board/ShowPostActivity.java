@@ -4,24 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.capstonedesignproject.Data.ArticleData;
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.FileDownloadTask;
 import com.example.capstonedesignproject.Server.GetArticleTask;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class ShowPostActivity extends AppCompatActivity {
     boolean userLike; // 현재 세션의 유저가 해당 게시글 좋아요 여부
@@ -50,25 +54,18 @@ public class ShowPostActivity extends AppCompatActivity {
         TextView TV_content = findViewById(R.id.TV_postContent);
         TextView TV_postWriter = findViewById(R.id.TV_postWriter);
         TextView TV_postDate = findViewById(R.id.TV_postDate);
-        ImageView iv = findViewById(R.id.IV_postPicture);
+        ImageButton BT_postImage = findViewById(R.id.BT_postImage);
 
-        ArticleData data = list.get(0);
-        TV_title.setText(data.getTitle());
-        TV_content.setText(data.getContent());
-        TV_postWriter.setText(data.getMemberId());
-        TV_postDate.setText(data.getCreateTime());
+        ArticleData articleData = list.get(0);
+        TV_title.setText(articleData.getTitle());
+        TV_content.setText(articleData.getContent());
+        TV_postWriter.setText(articleData.getMemberId());
+        TV_postDate.setText(articleData.getCreateTime());
 
-        Bitmap image = null;
-        try{
-            image = new FileDownloadTask().execute(data.getUrlPath()).get();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        if(image!=null){
-            iv.setImageBitmap(image);
-        }
-
-        // TODO 게시글 이미지를 작게 보여주도록 수정해야 함
+        Glide.with(this)
+                .load("http://211.222.234.14:8080/" + articleData.getFilePath())
+                .placeholder(R.drawable.button_border_gray)
+                .into(BT_postImage);
         // TODO 댓글 서비스 제공해야 함
     }
 

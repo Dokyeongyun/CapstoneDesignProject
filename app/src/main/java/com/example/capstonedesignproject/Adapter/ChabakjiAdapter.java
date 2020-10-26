@@ -1,5 +1,6 @@
 package com.example.capstonedesignproject.Adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
+import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 
 import java.util.ArrayList;
 
@@ -58,7 +62,11 @@ public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.ViewHo
         holder.TV_chabakjiUtil.setText(mDataset.get(position).chabakjiUtil);
         holder.TV_chabakjiIntro.setText(mDataset.get(position).chabakjiIntro);
         holder.TV_chabakjiRating.setText(mDataset.get(position).chabakjiRating);
-        holder.BT_chabakjiImage.setImageBitmap(mDataset.get(position).chabakjiImage);
+//        holder.BT_chabakjiImage.setImageBitmap(mDataset.get(position).chabakjiImage);
+        Glide.with(holder.itemView.getContext())
+                .load("http://211.222.234.14:8080/"+mDataset.get(position).filePath)
+                .fitCenter()
+                .into(holder.BT_chabakjiImage);
     }
 
     @Override
