@@ -1,6 +1,7 @@
 package com.example.capstonedesignproject.Server;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,7 +36,7 @@ public class FileUploadTask extends AsyncTask<Object, Void, String> {
         return sendMultiPart((File)objects[1], map);
     }
 
-    public String sendMultiPart(File file, Map<String, String> map) {
+    private String sendMultiPart(File file, Map<String, String> map) {
         try {
             URL url = new URL("http://211.222.234.14:8080/file/upload.do");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -81,6 +82,7 @@ public class FileUploadTask extends AsyncTask<Object, Void, String> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d("오류", "아아아아아아아");
         }
         return null;
     }

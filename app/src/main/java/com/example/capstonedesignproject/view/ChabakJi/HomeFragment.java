@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<ChabakjiData> myDataset;
     List<ChabakjiDAO> list;
+    static int page = 0;
 
     public HomeFragment() {
     }
@@ -62,7 +63,7 @@ public class HomeFragment extends Fragment {
         // TODO 불러온 차박지를 캐시에 저장해놓고, 동일한 데이털는 불러오지 않도록 해야 함 / 스크롤을 내리다가 재요청하여 10개씩 가져옴
         list = new ArrayList<>();
         try {
-            list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR).get();
+            list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, page).get();
         } catch (Exception e) {
             e.printStackTrace();
         }

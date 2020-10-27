@@ -10,25 +10,27 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>> {
-    private OutputStream outputStream;
 
     public ChabakjiInfoTask() { }
 
     @Override
     protected List<ChabakjiDAO> doInBackground(Object... objects) {
 
-        return getChabak();
+        return getChabak((int) objects[0]);
     }
 
-    public List<ChabakjiDAO> getChabak() {
+    public List<ChabakjiDAO> getChabak(int num) {
         try {
             URL url = new URL("http://211.222.234.14:8080/chabak/get.do");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -36,7 +38,9 @@ public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>>
             connection.setDoOutput(true);
             connection.setRequestMethod("POST"); // 데이터를 POST방식으로 전송
 
-            outputStream = connection.getOutputStream();
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8));
+            bw.write("num=" + num);
+            bw.flush();
 
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {

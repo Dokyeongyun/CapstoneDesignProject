@@ -73,12 +73,18 @@ public class WritePostActivity extends AppCompatActivity {
                 long fileName = new Date().getTime();
 
                 String result = "";
+                String fileUploadResult = "";
 
                 try {
                     if (photoUri != null) { // 이미지 첨부하여 게시글 작성 시
                         File file = new File(getPathFromUri(photoUri));
-                        result = new Task().execute("article/insert.do", id, title, content, "true", String.valueOf(fileName), createTime).get();
-                        result = new FileUploadTask().execute(id, file).get();
+                        try {
+                            fileUploadResult = new FileUploadTask().execute(id, file).get();
+                        } catch (Exception e) {
+                            Toast.makeText(this, "게시글 작성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        } finally {
+                            result = new Task().execute("article/insert.do", id, title, content, "true", String.valueOf(fileName)+".jpg", createTime).get();
+                        }
                     } else { // 이미지 첨부 없이 게시글 작성 시
                         result = new Task().execute("article/insert.do", id, title, content, "", "", createTime).get();
                     }
@@ -86,19 +92,12 @@ public class WritePostActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-                if (result.equals("\"success\"")) {
-/*                    Intent intent = new Intent(this, ShowPostActivity.class);
-
-                    startActivity(intent);*/
+                if (result.equals("\"success\"") && fileUploadResult.equals("Success")) {
+                    Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(this, "다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                 }
-
-//                if(result != null && !result.equals("") && result.equals("WritePost_OK")){
-//                    finish();
-//                    Toast.makeText(this, "결과: "+ result + "  게시글이 성공적으로 작성되었습니다.", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    Toast.makeText(this, "결과: "+ result + "  잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-//                }
             } else {
                 Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
             }
