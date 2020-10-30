@@ -18,7 +18,7 @@ import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
 import com.example.capstonedesignproject.view.Congestion.CongestionFragment;
 import com.example.capstonedesignproject.view.Filter.RegionChoiceFragment;
 import com.example.capstonedesignproject.view.MyPage.MyPageFragment;
-import com.example.capstonedesignproject.view.SearchActivity;
+import com.example.capstonedesignproject.view.Filter.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -31,7 +31,6 @@ public class HomeActivity extends AppCompatActivity {
     private MyPageFragment myPageFragment = new MyPageFragment();
 
     public static String memberID;
-    Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

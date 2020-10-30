@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,12 +24,15 @@ import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.ChabakjiInfoTask;
 import com.example.capstonedesignproject.view.Board.HttpImageTest;
+import com.example.capstonedesignproject.view.Filter.FilterActivity;
 import com.example.capstonedesignproject.view.Filter.RegionChoiceActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+
+    static final int FILTER_REQUEST_CODE = 1;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -60,7 +64,6 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         // 차박지 리스트를 불러온다.
-        // TODO 불러온 차박지를 캐시에 저장해놓고, 동일한 데이털는 불러오지 않도록 해야 함 / 스크롤을 내리다가 재요청하여 10개씩 가져옴
         list = new ArrayList<>();
         try {
             list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, page).get();
@@ -104,16 +107,33 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        Button ImageTest = v.findViewById(R.id.button3);
-        ImageTest.setOnClickListener(new View.OnClickListener() {
+        Button filter = v.findViewById(R.id.BT_setFilter);
+        filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), HttpImageTest.class);
-                startActivity(intent);
+                Intent intent = new Intent(getActivity(), FilterActivity.class);
+                startActivityForResult(intent, FILTER_REQUEST_CODE);
             }
         });
 
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == FILTER_REQUEST_CODE){
+            if(resultCode == 1){
+                boolean[] filterArr = data.getBooleanArrayExtra("FilterArr");
+                StringBuilder sb = new StringBuilder();
+                for(int i=0; i<filterArr.length; i++){
+                    sb.append(filterArr[i]+" ");
+                }
+                Toast.makeText(getActivity(), sb, Toast.LENGTH_SHORT).show();
+
+                // TODO 선택된 조건을 이용하여 검색 수행 및 결과 띄우기
+            }
+        }
     }
 
     public interface ClickListener {
