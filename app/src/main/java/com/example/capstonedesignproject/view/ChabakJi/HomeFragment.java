@@ -23,8 +23,6 @@ import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.ChabakjiInfoTask;
-import com.example.capstonedesignproject.view.Board.HttpImageTest;
-import com.example.capstonedesignproject.view.ETC.HomeActivity;
 import com.example.capstonedesignproject.view.Filter.FilterActivity;
 import com.example.capstonedesignproject.view.Filter.RegionChoiceActivity;
 
@@ -130,8 +128,10 @@ public class HomeFragment extends Fragment {
         if (addList == null) {
             Toast.makeText(context, "차박지 데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
         } else {
+            list = new ArrayList<>();
             for (int i = 0; i < addList.size(); i++) {
                 ChabakjiDAO temp = addList.get(i);
+                list.add(temp);
                 myDataset.add(new ChabakjiData(temp.getPlace_name(), temp.getAddress(), temp.getUtility(), temp.getIntroduce(), "3.5", temp.getFilePath()));
             }
             mAdapter.notifyDataSetChanged();

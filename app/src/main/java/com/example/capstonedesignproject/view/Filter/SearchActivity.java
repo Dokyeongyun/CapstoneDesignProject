@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
+import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 public class SearchActivity extends AppCompatActivity {
@@ -58,25 +59,14 @@ public class SearchActivity extends AppCompatActivity {
                         ChangeColor(BT_searchBoard);
                         break;
                     case R.id.BT_searchExec:
-                        // TODO 검색 결과를 어떻게 나타낼 지 구상해야 함..
-                        // TODO 검색 수행 -> 결과 화면으로
                         String search = ET_searchMessage.getText().toString();
                         Toast.makeText(SearchActivity.this, searchType + "타입으로 " + search + " 검색됨", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getApplicationContext(), HomeFragment.class);
+                        Intent intent = new Intent(getApplicationContext(), ListActivity.class);
                         intent.putExtra("Search", search);
-                        switch (searchType) {
-                            case "Region":
-                                setResult(1, intent);
-                                break;
-                            case "Keyword":
-                                setResult(2, intent);
-                                break;
-                            case "Board":
-                                setResult(3, intent);
-                                break;
-                        }
-                        finish();
+                        intent.putExtra("Type", searchType);
+
+                        startActivity(intent);
 
                         break;
                 }

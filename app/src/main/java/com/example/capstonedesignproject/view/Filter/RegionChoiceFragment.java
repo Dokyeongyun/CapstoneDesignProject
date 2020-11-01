@@ -20,18 +20,15 @@ import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 import java.util.ArrayList;
 
 public class RegionChoiceFragment extends Fragment {
-    static ArrayList<ProvinceData> provinceList = new ArrayList<>();
-    static ArrayList<String> cityList = new ArrayList<>();
+    private static ArrayList<ProvinceData> provinceList = new ArrayList<>();
+    private static ArrayList<String> cityList = new ArrayList<>();
 
     public RegionChoiceFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
+        super.onCreate(savedInstanceState); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,8 +46,6 @@ public class RegionChoiceFragment extends Fragment {
         provinceListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
-                // TODO 선택한 시/도 의 세분류 리스트뷰 표시 (어댑터 변경)
-
                 cityList = provinceList.get(position).getCityList();
                 CityAdapter cityAdapter = new CityAdapter(getContext(), cityList);
                 cityListView.setAdapter(cityAdapter);
@@ -60,10 +55,9 @@ public class RegionChoiceFragment extends Fragment {
         cityListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
-                // TODO 선택한 지역의 차박지 리스트 보여주는 액티비티로 이동
-                // 선택한 지역명을 인텐트에 넣어 보내고, ListActivity에서 받아 해당 지역 데이터를 불러와 보여줌
                 Intent intent = new Intent(getActivity(), ListActivity.class);
                 intent.putExtra("Region", cityList.get(position));
+                intent.putExtra("Type", "Region");
                 startActivity(intent);
             }
         });
@@ -94,12 +88,13 @@ public class RegionChoiceFragment extends Fragment {
         cityList.add("춘천/강촌");
         cityList.add("원주");
         cityList.add("경포대/사천/주문진/정동진");
-        cityList.add("강릉역/교동/옥계");
+        cityList.add("강릉/교동/옥계");
         cityList.add("영월/정선");
         cityList.add("속초/양양/고성");
         cityList.add("동해/삼척/태박");
         cityList.add("평창");
-        cityList.add("홍청/횡성");
+        cityList.add("홍천/횡성");
         cityList.add("화천/철원/인제/양구");
+        cityList.add("울산/포항/고성/고창");
     }
 }

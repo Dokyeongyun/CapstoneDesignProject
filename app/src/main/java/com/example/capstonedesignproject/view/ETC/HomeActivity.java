@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.ChabakjiInfoTask;
@@ -28,12 +26,10 @@ import com.example.capstonedesignproject.view.MyPage.MyPageFragment;
 import com.example.capstonedesignproject.view.Filter.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class HomeActivity extends AppCompatActivity {
-    private static final int SEARCH_REQUEST_CODE = 1;
     private long backKeyPressedTime = 0;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -113,31 +109,10 @@ public class HomeActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.app_bar_search:
                 Intent intent = new Intent(this, SearchActivity.class);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==SEARCH_REQUEST_CODE){
-            if(data!=null){
-                String search = data.getStringExtra("Search");
-                String requestUrl = "";
-                if (resultCode == 1)  requestUrl = "getAds.do";
-                else if(resultCode==2) requestUrl = "getKey.do";
-                else if(resultCode==3) requestUrl = "getBoard.do";
-                try {
-                    List<ChabakjiDAO> list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, search).get();
-                    HomeFragment.myDataset.clear();
-                    HomeFragment.setChabakjiList(list);
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     @Override
