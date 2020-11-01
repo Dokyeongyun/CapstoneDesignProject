@@ -37,7 +37,7 @@ public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>>
         try {
             URL url = new URL("http://211.222.234.14:8080/chabak/"+requestUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             connection.setDoOutput(true);
             connection.setRequestMethod("POST"); // 데이터를 POST방식으로 전송
 

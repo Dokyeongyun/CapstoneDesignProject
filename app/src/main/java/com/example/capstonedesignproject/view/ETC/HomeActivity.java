@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
+import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.ChabakjiInfoTask;
 import com.example.capstonedesignproject.view.Board.BoardFragment;
@@ -28,6 +29,7 @@ import com.example.capstonedesignproject.view.Filter.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class HomeActivity extends AppCompatActivity {
@@ -126,14 +128,10 @@ public class HomeActivity extends AppCompatActivity {
                 if (resultCode == 1)  requestUrl = "getAds.do";
                 else if(resultCode==2) requestUrl = "getKey.do";
                 else if(resultCode==3) requestUrl = "getBoard.do";
-
-                Toast.makeText(this, requestUrl, Toast.LENGTH_SHORT).show();
                 try {
-                    HomeFragment.list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, search).get();
-                    HomeFragment.myDataset = new ArrayList<>();
-//                    HomeFragment.mAdapter.notifyDataSetChanged();
-//                    HomeFragment.setChabakjiList();
-                    HomeFragment.mAdapter.notifyDataSetChanged();
+                    List<ChabakjiDAO> list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, search).get();
+                    HomeFragment.myDataset.clear();
+                    HomeFragment.setChabakjiList(list);
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }

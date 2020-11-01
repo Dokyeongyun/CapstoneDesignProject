@@ -37,10 +37,10 @@ public class HomeFragment extends Fragment {
     private static Context context;
 
     private RecyclerView mRecyclerView;
-    public static ArrayList<ChabakjiData> myDataset = new ArrayList<>();;
-    public static RecyclerView.Adapter mAdapter = new ChabakjiAdapter(myDataset);
-    public static List<ChabakjiDAO> list = new ArrayList<>();;
-    private RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+    private static RecyclerView.Adapter mAdapter;
+    public static ArrayList<ChabakjiData> myDataset;
+    private RecyclerView.LayoutManager mLayoutManager;
+    public static List<ChabakjiDAO> list;
     private static int page = 0;
 
     private Button regionChoice, filter;
@@ -58,9 +58,10 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         Init(v);
+
         // 차박지 리스트를 불러와 RecyclerView에 설정
         try { getChabakjiList(page); } catch (Exception e) { e.printStackTrace(); }
-        setChabakjiList();
+        setChabakjiList(list);
 
 
         // CardView 아이템 클릭 리스너
@@ -105,6 +106,10 @@ public class HomeFragment extends Fragment {
     // 초기 설정
     private void Init(View v){
         context = getActivity();
+        mLayoutManager = new LinearLayoutManager(getContext());
+        myDataset = new ArrayList<>();
+        mAdapter = new ChabakjiAdapter(myDataset);
+
         mRecyclerView = v.findViewById(R.id.home_recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -121,14 +126,15 @@ public class HomeFragment extends Fragment {
     }
 
     // RecyclerView 에 넣을 List 에 차박지 정보 삽입
-    public static void setChabakjiList(){
-        if (list == null) {
+    public static void setChabakjiList(List<ChabakjiDAO> addList){
+        if (addList == null) {
             Toast.makeText(context, "차박지 데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
         } else {
-            for (int i = 0; i < list.size(); i++) {
-                ChabakjiDAO temp = list.get(i);
+            for (int i = 0; i < addList.size(); i++) {
+                ChabakjiDAO temp = addList.get(i);
                 myDataset.add(new ChabakjiData(temp.getPlace_name(), temp.getAddress(), temp.getUtility(), temp.getIntroduce(), "3.5", temp.getFilePath()));
             }
+            mAdapter.notifyDataSetChanged();
         }
     }
 
