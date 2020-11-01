@@ -1,18 +1,24 @@
 package com.example.capstonedesignproject.view.ETC;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.Server.ChabakjiInfoTask;
 import com.example.capstonedesignproject.view.Board.BoardFragment;
 import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
 import com.example.capstonedesignproject.view.Congestion.CongestionFragment;
@@ -21,7 +27,12 @@ import com.example.capstonedesignproject.view.MyPage.MyPageFragment;
 import com.example.capstonedesignproject.view.Filter.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 public class HomeActivity extends AppCompatActivity {
+    private static final int SEARCH_REQUEST_CODE = 1;
+
     private FragmentManager fragmentManager = getSupportFragmentManager();
 
     private HomeFragment homeFragment = new HomeFragment();
@@ -99,9 +110,34 @@ public class HomeActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.app_bar_search:
                 Intent intent = new Intent(this, SearchActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==SEARCH_REQUEST_CODE){
+            if(data!=null){
+                String search = data.getStringExtra("Search");
+                String requestUrl = "";
+                if (resultCode == 1)  requestUrl = "getAds.do";
+                else if(resultCode==2) requestUrl = "getKey.do";
+                else if(resultCode==3) requestUrl = "getBoard.do";
+
+                Toast.makeText(this, requestUrl, Toast.LENGTH_SHORT).show();
+                try {
+                    HomeFragment.list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, search).get();
+                    HomeFragment.myDataset = new ArrayList<>();
+//                    HomeFragment.mAdapter.notifyDataSetChanged();
+//                    HomeFragment.setChabakjiList();
+                    HomeFragment.mAdapter.notifyDataSetChanged();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.example.capstonedesignproject.view.Filter;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +16,8 @@ import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
+import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -60,18 +63,21 @@ public class SearchActivity extends AppCompatActivity {
                         String search = ET_searchMessage.getText().toString();
                         Toast.makeText(SearchActivity.this, searchType + "타입으로 " + search + " 검색됨", Toast.LENGTH_SHORT).show();
 
-                        /*
-                        if(searchType.equals("Region")){
-                            Intent intent = new Intent(SearchActivity.this, ??);
-                            startActivity(intent);
-                        }else if(searchType.equals("Keyword")){
-                            Intent intent = new Intent(SearchActivity.this, ??);
-                            startActivity(intent);
-                        }else if(searchType.equals("Board")){
-                            Intent intent = new Intent(SearchActivity.this, ??);
-                            startActivity(intent);
+                        Intent intent = new Intent(getApplicationContext(), HomeFragment.class);
+                        intent.putExtra("Search", search);
+                        switch (searchType) {
+                            case "Region":
+                                setResult(1, intent);
+                                break;
+                            case "Keyword":
+                                setResult(2, intent);
+                                break;
+                            case "Board":
+                                setResult(3, intent);
+                                break;
                         }
-                        */
+                        finish();
+
                         break;
                 }
             }

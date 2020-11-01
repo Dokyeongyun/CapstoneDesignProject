@@ -22,24 +22,27 @@ import java.util.List;
 
 public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>> {
 
+    private static String query = "";
+    private static String requestUrl = "";
     public ChabakjiInfoTask() { }
 
     @Override
     protected List<ChabakjiDAO> doInBackground(Object... objects) {
-
-        return getChabak((int) objects[0]);
+        requestUrl = (String) objects[0];
+        InitQuery(requestUrl, objects[1]);
+        return getChabak();
     }
 
-    public List<ChabakjiDAO> getChabak(int num) {
+    private List<ChabakjiDAO> getChabak() {
         try {
-            URL url = new URL("http://211.222.234.14:8080/chabak/get.do");
+            URL url = new URL("http://211.222.234.14:8080/chabak/"+requestUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setDoOutput(true);
             connection.setRequestMethod("POST"); // 데이터를 POST방식으로 전송
 
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8));
-            bw.write("num=" + num);
+            bw.write(query);
             bw.flush();
 
             int responseCode = connection.getResponseCode();
@@ -93,5 +96,19 @@ public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>>
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void InitQuery(String url, Object... objects){
+        switch (url) {
+            case "get.do":
+                query = "num=" + objects[0];
+                break;
+            case "getKey.do":
+                query = "key=" + objects[0];
+                break;
+            case "getAds.do":
+                query = "address=" + objects[0];
+                break;
+        }
     }
 }
