@@ -114,9 +114,6 @@ public class JoinActivity extends AppCompatActivity {
 
     // 입력된 정보로 회원가입 수행
     public void doJoin(View view)  {
-        // TODO DB에 데이터 삽입, 회원가입 완료 메시지, 메인페이지로 이동
-        // TODO password와 passwordChk 값 일치여부 확인
-
         String email = ET_email.getText().toString();
         String password = ET_password.getText().toString();
         String passwordChk = ET_passwordChk.getText().toString();

@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 
 public class HomeActivity extends AppCompatActivity {
     private static final int SEARCH_REQUEST_CODE = 1;
+    private long backKeyPressedTime = 0;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -136,6 +137,18 @@ public class HomeActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish();
         }
     }
 }

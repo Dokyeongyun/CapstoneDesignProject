@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     public void Login(View view) {
         if (!isMember) {
             Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else {
             String id = ET_email.getText().toString();
@@ -82,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
             if (result.equals("\""+id+"\"")){
                 Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("memberID", id);
                 startActivity(intent);
             }else{
