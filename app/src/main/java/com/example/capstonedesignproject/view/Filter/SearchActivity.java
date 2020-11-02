@@ -20,13 +20,20 @@ import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
 import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
-public class SearchActivity extends AppCompatActivity {
+import java.util.Objects;
 
-    Button BT_searchRegion, BT_searchKeyword, BT_searchBoard;
-    Button BT_test1, BT_test2;
-    ImageButton BT_searchExec;
-    EditText ET_searchMessage;
-    TableLayout TL_hotKeyword;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class SearchActivity extends AppCompatActivity {
+    @BindView(R.id.BT_searchRegion) Button BT_searchRegion;
+    @BindView(R.id.BT_searchKeyword) Button BT_searchKeyword;
+    @BindView(R.id.BT_searchBoard) Button BT_searchBoard;
+    @BindView(R.id.BT_searchExec) ImageButton BT_searchExec;
+    @BindView(R.id.ET_searchMessage) EditText ET_searchMessage;
+    @BindView(R.id.TL_hotKeyword) TableLayout TL_hotKeyword;
+    @BindView(R.id.Toolbar_search) Toolbar mToolbar;
 
     String searchType = "Region"; // Default 검색타입
 
@@ -34,65 +41,30 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
-        // Toolbar
-        final Toolbar mToolbar = findViewById(R.id.Toolbar_search);
-        mToolbar.setTitle("검색");
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
-
-        // findViewById
+        ButterKnife.bind(this);
         Init();
-
-        // 버튼 클릭 리스너
-        Button.OnClickListener onClickListener = new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.BT_searchRegion:
-                        ChangeColor(BT_searchRegion);
-                        break;
-                    case R.id.BT_searchKeyword:
-                        ChangeColor(BT_searchKeyword);
-                        break;
-                    case R.id.BT_searchBoard:
-                        ChangeColor(BT_searchBoard);
-                        break;
-                    case R.id.BT_searchExec:
-                        String search = ET_searchMessage.getText().toString();
-                        Toast.makeText(SearchActivity.this, searchType + "타입으로 " + search + " 검색됨", Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-                        intent.putExtra("Search", search);
-                        intent.putExtra("Type", searchType);
-
-                        startActivity(intent);
-
-                        break;
-                }
-            }
-        };
-
-        BT_searchRegion.setOnClickListener(onClickListener);
-        BT_searchKeyword.setOnClickListener(onClickListener);
-        BT_searchBoard.setOnClickListener(onClickListener);
-        BT_searchExec.setOnClickListener(onClickListener);
-
         // TODO TableLayout 에 인기 검색 키워드 버튼 동적으로 생성, 클릭리스너 구현해야함
     }
 
-    public void Init() {
-        BT_searchRegion = findViewById(R.id.BT_searchRegion);
-        BT_searchKeyword = findViewById(R.id.BT_searchKeyword);
-        BT_searchBoard = findViewById(R.id.BT_searchBoard);
-        BT_searchExec = findViewById(R.id.BT_searchExec);
-        BT_test1 = findViewById(R.id.BT_test1);
-        BT_test2 = findViewById(R.id.BT_test2);
-        ET_searchMessage = findViewById(R.id.ET_searchMessage);
-        TL_hotKeyword = findViewById(R.id.TL_hotKeyword);
+    @OnClick(R.id.BT_searchRegion) void ClickSearchRegion(){ ChangeColor(BT_searchRegion); }
+    @OnClick(R.id.BT_searchRegion) void ClickSearchKeyword(){ ChangeColor(BT_searchKeyword); }
+    @OnClick(R.id.BT_searchBoard) void ClickSearchBoard(){ ChangeColor(BT_searchBoard); }
+    @OnClick(R.id.BT_searchExec) void ClickSearchExec(){
+        String search = ET_searchMessage.getText().toString();
+        Intent intent = new Intent(getApplicationContext(), ListActivity.class);
+        intent.putExtra("Search", search);
+        intent.putExtra("Type", searchType);
+        startActivity(intent);
     }
 
-    public void ChangeColor(View view) {
+    private void Init(){
+        // Toolbar
+        mToolbar.setTitle("검색");
+        setSupportActionBar(mToolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
+    }
+
+    private void ChangeColor(View view) {
         switch (view.getId()) {
             case R.id.BT_searchRegion:
                 BT_searchRegion.setBackgroundResource(R.drawable.button_border_green);

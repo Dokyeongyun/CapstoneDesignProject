@@ -18,43 +18,39 @@ import com.example.capstonedesignproject.view.MyPage.ChangePasswordActivity;
 import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class FindPasswordActivity extends AppCompatActivity {
-    Button findPassword;
-    LinearLayout LL_findPassword, LL_sendVerification;
+
+    @BindView(R.id.BT_findPassword) Button findPassword;
+    @BindView(R.id.LL_findPassword) LinearLayout LL_findPassword;
+    @BindView(R.id.LL_sendVerification) LinearLayout LL_sendVerification;
+    @BindView(R.id.ET_email) EditText ET_email;
+    @BindView(R.id.ET_verificationCode) EditText ET_verificationCode;
+
     String authCode;
-    EditText ET_email, ET_verificationCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_password);
-
+        ButterKnife.bind(this);
         /* SMTP 사용을 위한 인터넷 허용 */
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .permitDiskReads()
                 .permitDiskWrites()
                 .permitNetwork().build());
-
-        ET_email = findViewById(R.id.ET_email);
-        ET_verificationCode = findViewById(R.id.ET_verificationCode);
-        findPassword = findViewById(R.id.BT_findPassword);
-        LL_findPassword = findViewById(R.id.LL_findPassword);
-        LL_sendVerification = findViewById(R.id.LL_sendVerification);
         // TODO 이메일 입력 안되면 완료버튼 비활성화
-
     }
 
-    public void BackToLogin(View view) {
-        // TODO 로그인 페이지로 이동
-        finish();
-    }
-
-    public void SendAuthCode(View view) {
-        // TODO 존재하는 이메일이면 이메일로 인증번호 발송, LL_verification VISIBLE, 존재하지 않으면 오류메시지
+    @OnClick(R.id.BT_back) void BackToLogin() { finish(); }
+    @OnClick(R.id.BT_findPassword) void SendAuthCode() {
         try {
             GMailSender gMailSender = new GMailSender("aservmz@gmail.com", "ehruddbs4$");
-            //GMailSender.sendMail(제목, 본문내용, 받는사람);
             authCode = gMailSender.getEmailCode();
+            //GMailSender.sendMail(제목, 본문내용, 받는사람);
             gMailSender.sendMail("이메일 인증요청", "인증번호 : " + authCode, ET_email.getText().toString());
             Toast.makeText(getApplicationContext(), "이메일을 성공적으로 보냈습니다.", Toast.LENGTH_SHORT).show();
             LL_findPassword.setVisibility(View.GONE);
@@ -67,10 +63,7 @@ public class FindPasswordActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    public void CheckVerificationCode(View view) {
-        // TODO 인증번호 확인 -> 일치하면 로그인페이지, 아니면 오류메시지
-
+    @OnClick(R.id.BT_checkVerificationCode) void CheckVerificationCode() {
         if(ET_verificationCode!=null && !ET_verificationCode.getText().toString().equals("")){
             if(authCode.equals(ET_verificationCode.getText().toString())){
                 Toast.makeText(this, "확인되었습니다!", Toast.LENGTH_SHORT).show();
@@ -84,9 +77,7 @@ public class FindPasswordActivity extends AppCompatActivity {
             Toast.makeText(this, "인증번호를 입력해주세요!", Toast.LENGTH_SHORT).show();
         }
     }
-
-    public void Resend(View view) {
-        // TODO 인증번호 재발송
+    @OnClick(R.id.BT_resend) void Resend() {
         findPassword.callOnClick();
     }
 }

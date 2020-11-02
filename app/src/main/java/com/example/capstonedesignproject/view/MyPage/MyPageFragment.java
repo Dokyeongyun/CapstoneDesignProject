@@ -12,36 +12,25 @@ import android.widget.Button;
 
 import com.example.capstonedesignproject.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MyPageFragment extends Fragment {
-
+    @BindView(R.id.BT_manageProfile) Button BT_manageProfile;
     public MyPageFragment() { }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_my_page, container, false);
-
-        Button.OnClickListener onClickListener = new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.BT_manageProfile:
-                        Intent intent = new Intent(getActivity(), ManageMyProfile.class);
-                        startActivity(intent);
-                        break;
-                }
-            }
-        };
-
-        Button BT_manageProfile = v.findViewById(R.id.BT_manageProfile);
-        BT_manageProfile.setOnClickListener(onClickListener);
-
+        ButterKnife.bind(this, v);
         return v;
+    }
+    @OnClick(R.id.BT_manageProfile) void ClickManageProfile(){
+        Intent intent = new Intent(getActivity(), ManageMyProfile.class);
+        startActivity(intent);
     }
 }

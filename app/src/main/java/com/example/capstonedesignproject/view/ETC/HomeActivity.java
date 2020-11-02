@@ -29,11 +29,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class HomeActivity extends AppCompatActivity {
+    public static final String SERVER_IP = "http://211.222.234.14:";
+    public static final String PORT_NUMBER = "8090";
+    public static String SERVER_URL = SERVER_IP + PORT_NUMBER;
+
+    @BindView(R.id.homeToolbar) Toolbar mToolbar;
+    @BindView(R.id.bottomNavigationView) BottomNavigationView bottomNavigationView;
     private long backKeyPressedTime = 0;
-
     private FragmentManager fragmentManager = getSupportFragmentManager();
-
     private HomeFragment homeFragment = new HomeFragment();
     private RegionChoiceFragment regionChoiceFragment = new RegionChoiceFragment();
     private CongestionFragment congestionFragment = new CongestionFragment();
@@ -45,17 +52,16 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         memberID = intent.getStringExtra("memberID");
 
         // Toolbar
-        final Toolbar mToolbar = findViewById(R.id.homeToolbar);
         mToolbar.setTitle("차박러 모여라");
         setSupportActionBar(mToolbar);
 
         // BottomNavigationView
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_frame, homeFragment).commitAllowingStateLoss();
 

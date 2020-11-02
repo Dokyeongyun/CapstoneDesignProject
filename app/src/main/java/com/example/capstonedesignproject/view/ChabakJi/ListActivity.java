@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
@@ -25,28 +26,26 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class ListActivity extends AppCompatActivity {
 
-    Toolbar mToolbar;
-    Button regionChoice;
+    @BindView(R.id.listToolbar) Toolbar mToolbar;
+    @BindView(R.id.BT_regionChoice) Button regionChoice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        ButterKnife.bind(this);
         Init();
 
-        regionChoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegionChoiceActivity.class);
-                startActivity(intent);
-            }
-        });
-
         Intent intent = getIntent();
-        String[] regionArr = null;
         String search = intent.getStringExtra("Search");
+        String[] regionArr = new String[]{search};
         String requestUrl = "";
         if (Objects.equals(intent.getStringExtra("Type"), "Region"))  {
             requestUrl = "getAds.do";
@@ -84,18 +83,20 @@ public class ListActivity extends AppCompatActivity {
 
     private void Init(){
         // Toolbar
-        mToolbar = findViewById(R.id.listToolbar);
         mToolbar.setTitle("검색결과");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
+    }
 
-        regionChoice = findViewById(R.id.BT_regionChoice);
+    @OnClick(R.id.BT_regionChoice)
+    void ChoiceRegion(){
+        Intent intent = new Intent(getApplicationContext(), RegionChoiceActivity.class);
+        startActivity(intent);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(requestCode==1){
             if(resultCode==1){
                 finish();

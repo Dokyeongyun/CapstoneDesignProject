@@ -29,42 +29,37 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class WritePostActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 0;
-    ImageButton IB_photo;
+    @BindView(R.id.IB_photo) ImageButton IB_photo;
+    @BindView(R.id.ET_title) EditText ET_title;
+    @BindView(R.id.ET_content) EditText ET_content;
     Uri photoUri;
-    EditText ET_title, ET_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_post);
-
-        ET_title = findViewById(R.id.ET_title);
-        ET_content = findViewById(R.id.ET_content);
-        IB_photo = findViewById(R.id.IB_photo);
+        ButterKnife.bind(this);
     }
 
-    // 카메라 버튼 클릭 시 -> 사진 첨부기능
-    public void AddPhoto(View view) {
-        // 갤러리를 열어 사진을 고를 수 있도록 하는 코드 -> 사진 선택하면 onActivityResult()로 ㄱㄱ
+    @OnClick(R.id.BT_addPhoto) void AddPhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    // 첨부한 사진 클릭 시 -> 사진 첨부기능 재실행
-    public void ChangePhoto(View view) {
-        AddPhoto(view);
+    @OnClick(R.id.IB_photo) void ChangePhoto() {
+        AddPhoto();
     }
 
-    // 게시글 작성 완료
-    public void writeComplete(View view) {
-        // TODO 글 쓰기 완료 -> DB 에 저장 및 액티비티 종료
+    @OnClick(R.id.BT_complete) void writeComplete() {
         if (ET_title.getText() != null && !ET_title.getText().toString().equals("")) {
             if (ET_content.getText() != null && !ET_content.getText().toString().equals("")) {
-                // DB 삽입
-
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
                 String createTime = format.format(new Date());
                 String id = HomeActivity.memberID;
@@ -112,8 +107,6 @@ public class WritePostActivity extends AppCompatActivity {
         Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
         cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
-/*        Uri uri2 = Uri.fromFile(new File(path));
-        Log.d("하", "getRealPathFromURI(), path : " + uri2.toString());*/
         cursor.close();
         return path;
     }

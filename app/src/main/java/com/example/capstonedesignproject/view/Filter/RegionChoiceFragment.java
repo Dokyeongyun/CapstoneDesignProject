@@ -19,7 +19,14 @@ import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnItemClick;
+
 public class RegionChoiceFragment extends Fragment {
+    @BindView(R.id.province_listView) ListView provinceListView;
+    @BindView(R.id.city_listView) ListView cityListView;
+
     private static ArrayList<ProvinceData> provinceList = new ArrayList<>();
     private static ArrayList<String> cityList = new ArrayList<>();
 
@@ -33,36 +40,23 @@ public class RegionChoiceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_region_choice, container, false);
-
+        ButterKnife.bind(this, v);
         Init();
-
-        ListView provinceListView = v.findViewById(R.id.province_listView);
-        final ProvinceAdapter provinceAdapter = new ProvinceAdapter(getContext(), provinceList);
+        ProvinceAdapter provinceAdapter = new ProvinceAdapter(getContext(), provinceList);
         provinceListView.setAdapter(provinceAdapter);
 
-        final ListView cityListView = v.findViewById(R.id.city_listView);
-
-        // 클릭 리스너
-        provinceListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id){
-                cityList = provinceList.get(position).getCityList();
-                CityAdapter cityAdapter = new CityAdapter(getContext(), cityList);
-                cityListView.setAdapter(cityAdapter);
-            }
-        });
-
-        cityListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id){
-                Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("Region", cityList.get(position));
-                intent.putExtra("Type", "Region");
-                startActivity(intent);
-            }
-        });
-
         return v;
+    }
+    @OnItemClick(R.id.province_listView) void ClickProvince(AdapterView<?> parent, View v1, int position, long id){
+        cityList = provinceList.get(position).getCityList();
+        CityAdapter cityAdapter = new CityAdapter(getContext(), cityList);
+        cityListView.setAdapter(cityAdapter);
+    }
+    @OnItemClick(R.id.city_listView) void ClickCity(AdapterView<?> parent, View v1, int position, long id){
+        Intent intent = new Intent(getActivity(), ListActivity.class);
+        intent.putExtra("Region", cityList.get(position));
+        intent.putExtra("Type", "Region");
+        startActivity(intent);
     }
 
     // 샘플 데이터

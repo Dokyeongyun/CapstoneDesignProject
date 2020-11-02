@@ -11,15 +11,19 @@ import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ChangePasswordActivity extends AppCompatActivity {
+
+    @BindView(R.id.BasicToolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
-
+        ButterKnife.bind(this);
         // Toolbar
-        final Toolbar mToolbar = findViewById(R.id.BasicToolbar);
         mToolbar.setTitle("비밀번호 변경");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
@@ -32,7 +36,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         inflater.inflate(R.menu.basic_toolbar_menu, menu);
         return true;
     }
-
 
     // 툴바 메뉴 클릭 리스너
     @Override

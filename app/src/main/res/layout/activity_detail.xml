@@ -67,7 +67,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
-                        android:onClick="SunLike"
                         app:srcCompat="@drawable/sun_white_24dp" />
 
                     <ImageButton

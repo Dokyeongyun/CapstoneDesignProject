@@ -23,24 +23,33 @@ import com.example.capstonedesignproject.Server.GetArticleTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class ShowPostActivity extends AppCompatActivity {
     boolean userLike; // 현재 세션의 유저가 해당 게시글 좋아요 여부
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.TV_postTitle) TextView TV_title;
+    @BindView(R.id.TV_postContent) TextView TV_content;
+    @BindView(R.id.TV_postWriter) TextView TV_postWriter;
+    @BindView(R.id.TV_postDate) TextView TV_postDate;
+    @BindView(R.id.BT_postImage) ImageButton BT_postImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_post);
+        ButterKnife.bind(this);
 
-        Toolbar mToolbar = findViewById(R.id.toolbar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
 
-        // 인텐트 수신 및 setText
         Intent intent = getIntent();
         int articleID = intent.getIntExtra("articleID", 0);
         List<ArticleData> list = new ArrayList<>();
@@ -49,12 +58,6 @@ public class ShowPostActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
-        TextView TV_title = findViewById(R.id.TV_postTitle);
-        TextView TV_content = findViewById(R.id.TV_postContent);
-        TextView TV_postWriter = findViewById(R.id.TV_postWriter);
-        TextView TV_postDate = findViewById(R.id.TV_postDate);
-        ImageButton BT_postImage = findViewById(R.id.BT_postImage);
 
         ArticleData articleData = list.get(0);
         TV_title.setText(articleData.getTitle());
@@ -67,6 +70,23 @@ public class ShowPostActivity extends AppCompatActivity {
                 .placeholder(R.drawable.button_border_gray)
                 .into(BT_postImage);
         // TODO 댓글 서비스 제공해야 함
+    }
+
+    @OnClick(R.id.BT_LikePost) void LikePost() {
+        if (userLike) {
+            Toast.makeText(this, "이미 Like 한 게시글입니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            userLike = true;
+            Toast.makeText(this, "Like! 감사합니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @OnClick(R.id.BT_UnLikePost) void UnLikePost(){
+        if (userLike) {
+            userLike = false;
+            Toast.makeText(this, "UnLike!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "UnLike!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // 툴바에 메뉴 인플레이트
@@ -92,28 +112,6 @@ public class ShowPostActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void LikePost(View view) {
-        // 해당 유저의 게시글 좋아요 여부 가져옴 ( userLike )
-        if (view.getId() == R.id.BT_LikePost) {
-            if (userLike) {
-                Toast.makeText(this, "이미 Like 한 게시글입니다.", Toast.LENGTH_SHORT).show();
-            } else {
-                // DB에 좋아요 반영
-                userLike = true;
-                Toast.makeText(this, "Like! 감사합니다.", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            if (userLike) {
-                userLike = false;
-                Toast.makeText(this, "UnLike!", Toast.LENGTH_SHORT).show();
-            } else {
-                // DB에 싫어요 반영
-                Toast.makeText(this, "UnLike!", Toast.LENGTH_SHORT).show();
-                //Toast.makeText(this, "이미 UnLike 한 게시글입니다.", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }
 

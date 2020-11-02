@@ -11,11 +11,20 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.capstonedesignproject.Data.ArticleData;
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class BoardAdapter extends BaseAdapter {
-    private LayoutInflater mLayoutInflater = null;
+    @BindView(R.id.TV_postTitle) TextView TV_postTitle;
+    @BindView(R.id.TV_postDetail) TextView TV_postDetail;
+    @BindView(R.id.TV_postContent) TextView TV_postContent;
+    @BindView(R.id.IV_postPicture) ImageView IV_postPicture;
+
+    private LayoutInflater mLayoutInflater;
     private ArrayList<ArticleData> postList;
 
     public BoardAdapter(Context context, ArrayList<ArticleData> data) {
@@ -41,22 +50,18 @@ public class BoardAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = mLayoutInflater.inflate(R.layout.board_view, null);
-
-        TextView postTitle = view.findViewById(R.id.TV_postTitle);
-        TextView postDetail = view.findViewById(R.id.TV_postDetail);
-        TextView postContent = view.findViewById(R.id.TV_postContent);
-        ImageView postPicture = view.findViewById(R.id.IV_postPicture);
+        ButterKnife.bind(this, view);
 
         ArticleData articleData = postList.get(position);
         String detail = articleData.getMemberId() + "  " + articleData.getCreateTime();
-        postTitle.setText(articleData.getTitle());
-        postContent.setText(articleData.getContent()); // TODO 최대글자수 제한해야 함
-        postDetail.setText(detail);
+        TV_postTitle.setText(articleData.getTitle());
+        TV_postContent.setText(articleData.getContent()); // TODO 최대글자수 제한해야 함
+        TV_postDetail.setText(detail);
 
         Glide.with(parent.getContext())
-                .load("http://211.222.234.14:8080/"+articleData.getFilePath())
+                .load(HomeActivity.SERVER_URL + articleData.getFilePath())
                 .fitCenter()
-                .into(postPicture);
+                .into(IV_postPicture);
 
         return view;
     }

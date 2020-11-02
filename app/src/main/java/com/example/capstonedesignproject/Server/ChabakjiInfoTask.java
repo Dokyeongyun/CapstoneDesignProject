@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
+import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>>
 
     private List<ChabakjiDAO> getChabak() {
         try {
-            URL url = new URL("http://211.222.234.14:8080/chabak/"+requestUrl);
+            URL url = new URL(HomeActivity.SERVER_URL + "/chabak/" + requestUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             connection.setDoOutput(true);

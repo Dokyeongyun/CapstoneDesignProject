@@ -62,7 +62,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#D30C0B0E"
-                android:onClick="Member"
                 android:text="회원"
                 android:textColor="#FFFFFF" />
 
@@ -72,7 +71,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#FFFFFF"
-                android:onClick="Guest"
                 android:text="비회원" />
         </LinearLayout>
 
@@ -143,7 +141,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#D30C0B0E"
-                android:onClick="Login"
                 android:text="로그인"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
@@ -165,7 +162,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/border_right"
-                android:onClick="Join"
                 android:text="회원가입" />
 
             <Button
@@ -174,7 +170,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#FFFFFF"
-                android:onClick="FindPassword"
                 android:text="비밀번호찾기" />
         </LinearLayout>
     </LinearLayout>

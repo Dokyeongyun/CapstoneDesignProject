@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.capstonedesignproject.view.ETC.HomeActivity;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +42,7 @@ public class FileDownloadTask extends AsyncTask<String, Void, Bitmap> {
             @Override
             public void run() {
                 try {
-                    URL url1 = new URL("http://211.222.234.14:8080/" + filePath);
+                    URL url1 = new URL(HomeActivity.SERVER_URL+ "/" + filePath);
                     try {
                         HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
                         conn.setDoInput(true);

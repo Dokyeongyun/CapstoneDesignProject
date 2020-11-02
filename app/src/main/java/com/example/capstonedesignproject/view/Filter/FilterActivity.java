@@ -15,12 +15,24 @@ import android.widget.TextView;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 
+import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class FilterActivity extends AppCompatActivity {
     static final int optionNum = 5;
 
-    Toolbar mToolbar;
-    TextView TV_fishingSpot, TV_toilet, TV_convenience, TV_pay, TV_free, TV_refresh;
-    Button BT_filterComplete;
+    @BindView(R.id.TV_fishingSpot) TextView TV_fishingSpot;
+    @BindView(R.id.TV_toilet) TextView TV_toilet;
+    @BindView(R.id.TV_convenience) TextView TV_convenience;
+    @BindView(R.id.TV_pay) TextView TV_pay;
+    @BindView(R.id.TV_free) TextView TV_free;
+    @BindView(R.id.TV_refresh) TextView TV_refresh;
+    @BindView(R.id.Toolbar_filter) Toolbar mToolbar;
+    @BindView(R.id.BT_filterComplete) Button BT_filterComplete;
+
     boolean[] isChecked = new boolean[optionNum];
     TextView[] optionArr = new TextView[optionNum];
     int[] checkedImage = new int[optionNum];
@@ -30,69 +42,34 @@ public class FilterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
-
+        ButterKnife.bind(this);
         Init();
+    }
 
-        // 버튼 클릭 리스너
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.TV_fishingSpot:
-                        CheckOption(0);
-                        break;
-                    case R.id.TV_toilet:
-                        CheckOption(1);
-                        break;
-                    case R.id.TV_convenience:
-                        CheckOption(2);
-                        break;
-                    case R.id.TV_pay:
-                        CheckOption(3);
-                        break;
-                    case R.id.TV_free:
-                        CheckOption(4);
-                        break;
-                    case R.id.TV_refresh:
-                        isChecked = new boolean[optionNum];
-                        for(int i=0; i<optionNum; i++){
-                            isChecked[i] = true;
-                            CheckOption(i);
-                        }
-                        break;
-                    case R.id.BT_filterComplete:
-                        Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-                        intent.putExtra("FilterArr", isChecked);
-                        setResult(1, intent);
-                        finish();
-                        break;
-                }
-            }
-        };
-
-        TV_fishingSpot.setOnClickListener(onClickListener);
-        TV_toilet.setOnClickListener(onClickListener);
-        TV_convenience.setOnClickListener(onClickListener);
-        TV_pay.setOnClickListener(onClickListener);
-        TV_free.setOnClickListener(onClickListener);
-        TV_refresh.setOnClickListener(onClickListener);
-        BT_filterComplete.setOnClickListener(onClickListener);
+    @OnClick(R.id.TV_fishingSpot) void ClickFishingSpot() { CheckOption(0); }
+    @OnClick(R.id.TV_toilet) void ClickToilet() { CheckOption(1); }
+    @OnClick(R.id.TV_convenience) void ClickConvenience() { CheckOption(2); }
+    @OnClick(R.id.TV_pay) void ClickPay() { CheckOption(3); }
+    @OnClick(R.id.TV_free) void ClickFree() { CheckOption(4); }
+    @OnClick(R.id.TV_refresh) void ClickRefresh() {
+        isChecked = new boolean[optionNum];
+        for (int i = 0; i < optionNum; i++) {
+            isChecked[i] = true;
+            CheckOption(i);
+        }
+    }
+    @OnClick(R.id.BT_filterComplete) void ClickFilterComplete() {
+        Intent intent = new Intent(getApplicationContext(), ListActivity.class);
+        intent.putExtra("FilterArr", isChecked);
+        setResult(1, intent);
+        finish();
     }
 
     void Init(){
         // Toolbar
-        mToolbar = findViewById(R.id.Toolbar_filter);
         mToolbar.setTitle("조건설정");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
-
-        TV_fishingSpot = findViewById(R.id.TV_fishingSpot);
-        TV_toilet = findViewById(R.id.TV_toilet);
-        TV_convenience = findViewById(R.id.TV_convenience);
-        TV_pay = findViewById(R.id.TV_pay);
-        TV_free = findViewById(R.id.TV_free);
-        TV_refresh = findViewById(R.id.TV_refresh);
-        BT_filterComplete = findViewById(R.id.BT_filterComplete);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
 
         optionArr = new TextView[]{TV_fishingSpot, TV_toilet, TV_convenience, TV_pay, TV_free};
         checkedImage = new int[]{R.drawable.fishing_spot_blue,

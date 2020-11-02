@@ -12,27 +12,27 @@ import com.example.capstonedesignproject.R;
 
 import net.daum.mf.map.api.MapView;
 
+import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class CongestionFragment extends Fragment {
-    public CongestionFragment() {
-    }
+    @BindView(R.id.mapView) ViewGroup mapViewContainer;
+    public CongestionFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_congestion, container, false);
-
-        MapView mapView = new MapView(getContext());
-
-        ViewGroup mapViewContainer = v.findViewById(R.id.mapView);
+        ButterKnife.bind(this, v);
+        MapView mapView = new MapView(Objects.requireNonNull(getContext()));
         mapViewContainer.addView(mapView);
-
         return v;
     }
 }

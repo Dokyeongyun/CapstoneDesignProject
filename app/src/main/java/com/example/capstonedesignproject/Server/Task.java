@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.capstonedesignproject.view.ETC.HomeActivity;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -20,16 +22,13 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class Task extends AsyncTask<String, Void, String> {
-    private static String ip = "211.222.234.14"; // IP
-    private String serverip = "http://" + ip + ":8080/"; // JSP 주소
     private String sendMsg, receiveMsg;
 
     Task(String sendmsg) {
         this.sendMsg = sendmsg;
     }
 
-    public Task() {
-    }
+    public Task() { }
 
     @Override
     protected String doInBackground(String... strings) {
@@ -78,7 +77,7 @@ public class Task extends AsyncTask<String, Void, String> {
 
     private HttpURLConnection returnConnection(String urlString) {
         try {
-            URL url = new URL(serverip += urlString);
+            URL url = new URL(HomeActivity.SERVER_URL + "/" + urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             conn.setDoOutput(true);

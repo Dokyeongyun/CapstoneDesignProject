@@ -30,18 +30,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
+
 public class HomeFragment extends Fragment {
     private static final int FILTER_REQUEST_CODE = 1;
     private static Context context;
 
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.BT_regionChoice) Button BT_regionChoice;
+    @BindView(R.id.BT_setFilter) Button BT_setFilter;
+    @BindView(R.id.home_recyclerView) RecyclerView mRecyclerView;
+
     private static RecyclerView.Adapter mAdapter;
-    public static ArrayList<ChabakjiData> myDataset;
+    static ArrayList<ChabakjiData> myDataset;
     private RecyclerView.LayoutManager mLayoutManager;
     public static List<ChabakjiDAO> list;
     private static int page = 0;
-
-    private Button regionChoice, filter;
 
     public HomeFragment() {
     }
@@ -55,50 +61,37 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        ButterKnife.bind(this, v);
         Init(v);
 
         // 차박지 리스트를 불러와 RecyclerView에 설정
         try { getChabakjiList(page); } catch (Exception e) { e.printStackTrace(); }
         setChabakjiList(list);
 
-
         // CardView 아이템 클릭 리스너
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                // TODO CardView 아이템 클릭시 해당 차박지 상세정보 띄우기
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("Chabakji", list.get(position));
                 startActivity(intent);
             }
-
             @Override
             public void onLongClick(View view, int position) {
 
             }
         }));
-
-        // 버튼 클릭 리스너
-        Button.OnClickListener onClickListener = new Button.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                switch (v.getId()){
-                    case R.id.BT_regionChoice:
-                        intent = new Intent(getActivity(), RegionChoiceActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.BT_setFilter:
-                        intent = new Intent(getActivity(), FilterActivity.class);
-                        startActivityForResult(intent, FILTER_REQUEST_CODE);
-                        break;
-                }
-            }
-        };
-        regionChoice.setOnClickListener(onClickListener);
-        filter.setOnClickListener(onClickListener);
-
         return v;
+    }
+
+    @OnClick(R.id.BT_regionChoice) void ClickRegionChoice(){
+        Intent intent = new Intent(getActivity(), RegionChoiceActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.BT_setFilter) void ClickSetFilter(){
+        Intent intent = new Intent(getActivity(), FilterActivity.class);
+        startActivityForResult(intent, FILTER_REQUEST_CODE);
     }
 
     // 초기 설정
@@ -107,15 +100,11 @@ public class HomeFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         myDataset = new ArrayList<>();
         mAdapter = new ChabakjiAdapter(myDataset);
-
-        mRecyclerView = v.findViewById(R.id.home_recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        regionChoice = v.findViewById(R.id.BT_regionChoice);
-        filter = v.findViewById(R.id.BT_setFilter);
-        regionChoice.setText("내주변");
+        BT_regionChoice.setText("내주변");
     }
 
     // 최초 차박지리스트 불러오기
@@ -124,7 +113,7 @@ public class HomeFragment extends Fragment {
     }
 
     // RecyclerView 에 넣을 List 에 차박지 정보 삽입
-    public static void setChabakjiList(List<ChabakjiDAO> addList){
+    static void setChabakjiList(List<ChabakjiDAO> addList){
         if (addList == null) {
             Toast.makeText(context, "차박지 데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
         } else {
@@ -151,7 +140,6 @@ public class HomeFragment extends Fragment {
                     }
                     Toast.makeText(getActivity(), sb, Toast.LENGTH_SHORT).show();
                 }
-
                 // TODO 선택된 조건을 이용하여 검색 수행 및 결과 띄우기
             }
         }
@@ -203,5 +191,4 @@ public class HomeFragment extends Fragment {
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
         }
     }
-
 }

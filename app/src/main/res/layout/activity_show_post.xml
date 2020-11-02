@@ -75,7 +75,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
-                android:onClick="LikePost"
                 android:src="@drawable/mood_yellow_24dp" />
 
             <ImageButton
@@ -85,7 +84,6 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
-                android:onClick="LikePost"
                 app:srcCompat="@drawable/mood_bad_yellow_24dp" />
 
         </LinearLayout>

@@ -22,11 +22,19 @@ import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText ET_email, ET_password;
-    Button BT_member, BT_guest;
+    @BindView(R.id.ET_email) EditText ET_email;
+    @BindView(R.id.ET_password) EditText ET_password;
+    @BindView(R.id.BT_member) Button BT_member;
+    @BindView(R.id.BT_guest) Button BT_guest;
     boolean isMember = true;
 
     @Override
@@ -37,20 +45,12 @@ public class LoginActivity extends AppCompatActivity {
         // TODO 이메일, 비밀번호 입력 안하면 로그인 버튼 비활성화
         // TODO 로그인 작업 처리 중 프로그레스 바 띄우기
         // TODO 카카오톡, 구글, 페이스북으로 로그인하기 추가
-        Log.d("Debug Key", getSignature(getApplicationContext()));
+        Log.d("Debug Key", Objects.requireNonNull(getSignature(getApplicationContext())));
 
-        Init();
-
+        ButterKnife.bind(this);
     }
 
-    public void Init() {
-        BT_member = findViewById(R.id.BT_member);
-        BT_guest = findViewById(R.id.BT_guest);
-        ET_email = findViewById(R.id.ET_email);
-        ET_password = findViewById(R.id.ET_password);
-    }
-
-    public void Guest(View view) {
+    @OnClick(R.id.BT_guest) void Guest(View view) {
         isMember = false;
         BT_guest.setBackgroundColor(Color.parseColor("#D30C0B0E"));
         BT_member.setBackgroundColor(Color.WHITE);
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         BT_member.setTextColor(Color.BLACK);
     }
 
-    public void Member(View view) {
+    @OnClick(R.id.BT_member) void Member(View view) {
         isMember = true;
         BT_member.setBackgroundColor(Color.parseColor("#D30C0B0E"));
         BT_guest.setBackgroundColor(Color.WHITE);
@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         BT_guest.setTextColor(Color.BLACK);
     }
 
-    public void Login(View view) {
+    @OnClick(R.id.BT_login) void Login(View view) {
         if (!isMember) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -92,21 +92,20 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void Join(View view) {
+    @OnClick(R.id.BT_doJoin) void Join(View view) {
         Intent intent = new Intent(this, JoinActivity.class);
         startActivity(intent);
     }
 
-    public void FindPassword(View view) {
+    @OnClick(R.id.BT_findPassword) void FindPassword(View view) {
         Intent intent = new Intent(this, FindPasswordActivity.class);
         startActivity(intent);
     }
 
-    public static String getSignature(Context context) {
+    private static String getSignature(Context context) {
         PackageManager pm = context.getPackageManager();
         try {
             PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
-
             for (int i = 0; i < packageInfo.signatures.length; i++) {
                 Signature signature = packageInfo.signatures[i];
                 try {
@@ -116,9 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
-
             }
-
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

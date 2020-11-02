@@ -30,19 +30,26 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class DetailActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-    static String memberID;
+public class DetailActivity extends AppCompatActivity {
     static boolean like = false;
-    TextView TV_ChabakjiTitle, TV_ChabakjiAddress, TV_ChabakjiAddress2;
-    ViewGroup mapViewContainer;
-    ImageButton BT_ChabakjiImage;
+    @BindView(R.id.TV_ChabakjiTitle) TextView TV_ChabakjiTitle;
+    @BindView(R.id.TV_ChabakjiAddress) TextView TV_ChabakjiAddress;
+    @BindView(R.id.TV_ChabakjiAddress2) TextView TV_ChabakjiAddress2;
+    @BindView(R.id.mapView2) ViewGroup mapViewContainer;
+    @BindView(R.id.BT_ChabakjiImage) ImageButton BT_ChabakjiImage;
+    @BindView(R.id.BT_sun) ImageButton sun;
+
     ChabakjiDAO chabakjiData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
 
         // 상태바 범위까지 사용하여 차박지 사진이 잘 보이도록!!
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
@@ -50,8 +57,6 @@ public class DetailActivity extends AppCompatActivity {
         // TODO 사용자 정보를 불러온 후 유저가 해당 차박지를 찜했으면 SunLike 메서드 실행
         Intent intent = getIntent();
         chabakjiData = (ChabakjiDAO) intent.getSerializableExtra("Chabakji");
-
-        Init();
 
         TV_ChabakjiTitle.setText(chabakjiData.getPlace_name()); // 차박지 이름
         TV_ChabakjiAddress.setText(chabakjiData.getAddress()); // 차박지 주소
@@ -74,37 +79,26 @@ public class DetailActivity extends AppCompatActivity {
         marker.setTag(0);
         marker.setMapPoint(mapPoint);
 
-        // 초기 BluePin
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-        // 마커를 클릭했을때 RedPin
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
         mapView.addPOIItem(marker);
     }
 
-    public void Init() {
-        memberID = HomeActivity.memberID;
-
-        TV_ChabakjiTitle = findViewById(R.id.TV_ChabakjiTitle);
-        TV_ChabakjiAddress = findViewById(R.id.TV_ChabakjiAddress);
-        TV_ChabakjiAddress2 = findViewById(R.id.TV_ChabakjiAddress2);
-        mapViewContainer = findViewById(R.id.mapView2);
-        BT_ChabakjiImage = findViewById(R.id.BT_ChabakjiImage);
-    }
-
-    public void SunLike(View view) throws ExecutionException, InterruptedException {
-        ImageButton sun = findViewById(R.id.BT_sun);
-        if (like) {
-            like = false;
-            sun.setImageResource(R.drawable.sun_white_24dp);
-            // TODO DB에 저장
-            String result = new Task().execute("member/jjim.undo", memberID, chabakjiData.getPlace_name()).get();
-            Toast.makeText(this, result + " " + memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
-        } else {
-            like = true;
-            sun.setImageResource(R.drawable.sun_yellow_24dp);
-            // TODO DB에 저장
-            String result = new Task().execute("member/jjim.do", memberID, chabakjiData.getPlace_name()).get();
-            Toast.makeText(this, result + " " + memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
+    @OnClick(R.id.BT_sun) void SunLike() {
+        try{
+            if (like) {
+                like = false;
+                sun.setImageResource(R.drawable.sun_white_24dp);
+                String result = new Task().execute("member/jjim.undo", HomeActivity.memberID, chabakjiData.getPlace_name()).get();
+                Toast.makeText(this, result + " " + HomeActivity.memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
+            } else {
+                like = true;
+                sun.setImageResource(R.drawable.sun_yellow_24dp);
+                String result = new Task().execute("member/jjim.do", HomeActivity.memberID, chabakjiData.getPlace_name()).get();
+                Toast.makeText(this, result + " " + HomeActivity.memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

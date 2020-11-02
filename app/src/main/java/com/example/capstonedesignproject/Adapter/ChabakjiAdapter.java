@@ -15,28 +15,26 @@ import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
 import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
+import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.ViewHolder> {
     private static ArrayList<ChabakjiData> mDataset;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageButton BT_chabakjiImage;
-        TextView TV_chabakjiName;
-        TextView TV_chabakjiAddr;
-        TextView TV_chabakjiUtil;
-        TextView TV_chabakjiIntro;
-        TextView TV_chabakjiRating;
-
+        @BindView(R.id.BT_chabakjiImage) ImageButton BT_chabakjiImage;
+        @BindView(R.id.TV_chabakjiName) TextView TV_chabakjiName;
+        @BindView(R.id.TV_chabakjiAddr) TextView TV_chabakjiAddr;
+        @BindView(R.id.TV_chabakjiUtil) TextView TV_chabakjiUtil;
+        @BindView(R.id.TV_chabakjiIntro) TextView TV_chabakjiIntro;
+        @BindView(R.id.TV_chabakjiRating) TextView TV_chabakjiRating;
         ViewHolder(View view) {
             super(view);
-            BT_chabakjiImage = view.findViewById(R.id.BT_chabakjiImage);
-            TV_chabakjiName = view.findViewById(R.id.TV_chabakjiName);
-            TV_chabakjiAddr = view.findViewById(R.id.TV_chabakjiAddr);
-            TV_chabakjiUtil = view.findViewById(R.id.TV_chabakjiUtil);
-            TV_chabakjiIntro = view.findViewById(R.id.TV_chabakjiIntro);
-            TV_chabakjiRating = view.findViewById(R.id.TV_chabakjiRating);
+            ButterKnife.bind(this, view);
         }
     }
 
@@ -62,9 +60,8 @@ public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.ViewHo
         holder.TV_chabakjiUtil.setText(mDataset.get(position).chabakjiUtil);
         holder.TV_chabakjiIntro.setText(mDataset.get(position).chabakjiIntro);
         holder.TV_chabakjiRating.setText(mDataset.get(position).chabakjiRating);
-//        holder.BT_chabakjiImage.setImageBitmap(mDataset.get(position).chabakjiImage);
         Glide.with(holder.itemView.getContext())
-                .load("http://211.222.234.14:8080/"+mDataset.get(position).filePath)
+                .load(HomeActivity.SERVER_URL + "/" + mDataset.get(position).filePath)
                 .fitCenter()
                 .into(holder.BT_chabakjiImage);
     }

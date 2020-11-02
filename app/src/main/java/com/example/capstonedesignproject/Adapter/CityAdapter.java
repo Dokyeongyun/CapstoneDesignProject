@@ -11,15 +11,17 @@ import com.example.capstonedesignproject.R;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CityAdapter extends BaseAdapter {
-    LayoutInflater mLayoutInflater = null;
-    ArrayList<String> cityList;
-    Context mContext = null;
+    @BindView(R.id.provinceName) TextView cityName;
+    private LayoutInflater mLayoutInflater;
+    private ArrayList<String> cityList;
 
     public CityAdapter(Context context, ArrayList<String> data) {
-        mContext = context;
         cityList = data;
-        mLayoutInflater = LayoutInflater.from(mContext);
+        mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class CityAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = mLayoutInflater.inflate(R.layout.province_view, null);
-        TextView cityName = view.findViewById(R.id.provinceName);
+        ButterKnife.bind(this, view);
         cityName.setText(cityList.get(position));
         cityName.setHeight(120);
         return view;

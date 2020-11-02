@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.capstonedesignproject.Data.ArticleData;
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
+import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public class GetArticleTask extends AsyncTask<Object, Void, List<ArticleData>> {
 
     public List<ArticleData> getArticleList(String path, int num) {
         try {
-            URL url = new URL("http://211.222.234.14:8080/" + path);
+            URL url = new URL(HomeActivity.SERVER_URL + "/" + path);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setDoOutput(true);
@@ -99,7 +100,7 @@ public class GetArticleTask extends AsyncTask<Object, Void, List<ArticleData>> {
 
     public List<ArticleData> getArticle(String path, int articleID) {
         try {
-            URL url = new URL("http://211.222.234.14:8080/" + path);
+            URL url = new URL(HomeActivity.SERVER_URL + "/" + path);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setDoOutput(true);
