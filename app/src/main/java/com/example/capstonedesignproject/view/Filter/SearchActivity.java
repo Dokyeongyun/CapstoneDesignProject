@@ -43,12 +43,18 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
         Init();
+
+        Intent intent = getIntent();
+        if(intent.getStringExtra("FromMain") != null){
+            searchType = intent.getStringExtra("FromMain");
+            ChangeColor(searchType);
+        }
         // TODO TableLayout 에 인기 검색 키워드 버튼 동적으로 생성, 클릭리스너 구현해야함
     }
 
-    @OnClick(R.id.BT_searchRegion) void ClickSearchRegion(){ ChangeColor(BT_searchRegion); }
-    @OnClick(R.id.BT_searchRegion) void ClickSearchKeyword(){ ChangeColor(BT_searchKeyword); }
-    @OnClick(R.id.BT_searchBoard) void ClickSearchBoard(){ ChangeColor(BT_searchBoard); }
+    @OnClick(R.id.BT_searchRegion) void ClickSearchRegion(){ ChangeColor("Region"); }
+    @OnClick(R.id.BT_searchKeyword) void ClickSearchKeyword(){ ChangeColor("Keyword"); }
+    @OnClick(R.id.BT_searchBoard) void ClickSearchBoard(){ ChangeColor("Board"); }
     @OnClick(R.id.BT_searchExec) void ClickSearchExec(){
         String search = ET_searchMessage.getText().toString();
         Intent intent = new Intent(getApplicationContext(), ListActivity.class);
@@ -64,21 +70,21 @@ public class SearchActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
     }
 
-    private void ChangeColor(View view) {
-        switch (view.getId()) {
-            case R.id.BT_searchRegion:
+    private void ChangeColor(String st) {
+        switch (st) {
+            case "Region":
                 BT_searchRegion.setBackgroundResource(R.drawable.button_border_green);
                 BT_searchKeyword.setBackgroundResource(R.drawable.button_border_gray);
                 BT_searchBoard.setBackgroundResource(R.drawable.button_border_gray);
                 searchType = "Region";
                 break;
-            case R.id.BT_searchKeyword:
+            case "Keyword":
                 BT_searchRegion.setBackgroundResource(R.drawable.button_border_gray);
                 BT_searchKeyword.setBackgroundResource(R.drawable.button_border_green);
                 BT_searchBoard.setBackgroundResource(R.drawable.button_border_gray);
                 searchType = "Keyword";
                 break;
-            case R.id.BT_searchBoard:
+            case "Board":
                 BT_searchRegion.setBackgroundResource(R.drawable.button_border_gray);
                 BT_searchKeyword.setBackgroundResource(R.drawable.button_border_gray);
                 BT_searchBoard.setBackgroundResource(R.drawable.button_border_green);

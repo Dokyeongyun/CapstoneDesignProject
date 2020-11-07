@@ -39,32 +39,40 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView31"
+                        android:id="@+id/TV_searchUsingRegion"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:clickable="true"
                         android:drawableTop="@drawable/map_black_48dp"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:text="지역별 차박지 검색"
                         android:textColor="#000000" />
 
                     <TextView
+                        android:id="@+id/TV_searchUsingKeyword"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:clickable="true"
                         android:drawableTop="@drawable/search_48dp"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:text="키워드 검색"
                         android:textColor="#000000" />
 
                     <TextView
+                        android:id="@+id/TV_searchBoard"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:clickable="true"
                         android:drawableTop="@drawable/board_search_black_48dp"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:text="게시판 검색"
                         android:textColor="#000000" />
@@ -86,7 +94,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView30"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center|left"
@@ -103,33 +110,40 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView25"
+                        android:id="@+id/TV_goToBoard"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:clickable="true"
                         android:drawableTop="@drawable/board_black_48dp"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:text="게시판"
                         android:textColor="#000000" />
 
                     <TextView
-                        android:id="@+id/textView26"
+                        android:id="@+id/TV_goToSuggest"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:clickable="true"
                         android:drawableTop="@drawable/camping_car_black_48dp"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:text="차박지 등록하기"
                         android:textColor="#000000" />
 
                     <TextView
+                        android:id="@+id/TV_goToJJIM"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:clickable="true"
                         android:drawableTop="@drawable/jjim_black_48dp"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:text="즐겨찾는 차박지"
                         android:textColor="#000000" />
@@ -139,36 +153,44 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView24"
+                        android:id="@+id/TV_goToMypage"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:clickable="true"
                         android:drawableTop="@drawable/person_black_48dp"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:text="마이페이지"
                         android:textColor="#000000" />
 
                     <TextView
+                        android:id="@+id/TV_goToQnA"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:clickable="true"
                         android:drawableTop="@drawable/qna_black_48dp"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:text="고객센터"
                         android:textColor="#000000" />
 
                     <TextView
+                        android:id="@+id/TV_goToLogout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:clickable="true"
                         android:drawableTop="@drawable/logout_black_48dp"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:text="로그아웃"
                         android:textColor="#000000" />
@@ -190,7 +212,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView27"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center|left"
