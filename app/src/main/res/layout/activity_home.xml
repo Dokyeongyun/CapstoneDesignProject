@@ -30,9 +30,10 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="#FFFFFF"
-        app:elevation="8dp"
+        android:fadingEdge="horizontal|vertical"
+        app:elevation="20dp"
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconTint="#434343"
         app:itemTextColor="#FFFFFF"

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".view.ETC.MainFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center|left"
+                    android:paddingStart="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingEnd="20dp"
+                    android:text="검색"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:drawableTop="@drawable/map_black_48dp"
+                        android:gravity="center"
+                        android:text="지역별 차박지 검색"
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:drawableTop="@drawable/search_48dp"
+                        android:gravity="center"
+                        android:text="키워드 검색"
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:drawableTop="@drawable/board_search_black_48dp"
+                        android:gravity="center"
+                        android:text="게시판 검색"
+                        android:textColor="#000000" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider16"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_marginTop="20dp"
+                android:background="#EAEAEA" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView30"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center|left"
+                    android:paddingStart="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingEnd="20dp"
+                    android:text="메뉴"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView25"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:drawableTop="@drawable/board_black_48dp"
+                        android:gravity="center"
+                        android:text="게시판"
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:id="@+id/textView26"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:drawableTop="@drawable/camping_car_black_48dp"
+                        android:gravity="center"
+                        android:text="차박지 등록하기"
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:drawableTop="@drawable/jjim_black_48dp"
+                        android:gravity="center"
+                        android:text="즐겨찾는 차박지"
+                        android:textColor="#000000" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:drawableTop="@drawable/person_black_48dp"
+                        android:gravity="center"
+                        android:text="마이페이지"
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:drawableTop="@drawable/qna_black_48dp"
+                        android:gravity="center"
+                        android:text="고객센터"
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:drawableTop="@drawable/logout_black_48dp"
+                        android:gravity="center"
+                        android:text="로그아웃"
+                        android:textColor="#000000" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider18"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_marginTop="20dp"
+                android:background="#EAEAEA" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView27"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center|left"
+                    android:paddingStart="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingEnd="20dp"
+                    android:text="현재 인기있는 차박지"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/RV_main"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider17"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_marginTop="20dp"
+                android:background="#EAEAEA" />
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

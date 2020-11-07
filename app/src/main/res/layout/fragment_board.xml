@@ -29,7 +29,7 @@
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/boardTabLayout"
+            android:id="@+id/TL_board"
             android:layout_width="match_parent"
             android:layout_height="50dp">
 
