@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -34,7 +35,7 @@ import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
     public static final String SERVER_IP = "http://211.222.234.14:";
-    public static final String PORT_NUMBER = "8090";
+    public static final String PORT_NUMBER = "8080";
     public static String SERVER_URL = SERVER_IP + PORT_NUMBER;
 
     @BindView(R.id.homeToolbar) Toolbar mToolbar;
@@ -46,6 +47,7 @@ public class HomeActivity extends AppCompatActivity {
     private CongestionFragment congestionFragment = new CongestionFragment();
     private BoardFragment boardFragment = new BoardFragment();
     private MyPageFragment myPageFragment = new MyPageFragment();
+    private MainFragment mainFragment = new MainFragment();
 
     public static String memberID;
     @Override
@@ -63,42 +65,40 @@ public class HomeActivity extends AppCompatActivity {
 
         // BottomNavigationView
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_frame, homeFragment).commitAllowingStateLoss();
+        transaction.replace(R.id.fragment_frame, mainFragment).commitAllowingStateLoss();
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                switch (item.getItemId()) {
-                    case R.id.home_menu: {
-                        mToolbar.setTitle("차박러 모여라");
-                        transaction.replace(R.id.fragment_frame, homeFragment).commitAllowingStateLoss();
-                        break;
-                    }
-                    case R.id.list_menu: {
-                        transaction.replace(R.id.fragment_frame, regionChoiceFragment).commitAllowingStateLoss();
-                        mToolbar.setTitle("지역");
-                        break;
-                    }
-                    case R.id.congestion_menu: {
-                        transaction.replace(R.id.fragment_frame, congestionFragment).commitAllowingStateLoss();
-                        mToolbar.setTitle("혼잡도");
-                        break;
-                    }
-                    case R.id.board_menu: {
-                        transaction.replace(R.id.fragment_frame, boardFragment).commitAllowingStateLoss();
-                        mToolbar.setTitle("게시판");
-                        break;
-                    }
-                    case R.id.myPage_menu: {
-                        transaction.replace(R.id.fragment_frame, myPageFragment).commitAllowingStateLoss();
-                        mToolbar.setTitle("마이페이지");
-                        break;
-                    }
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home_menu: {
+                    replaceFragment(mainFragment, "차박러 모여라");
+                    break;
                 }
-                return true;
+                case R.id.list_menu: {
+                    replaceFragment(regionChoiceFragment, "지역선택");
+                    break;
+                }
+                case R.id.congestion_menu: {
+                    replaceFragment(congestionFragment, "혼잡도");
+                    break;
+                }
+                case R.id.board_menu: {
+                    replaceFragment(boardFragment, "게시판");
+                    break;
+                }
+                case R.id.myPage_menu: {
+                    replaceFragment(myPageFragment, "마이페이지");
+                    break;
+                }
             }
+            return true;
         });
+    }
+
+    public void replaceFragment(Fragment fragment, String toolbarTitle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame, fragment).commit();
+        mToolbar.setTitle(toolbarTitle);
     }
 
     // 툴바에 메뉴 인플레이트

@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.Data.ChabakjiData;
+import com.example.capstonedesignproject.Listener.ClickListener;
+import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.ChabakjiInfoTask;
 import com.example.capstonedesignproject.view.Filter.FilterActivity;
@@ -62,7 +64,7 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         ButterKnife.bind(this, v);
-        Init(v);
+        Init();
 
         // 차박지 리스트를 불러와 RecyclerView에 설정
         try { getChabakjiList(page); } catch (Exception e) { e.printStackTrace(); }
@@ -95,7 +97,7 @@ public class HomeFragment extends Fragment {
     }
 
     // 초기 설정
-    private void Init(View v){
+    private void Init(){
         context = getActivity();
         mLayoutManager = new LinearLayoutManager(getContext());
         myDataset = new ArrayList<>();
@@ -142,53 +144,6 @@ public class HomeFragment extends Fragment {
                 }
                 // TODO 선택된 조건을 이용하여 검색 수행 및 결과 띄우기
             }
-        }
-    }
-
-    public interface ClickListener {
-        void onClick(View view, int position);
-
-        void onLongClick(View view, int position);
-    }
-
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private GestureDetector gestureDetector;
-        private HomeFragment.ClickListener clickListener;
-
-        RecyclerTouchListener(Context context, final RecyclerView recyclerView, final HomeFragment.ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildAdapterPosition(child));
-                    }
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildAdapterPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
         }
     }
 }

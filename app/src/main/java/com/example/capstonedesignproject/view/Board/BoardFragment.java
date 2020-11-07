@@ -42,9 +42,10 @@ import butterknife.OnItemSelected;
 public class BoardFragment extends Fragment {
     @BindView(R.id.LL_board) LinearLayout LL_board;
     @BindView(R.id.LL_notification) LinearLayout LL_notification;
-    @BindView(R.id.boardTabLayout) TabLayout tabLayout;
-    @BindView(R.id.FAB_writePost) FloatingActionButton fab;
-    @BindView(R.id.LV_board) ListView boardListView;
+    @BindView(R.id.TL_board) TabLayout TL_board;
+    @BindView(R.id.FAB_writePost) FloatingActionButton FAB_writePost;
+    @BindView(R.id.LV_board) ListView LV_board;
+    @BindView(R.id.LV_notification) ListView LV_notification;
 
     private Context context;
     private static ArrayList<ArticleData> postList;
@@ -64,7 +65,7 @@ public class BoardFragment extends Fragment {
         Init();
 
         // 탭 클릭 리스너
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        TL_board.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
@@ -105,7 +106,7 @@ public class BoardFragment extends Fragment {
         context = getActivity();
         postList = new ArrayList<>();
         BoardAdapter boardAdapter = new BoardAdapter(getContext(), postList);
-        boardListView.setAdapter(boardAdapter);
+        LV_board.setAdapter(boardAdapter);
     }
     private void changeView(int pos) {
         switch (pos) {
