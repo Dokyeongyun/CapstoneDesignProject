@@ -103,6 +103,11 @@ public class ManageMyProfile extends AppCompatActivity {
     }
     @OnClick(R.id.BT_withdraw) void ClickWithdraw() {
         // TODO Dialog 띄워서 한번 더 확인시키고, 동의하면 회원탈퇴 -> 로그인화면으로 이동
+        String autoCheck = LoginActivity.autoLoginFile.getString("autoLogin","");
+        if(autoCheck.equals("true")){
+            LoginActivity.editor.putString("autoLogin", "false");
+            LoginActivity.editor.apply();
+        }
         Toast.makeText(ManageMyProfile.this, "이용해주셔서 감사합니다__^^__", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(ManageMyProfile.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

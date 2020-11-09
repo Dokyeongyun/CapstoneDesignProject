@@ -2,8 +2,11 @@ package com.example.capstonedesignproject.view.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -13,6 +16,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,7 +39,11 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.ET_password) EditText ET_password;
     @BindView(R.id.BT_member) Button BT_member;
     @BindView(R.id.BT_guest) Button BT_guest;
-    boolean isMember = true;
+    @BindView(R.id.CB_autoLogin) CheckBox CB_autoLogin;
+    boolean isMember = true, autoLogin = false;
+    String autoCheck;
+    public static SharedPreferences autoLoginFile;
+    public static SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +56,23 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("Debug Key", Objects.requireNonNull(getSignature(getApplicationContext())));
 
         ButterKnife.bind(this);
+        AutoLogin();
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    void AutoLogin(){
+        autoLoginFile = getSharedPreferences("autoLoginFile", Activity.MODE_PRIVATE);
+        editor = autoLoginFile.edit();
+        autoCheck = autoLoginFile.getString("autoLogin","");
+        if(autoCheck.equals("true")){
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
+
+    @OnClick(R.id.CB_autoLogin) void AutoLoginCheck(){
+        autoLogin = CB_autoLogin.isChecked();
     }
 
     @OnClick(R.id.BT_guest) void Guest(View view) {
@@ -81,6 +106,10 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             if (result.equals("\""+id+"\"")){
+                if(autoLogin){
+                    editor.putString("autoLogin", "true");
+                    editor.apply();
+                }
                 Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

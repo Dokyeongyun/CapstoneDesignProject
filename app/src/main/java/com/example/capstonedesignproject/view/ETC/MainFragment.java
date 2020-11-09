@@ -1,5 +1,6 @@
 package com.example.capstonedesignproject.view.ETC;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -156,6 +157,11 @@ public class MainFragment extends Fragment {
         // TODO QnA 페이지로 이동
     }
     @OnClick(R.id.TV_goToLogout) void goToLogout(){
+        String autoCheck = LoginActivity.autoLoginFile.getString("autoLogin","");
+        if(autoCheck.equals("true")){
+            LoginActivity.editor.putString("autoLogin", "false");
+            LoginActivity.editor.apply();
+        }
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
