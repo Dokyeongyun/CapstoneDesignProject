@@ -47,9 +47,8 @@ public class BoardFragment extends Fragment {
     @BindView(R.id.LV_board) ListView LV_board;
     @BindView(R.id.LV_notification) ListView LV_notification;
 
-    private Context context;
     private static ArrayList<ArticleData> postList;
-
+    private static List<ArticleData> articleData;
     public BoardFragment() { }
 
     @Override
@@ -62,7 +61,14 @@ public class BoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_board, container, false);
         ButterKnife.bind(this, v);
-        Init();
+        try {
+            getArticleList(1);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }finally{
+            Init();
+            setArticleList();
+        }
 
         // 탭 클릭 리스너
         TL_board.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -82,11 +88,6 @@ public class BoardFragment extends Fragment {
             }
         });
 
-        try {
-            getArticleList(1);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
 
         return v;
     }
@@ -103,7 +104,6 @@ public class BoardFragment extends Fragment {
     }
 
     private void Init(){
-        context = getActivity();
         postList = new ArrayList<>();
         BoardAdapter boardAdapter = new BoardAdapter(getContext(), postList);
         LV_board.setAdapter(boardAdapter);
@@ -122,11 +122,13 @@ public class BoardFragment extends Fragment {
     }
 
     private void getArticleList(int num) throws ExecutionException, InterruptedException {
-        List<ArticleData> articleData = new GetArticleTask().execute("article/get.do", num).get();
+        articleData = new GetArticleTask().execute("article/get.do", num).get();
         if(articleData == null){
-            Toast.makeText(context, "게시글을 불러오는 데 실패했습니다.\n잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-        }else{
-             postList.addAll(articleData);
+            Toast.makeText(getContext(), "게시글을 불러오는 데 실패했습니다.\n잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void setArticleList(){
+        postList.addAll(articleData);
     }
 }

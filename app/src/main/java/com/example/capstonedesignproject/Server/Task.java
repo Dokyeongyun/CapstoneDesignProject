@@ -21,6 +21,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import static com.example.capstonedesignproject.view.ETC.HomeActivity.CONNECT_TIME_OUT;
+
 public class Task extends AsyncTask<String, Void, String> {
     private String sendMsg, receiveMsg;
 
@@ -83,6 +85,7 @@ public class Task extends AsyncTask<String, Void, String> {
             conn.setDoOutput(true);
             conn.setDoInput(true);
             conn.setRequestMethod("POST"); // 데이터를 POST방식으로 전송
+            conn.setConnectTimeout(CONNECT_TIME_OUT);
             return conn;
         } catch (IOException e) {
             e.printStackTrace();

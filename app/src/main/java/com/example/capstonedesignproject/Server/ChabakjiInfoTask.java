@@ -8,10 +8,12 @@ import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -20,6 +22,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
+
+import static com.example.capstonedesignproject.view.ETC.HomeActivity.CONNECT_TIME_OUT;
 
 public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>> {
 
@@ -41,6 +46,7 @@ public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>>
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             connection.setDoOutput(true);
             connection.setRequestMethod("POST"); // 데이터를 POST방식으로 전송
+            connection.setConnectTimeout(CONNECT_TIME_OUT);
 
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8));
             bw.write(query);

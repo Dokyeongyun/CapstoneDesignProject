@@ -22,6 +22,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.capstonedesignproject.view.ETC.HomeActivity.CONNECT_TIME_OUT;
+
 public class GetArticleTask extends AsyncTask<Object, Void, List<ArticleData>> {
     public GetArticleTask() {
     }
@@ -44,6 +46,7 @@ public class GetArticleTask extends AsyncTask<Object, Void, List<ArticleData>> {
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setDoOutput(true);
             connection.setRequestMethod("POST"); // 데이터를 POST방식으로 전송
+            connection.setConnectTimeout(CONNECT_TIME_OUT);
 
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8));
             bw.write("num=" + num);

@@ -75,11 +75,16 @@ public class MainFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
 
         ButterKnife.bind(this, v);
-        Init();
 
         // 차박지 리스트를 불러와 RecyclerView에 설정
-        try { getChabakjiList(page); } catch (Exception e) { e.printStackTrace(); }
-        setChabakjiList(list);
+        try {
+            getChabakjiList(page);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Init();
+            setChabakjiList(list);
+        }
 
         // CardView 아이템 클릭 리스너
         RV_main.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), RV_main, new ClickListener() {

@@ -87,12 +87,17 @@ public class WritePostActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (result.equals("\"success\"") && fileUploadResult.equals("Success")) {
-                    Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(this, "다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                if(result!=null && fileUploadResult!=null){
+                    if (result.equals("\"success\"") && fileUploadResult.equals("Success")) {
+                        Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(this, "다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(this, "네트워크 상태를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
                 }
+
             } else {
                 Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
             }

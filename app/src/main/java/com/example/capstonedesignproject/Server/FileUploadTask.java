@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import static com.example.capstonedesignproject.view.ETC.HomeActivity.CONNECT_TIME_OUT;
+
 public class FileUploadTask extends AsyncTask<Object, Void, String> {
     private final static String boundary = "aJ123Af2318";
     private final static String LINE_FEED = "\r\n";
@@ -48,7 +50,7 @@ public class FileUploadTask extends AsyncTask<Object, Void, String> {
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setUseCaches(false);
-            //connection.setConnectTimeout(10000);
+            connection.setConnectTimeout(CONNECT_TIME_OUT);
 
             outputStream = connection.getOutputStream();
             writer = new PrintWriter(new OutputStreamWriter(outputStream, charset), true);

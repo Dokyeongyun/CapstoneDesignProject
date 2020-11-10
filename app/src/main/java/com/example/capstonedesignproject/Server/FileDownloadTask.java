@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import static com.example.capstonedesignproject.view.ETC.HomeActivity.CONNECT_TIME_OUT;
+
 public class FileDownloadTask extends AsyncTask<String, Void, Bitmap> {
 
     private Bitmap mybitmap;
@@ -46,6 +48,7 @@ public class FileDownloadTask extends AsyncTask<String, Void, Bitmap> {
                     try {
                         HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
                         conn.setDoInput(true);
+                        conn.setConnectTimeout(CONNECT_TIME_OUT);
                         conn.connect();
 
                         InputStream is = conn.getInputStream();

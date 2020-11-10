@@ -36,6 +36,7 @@ import butterknife.ButterKnife;
 public class HomeActivity extends AppCompatActivity {
     public static final String SERVER_IP = "http://211.222.234.14:";
     public static final String PORT_NUMBER = "8080";
+    public static final int CONNECT_TIME_OUT = 5000;
     public static String SERVER_URL = SERVER_IP + PORT_NUMBER;
 
     @BindView(R.id.homeToolbar) Toolbar mToolbar;
