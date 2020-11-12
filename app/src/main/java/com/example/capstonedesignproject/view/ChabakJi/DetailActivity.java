@@ -3,10 +3,7 @@ package com.example.capstonedesignproject.view.ChabakJi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -14,21 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
-import com.example.capstonedesignproject.Data.ChabakjiDAO;
-import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.FileDownloadTask;
 import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
+import com.example.capstonedesignproject.view.Test.ChabakjiData;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +33,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.BT_ChabakjiImage) ImageButton BT_ChabakjiImage;
     @BindView(R.id.BT_sun) ImageButton sun;
 
-    ChabakjiDAO chabakjiData;
+    ChabakjiData chabakjiData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
 
         // TODO 사용자 정보를 불러온 후 유저가 해당 차박지를 찜했으면 SunLike 메서드 실행
         Intent intent = getIntent();
-        chabakjiData = (ChabakjiDAO) intent.getSerializableExtra("Chabakji");
+        chabakjiData = (ChabakjiData) intent.getSerializableExtra("Chabakji");
 
         TV_ChabakjiTitle.setText(chabakjiData.getPlace_name()); // 차박지 이름
         TV_ChabakjiAddress.setText(chabakjiData.getAddress()); // 차박지 주소
@@ -70,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
         // Map
         MapView mapView = new MapView(this);
         // 마커
-        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(chabakjiData.getLatitude(), chabakjiData.getLongitude());
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(chabakjiData.getLatitude()), Double.parseDouble(chabakjiData.getLongitude()));
         mapView.setMapCenterPoint(mapPoint, true);
         mapViewContainer.addView(mapView);
 
@@ -113,5 +103,4 @@ public class DetailActivity extends AppCompatActivity {
     public void showTotalImage(View view) {
         // TODO 해당 차박지 사진 앨범 보기
     }
-
 }

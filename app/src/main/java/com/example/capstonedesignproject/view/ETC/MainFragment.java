@@ -1,22 +1,24 @@
 package com.example.capstonedesignproject.view.ETC;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.capstonedesignproject.Adapter.SmallChabakjiAdapter;
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.Data.ChabakjiData;
 import com.example.capstonedesignproject.Listener.ClickListener;
@@ -29,8 +31,10 @@ import com.example.capstonedesignproject.view.ChabakJi.DetailActivity;
 import com.example.capstonedesignproject.view.Filter.RegionChoiceFragment;
 import com.example.capstonedesignproject.view.Filter.SearchActivity;
 import com.example.capstonedesignproject.view.Login.LoginActivity;
-import com.example.capstonedesignproject.view.MyPage.ManageMyProfile;
 import com.example.capstonedesignproject.view.MyPage.MyPageFragment;
+import com.example.capstonedesignproject.view.Test.ChabakjiAdapter;
+import com.example.capstonedesignproject.view.Test.ChabakjiApplication;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,10 @@ import java.util.concurrent.ExecutionException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class MainFragment extends Fragment {
@@ -55,10 +63,12 @@ public class MainFragment extends Fragment {
     @BindView(R.id.TV_goToMypage) TextView TV_goToMypage;
     @BindView(R.id.TV_goToQnA) TextView TV_goToQnA;
     @BindView(R.id.TV_goToLogout) TextView TV_goToLogout;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.snackContainer) ConstraintLayout snackContainer;
 
+    private ChabakjiAdapter chabakjiAdapter;
     private static RecyclerView.Adapter mAdapter;
-    private static ArrayList<ChabakjiData> myDataset;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private static ArrayList<ChabakjiData> myDataset = new ArrayList<>();
     public static List<ChabakjiDAO> list;
     private static int page = 0;
 
@@ -75,48 +85,74 @@ public class MainFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
 
         ButterKnife.bind(this, v);
+        Init();
 
-        // 차박지 리스트를 불러와 RecyclerView에 설정
+/*        // 차박지 리스트를 불러와 RecyclerView에 설정
         try {
             getChabakjiList(page);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            Init();
             setChabakjiList(list);
-        }
+        }*/
 
         // CardView 아이템 클릭 리스너
-        RV_main.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), RV_main, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("Chabakji", list.get(position));
-                startActivity(intent);
-            }
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
+        RV_main.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), RV_main, (view, position) -> {
+            Intent intent = new Intent(getActivity(), DetailActivity.class);
+            intent.putExtra("Chabakji", chabakjiAdapter.getItemAt(position));
+            startActivity(intent);
         }));
         return v;
     }
     // 초기 설정
     private void Init(){
         context = getActivity();
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        myDataset = new ArrayList<>();
-        mAdapter = new SmallChabakjiAdapter(myDataset);
+
+        // Recycler View
+        RV_main.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        chabakjiAdapter = new ChabakjiAdapter(getContext());
         RV_main.setHasFixedSize(true);
-        RV_main.setLayoutManager(mLayoutManager);
-        RV_main.setAdapter(mAdapter);
+        RV_main.setAdapter(chabakjiAdapter);
+
+        load();
+
+//        mAdapter = new SmallChabakjiAdapter(myDataset);
+//        RV_main.setAdapter(mAdapter);
+    }
+
+    private void load(){
+        progressBar.setVisibility(View.VISIBLE);
+        final ChabakjiApplication application = (ChabakjiApplication) Objects.requireNonNull(getActivity()).getApplication();
+        Observable<List<com.example.capstonedesignproject.view.Test.ChabakjiData>> observable = application.getChabakjiService().getChabakjiList();
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<com.example.capstonedesignproject.view.Test.ChabakjiData>>() {
+            @Override
+            public void onNext(List<com.example.capstonedesignproject.view.Test.ChabakjiData> items) {
+                Log.d("수신", "총 수신 개수: "+items.size());
+                for(int i=0; i<items.size(); i++){
+                    Log.d("수신", String.valueOf(items.get(i)));
+                    chabakjiAdapter.setItemsAndRefresh(items.get(i));
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onError(Throwable e) {
+                Log.d("수신","수신실패");
+                e.printStackTrace();
+                Snackbar.make(snackContainer, "차박지 데이터를 읽어올 수 없습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                progressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onCompleted() {
+                // 아무것도 하지 않는다
+            }
+        });
     }
 
     // 최초 차박지리스트 불러오기
     private void getChabakjiList(int pageNum) throws ExecutionException, InterruptedException {
-        list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "get.do", pageNum).get();
+        list = new ChabakjiInfoTask(getContext()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "get.do", pageNum).get();
     }
-
     // RecyclerView 에 넣을 List 에 차박지 정보 삽입
     private static void setChabakjiList(List<ChabakjiDAO> addList){
         if (addList == null) {
