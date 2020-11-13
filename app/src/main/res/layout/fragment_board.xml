@@ -7,6 +7,16 @@
     android:background="#FFFFFF"
     tools:context=".view.Board.BoardFragment">
 
+    <ProgressBar
+        android:id="@+id/PB_board"
+        style="@android:style/Widget.Material.Light.ProgressBar.Small.Title"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:indeterminate="false"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateTint="#B14375" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/boardToolbar"
         android:layout_width="match_parent"
@@ -101,5 +111,11 @@
                 app:fabType="roundedSquare" />
         </FrameLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/CL_snackContainer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </FrameLayout>

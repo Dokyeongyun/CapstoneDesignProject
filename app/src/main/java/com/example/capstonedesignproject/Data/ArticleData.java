@@ -1,8 +1,5 @@
 package com.example.capstonedesignproject.Data;
 
-
-import android.graphics.Bitmap;
-
 public class ArticleData {
     // 게시글에 포함되어야 할 정보
     // 게시글번호, 등록날짜 및 시간, 작성자, 제목, 사진, 본문, (댓글)
@@ -10,17 +7,15 @@ public class ArticleData {
     private String memberId;
     private String title;
     private String content;
-    private String filePath;
+    private String urlPath;
     private String createTime;
 
-    private Bitmap image;
-
-    public ArticleData(int articleId, String memberId, String title, String content, String filePath, String createTime) {
+    public ArticleData(int articleId, String memberId, String title, String content, String urlPath, String createTime) {
         this.articleId = articleId;
         this.memberId = memberId;
         this.title = title;
         this.content = content;
-        this.filePath = filePath;
+        this.urlPath = urlPath;
         this.createTime = createTime;
     }
 
@@ -56,12 +51,12 @@ public class ArticleData {
         this.content = content;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getUrlPath() {
+        return urlPath;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setUrlPath(String filePath) {
+        this.urlPath = filePath;
     }
 
     public String getCreateTime() {
@@ -70,13 +65,5 @@ public class ArticleData {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
-    }
-
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
     }
 }

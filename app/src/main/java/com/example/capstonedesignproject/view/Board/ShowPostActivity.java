@@ -66,7 +66,7 @@ public class ShowPostActivity extends AppCompatActivity {
         TV_postDate.setText(articleData.getCreateTime());
 
         Glide.with(this)
-                .load("http://211.222.234.14:8080/" + articleData.getFilePath())
+                .load("http://211.222.234.14:8080/" + articleData.getUrlPath())
                 .placeholder(R.drawable.button_border_gray)
                 .into(BT_postImage);
         // TODO 댓글 서비스 제공해야 함

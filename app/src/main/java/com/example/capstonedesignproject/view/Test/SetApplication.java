@@ -12,9 +12,10 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class ChabakjiApplication extends Application {
+public class SetApplication extends Application {
     private Retrofit retrofit;
     private ChabakjiService chabakjiService;
+    private ArticleService articleService;
 
     @Override
     public void onCreate() {
@@ -37,10 +38,14 @@ public class ChabakjiApplication extends Application {
                 .build();
 
         chabakjiService = retrofit.create(ChabakjiService.class);
+        articleService = retrofit.create(ArticleService.class);
     }
 
     public ChabakjiService getChabakjiService() {
         return chabakjiService;
+    }
+    public ArticleService getArticleService() {
+        return articleService;
     }
 
 }
