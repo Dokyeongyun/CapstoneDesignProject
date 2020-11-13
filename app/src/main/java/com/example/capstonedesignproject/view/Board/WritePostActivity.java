@@ -65,7 +65,7 @@ public class WritePostActivity extends AppCompatActivity {
                 String id = HomeActivity.memberID;
                 String title = ET_title.getText().toString();
                 String content = ET_content.getText().toString();
-                long fileName = new Date().getTime();
+                String fileName = new Date().getTime() + ".jpg";
 
                 String result = "";
                 String fileUploadResult = "";
@@ -74,11 +74,11 @@ public class WritePostActivity extends AppCompatActivity {
                     if (photoUri != null) { // 이미지 첨부하여 게시글 작성 시
                         File file = new File(getPathFromUri(photoUri));
                         try {
-                            fileUploadResult = new FileUploadTask().execute(id, file).get();
+                            fileUploadResult = new FileUploadTask().execute(id, file, fileName).get();
                         } catch (Exception e) {
                             Toast.makeText(this, "게시글 작성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         } finally {
-                            result = new Task().execute("article/insert.do", id, title, content, "true", String.valueOf(fileName)+".jpg", createTime).get();
+                            result = new Task().execute("article/insert.do", id, title, content, "true", fileName, createTime).get();
                         }
                     } else { // 이미지 첨부 없이 게시글 작성 시
                         result = new Task().execute("article/insert.do", id, title, content, "", "", createTime).get();

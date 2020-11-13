@@ -30,11 +30,13 @@ public class FileUploadTask extends AsyncTask<Object, Void, String> {
     private final static String charset = "utf-8";
     private OutputStream outputStream;
     private PrintWriter writer;
+    private String fileName;
 
     public FileUploadTask(){}
 
     @Override
     protected String doInBackground(Object... objects) {
+        fileName = (String) objects[2];
         Map<String, String> map = new HashMap<>();
         map.put("id", (String) objects[0]);
         return sendMultiPart((File)objects[1], map);
@@ -102,7 +104,7 @@ public class FileUploadTask extends AsyncTask<Object, Void, String> {
 
     private void addFilePart(String name, File file) throws IOException {
         writer.append("--" + boundary).append(LINE_FEED);
-        writer.append("Content-Disposition: form-data; name=\"" + name + "\"; filename=\"" + file.getName() + "\"").append(LINE_FEED);
+        writer.append("Content-Disposition: form-data; name=\"" + name + "\"; filename=\"" + fileName + "\"").append(LINE_FEED);
         writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName())).append(LINE_FEED);
         writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
         writer.append(LINE_FEED);
