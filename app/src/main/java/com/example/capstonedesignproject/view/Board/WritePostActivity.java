@@ -2,6 +2,7 @@ package com.example.capstonedesignproject.view.Board;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
@@ -58,51 +60,62 @@ public class WritePostActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.BT_complete) void writeComplete() {
-        if (ET_title.getText() != null && !ET_title.getText().toString().equals("")) {
-            if (ET_content.getText() != null && !ET_content.getText().toString().equals("")) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
-                String createTime = format.format(new Date());
-                String id = HomeActivity.memberID;
-                String title = ET_title.getText().toString();
-                String content = ET_content.getText().toString();
-                String fileName = new Date().getTime() + ".jpg";
-
-                String result = "";
-                String fileUploadResult = "";
-
-                try {
-                    if (photoUri != null) { // 이미지 첨부하여 게시글 작성 시
-                        File file = new File(getPathFromUri(photoUri));
-                        try {
-                            fileUploadResult = new FileUploadTask().execute(id, file, fileName).get();
-                        } catch (Exception e) {
-                            Toast.makeText(this, "게시글 작성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                        } finally {
-                            result = new Task().execute("article/insert.do", id, title, content, "true", fileName, createTime).get();
-                        }
-                    } else { // 이미지 첨부 없이 게시글 작성 시
-                        result = new Task().execute("article/insert.do", id, title, content, "", "", createTime).get();
-                    }
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                if(result!=null && fileUploadResult!=null){
-                    if (result.equals("\"success\"") && fileUploadResult.equals("Success")) {
-                        Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
-                        finish();
-                    } else {
-                        Toast.makeText(this, "다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Toast.makeText(this, "네트워크 상태를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
-                }
-
-            } else {
-                Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
-            }
-        } else {
+        if (ET_title.getText().toString().equals("") || ET_title.getText() == null) {
             Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (ET_content.getText().toString().equals("") || ET_content.getText() == null) {
+            Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
+        String createTime = format.format(new Date());
+        String id = HomeActivity.memberID;
+        String title = ET_title.getText().toString();
+        String content = ET_content.getText().toString();
+        String fileName = new Date().getTime() + ".jpg";
+
+        String result = "";
+        String fileUploadResult = "";
+
+        try {
+            if (photoUri != null) { // 이미지 첨부하여 게시글 작성 시
+                File file = new File(getPathFromUri(photoUri));
+                try { fileUploadResult = new FileUploadTask(this).execute(id, file, fileName).get();
+                } catch (Exception e) { Toast.makeText(this, "게시글 작성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                } finally { result = new Task(this).execute("article/insert.do", id, title, content, "true", fileName, createTime).get();
+                }
+                checkResult(true, fileUploadResult, result);
+            } else { // 이미지 첨부 없이 게시글 작성 시
+                result = new Task(this).execute("article/insert.do", id, title, content, "", "", createTime).get();
+                checkResult(false, result);
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkResult(boolean isAttached, String... result){
+        if(result[0] == null){
+            Toast.makeText(this, "네트워크 상태가 불안정합니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(isAttached){
+            if(result[0].equals("Success") && result[1].equals("\"success\"")){
+                Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                finish();
+            } else{
+                Toast.makeText(this, "다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(!isAttached){
+            if(result[0].equals("\"success\"")){
+                Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+                finish();
+            }else{
+                Toast.makeText(this, "다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -122,9 +135,8 @@ public class WritePostActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
-                    InputStream in = getContentResolver().openInputStream(data.getData());
+                    InputStream in = getContentResolver().openInputStream(Objects.requireNonNull(data.getData()));
                     Bitmap img = BitmapFactory.decodeStream(in);
-                    in.close();
                     if (img != null) {
                         // TODO setImageBitmap 했을 때 사진이 90도 회전되어 첨부되는 현상 수정하기
                         IB_photo.setVisibility(View.VISIBLE);
