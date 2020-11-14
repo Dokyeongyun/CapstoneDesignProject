@@ -101,22 +101,23 @@ public class LoginActivity extends AppCompatActivity {
             String password = ET_password.getText().toString();
             String result = "";
             try {
-                result = new Task().execute("member/login.do", id, password).get();
+                result = new Task(this).execute("member/login.do", id, password).get();
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-            if (result.equals("\""+id+"\"")){
-                if(autoLogin){
-                    editor.putString("autoLogin", "true");
-                    editor.apply();
+            }finally {
+                if (result.equals("\""+id+"\"")){
+                    if(autoLogin){
+                        editor.putString("autoLogin", "true");
+                        editor.apply();
+                    }
+                    Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("memberID", id);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(this, "아이디 또는 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("memberID", id);
-                startActivity(intent);
-            }else{
-                Toast.makeText(this, "아이디 또는 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
             }
         }
     }

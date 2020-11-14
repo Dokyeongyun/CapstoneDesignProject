@@ -1,8 +1,11 @@
 package com.example.capstonedesignproject.Server;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.io.BufferedReader;
@@ -31,8 +34,26 @@ public class FileUploadTask extends AsyncTask<Object, Void, String> {
     private OutputStream outputStream;
     private PrintWriter writer;
     private String fileName;
+    private ProgressDialog progressDialog;
 
-    public FileUploadTask(){}
+    public FileUploadTask(Context context) {
+        progressDialog = new ProgressDialog(context, android.R.style.Theme_Material_Dialog_Alert);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("처리중입니다..");
+        progressDialog.setContentView(R.layout.dialog_progress);
+        progressDialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        progressDialog.dismiss();
+    }
 
     @Override
     protected String doInBackground(Object... objects) {

@@ -1,11 +1,17 @@
 package com.example.capstonedesignproject.Server;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
+import com.example.capstonedesignproject.Data.ChabakjiData;
+import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
+import com.example.capstonedesignproject.view.ETC.MainFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +36,31 @@ public class ChabakjiInfoTask extends AsyncTask<Object, Void, List<ChabakjiDAO>>
 
     private static String query = "";
     private static String requestUrl = "";
-    public ChabakjiInfoTask() { }
+    private ProgressDialog progressDialog;
+
+    public ChabakjiInfoTask(Context context) {
+        progressDialog = new ProgressDialog(context, android.R.style.Theme_Material_Dialog_Alert);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("데이터를 가져오고 있습니다.");
+        progressDialog.setContentView(R.layout.dialog_progress);
+        progressDialog.show();
+        super.onPreExecute();
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onPostExecute(List<ChabakjiDAO> chabakjiDAOS) {
+        super.onPostExecute(chabakjiDAOS);
+        progressDialog.dismiss();
+    }
 
     @Override
     protected List<ChabakjiDAO> doInBackground(Object... objects) {

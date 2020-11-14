@@ -92,12 +92,14 @@ public class JoinActivity extends AppCompatActivity {
         isEmailCheck = true;
         checkedEmail = ET_email.getText().toString().trim();
         Toast.makeText(this, checkedEmail, Toast.LENGTH_SHORT).show();
+        Next();
     }
     @OnClick(R.id.BT_checkNick) void CheckNick() {
         // TODO DB에서 닉네임 중복확인
         isNickCheck = true;
         checkedNick = ET_nick.getText().toString().trim();
         Toast.makeText(this, checkedNick, Toast.LENGTH_SHORT).show();
+        Next();
     }
     @OnClick(R.id.BT_doJoin) void doJoin()  {
         String email = ET_email.getText().toString();
@@ -118,7 +120,7 @@ public class JoinActivity extends AppCompatActivity {
             } else if(!password.equals(passwordChk)){
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
             } else {
-                String result = new Task().execute("member/insert.do", email, nick, password).get();
+                String result = new Task(this).execute("member/insert.do", email, nick, password).get();
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
                 if(result.equals("\"success\"")){
                     Toast.makeText(this, "회원가입에 성공했습니다. 환영합니다!", Toast.LENGTH_SHORT).show();

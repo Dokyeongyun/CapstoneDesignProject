@@ -78,10 +78,6 @@ public class HomeFragment extends Fragment {
                 intent.putExtra("Chabakji", list.get(position));
                 startActivity(intent);
             }
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
         }));
         return v;
     }
@@ -111,7 +107,7 @@ public class HomeFragment extends Fragment {
 
     // 최초 차박지리스트 불러오기
     private void getChabakjiList(int pageNum) throws ExecutionException, InterruptedException {
-        list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "get.do", pageNum).get();
+        list = new ChabakjiInfoTask(getActivity()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "get.do", pageNum).get();
     }
 
     // RecyclerView 에 넣을 List 에 차박지 정보 삽입

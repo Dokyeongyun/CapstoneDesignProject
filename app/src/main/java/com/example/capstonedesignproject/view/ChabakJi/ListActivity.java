@@ -64,10 +64,10 @@ public class ListActivity extends AppCompatActivity {
             List<ChabakjiDAO> list = new ArrayList<>();
             if(requestUrl.equals("getAds.do")){
                 for (String s : regionArr) {
-                    list.addAll(new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, s).get());
+                    list.addAll(new ChabakjiInfoTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, s).get());
                 }
             }else{
-                list = new ChabakjiInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, search).get();
+                list = new ChabakjiInfoTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, search).get();
             }
             if(list == null || list.size()==0){
                 Intent intent1 = new Intent(this, NoResultActivity.class);

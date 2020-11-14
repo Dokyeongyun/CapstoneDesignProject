@@ -1,11 +1,17 @@
 package com.example.capstonedesignproject.Server;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.FileUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.capstonedesignproject.Data.ChabakjiDAO;
+import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.io.BufferedReader;
@@ -20,17 +26,32 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static com.example.capstonedesignproject.view.ETC.HomeActivity.CONNECT_TIME_OUT;
 
 public class Task extends AsyncTask<String, Void, String> {
     private String sendMsg, receiveMsg;
+    private ProgressDialog progressDialog;
+    @SuppressLint("StaticFieldLeak")
 
-    Task(String sendmsg) {
-        this.sendMsg = sendmsg;
+    public Task(Context context){
+        progressDialog = new ProgressDialog(context, android.R.style.Theme_Material_Dialog_Alert);
+    }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("처리중입니다..");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
     }
 
-    public Task() { }
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        progressDialog.dismiss();
+    }
 
     @Override
     protected String doInBackground(String... strings) {

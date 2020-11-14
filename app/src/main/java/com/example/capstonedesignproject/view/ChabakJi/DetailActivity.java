@@ -79,12 +79,12 @@ public class DetailActivity extends AppCompatActivity {
             if (like) {
                 like = false;
                 sun.setImageResource(R.drawable.sun_white_24dp);
-                String result = new Task().execute("member/jjim.undo", HomeActivity.memberID, chabakjiData.getPlace_name()).get();
+                String result = new Task(this).execute("member/jjim.undo", HomeActivity.memberID, chabakjiData.getPlace_name()).get();
                 Toast.makeText(this, result + " " + HomeActivity.memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
             } else {
                 like = true;
                 sun.setImageResource(R.drawable.sun_yellow_24dp);
-                String result = new Task().execute("member/jjim.do", HomeActivity.memberID, chabakjiData.getPlace_name()).get();
+                String result = new Task(this).execute("member/jjim.do", HomeActivity.memberID, chabakjiData.getPlace_name()).get();
                 Toast.makeText(this, result + " " + HomeActivity.memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
             }
         }catch (Exception e){
