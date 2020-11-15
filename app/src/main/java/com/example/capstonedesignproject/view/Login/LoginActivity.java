@@ -29,7 +29,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -105,18 +104,20 @@ public class LoginActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }finally {
-                if (result.equals("\""+id+"\"")){
-                    if(autoLogin){
-                        editor.putString("autoLogin", "true");
-                        editor.apply();
+                if(result != null) {
+                    if (result.equals("\"" + id + "\"")) {
+                        if (autoLogin) {
+                            editor.putString("autoLogin", "true");
+                            editor.apply();
+                        }
+                        Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("memberID", id);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(this, "아이디 또는 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("memberID", id);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(this, "아이디 또는 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
