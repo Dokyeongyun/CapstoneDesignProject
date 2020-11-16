@@ -79,20 +79,22 @@ public class WritePostActivity extends AppCompatActivity {
         String result = "";
         String fileUploadResult = "";
 
+        boolean isAttached = false;
         try {
             if (photoUri != null) { // 이미지 첨부하여 게시글 작성 시
+                isAttached = true;
                 File file = new File(getPathFromUri(photoUri));
                 try { fileUploadResult = new FileUploadTask(this).execute(id, file, fileName).get();
                 } catch (Exception e) { Toast.makeText(this, "게시글 작성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                 } finally { result = new Task(this).execute("article/insert.do", id, title, content, "true", fileName, createTime).get();
                 }
-                checkResult(true, fileUploadResult, result);
             } else { // 이미지 첨부 없이 게시글 작성 시
                 result = new Task(this).execute("article/insert.do", id, title, content, "", "", createTime).get();
-                checkResult(false, result);
             }
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if(isAttached){ checkResult(true, fileUploadResult, result); } else{ checkResult(false, result); }
         }
     }
 

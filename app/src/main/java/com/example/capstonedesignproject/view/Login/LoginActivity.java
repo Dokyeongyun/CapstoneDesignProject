@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         autoCheck = autoLoginFile.getString("autoLogin","");
         if(autoCheck.equals("true")){
             Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("memberID", autoLoginFile.getString("id", ""));
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
@@ -108,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (result.equals("\"" + id + "\"")) {
                         if (autoLogin) {
                             editor.putString("autoLogin", "true");
+                            editor.putString("id", id);
                             editor.apply();
                         }
                         Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();

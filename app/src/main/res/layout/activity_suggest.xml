@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
+            android:id="@+id/BT_back_suggest"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
@@ -155,6 +156,7 @@
                         android:textStyle="bold" />
 
                     <EditText
+                        android:id="@+id/ET_suggestPlaceName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="8"
@@ -192,7 +194,7 @@
                         android:textStyle="bold" />
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/BT_suggestAddress"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
@@ -236,14 +238,51 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editText2"
+                        android:id="@+id/ET_suggestIntro"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="전화번호를 입력해주세요."
+                        android:inputType="none"
+                        android:paddingStart="10dp"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="20dp"
+                        android:scrollHorizontally="true"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:background="#00FFFFFF"
+                        android:fontFamily="serif-monospace"
+                        android:gravity="top|left"
+                        android:paddingStart="10dp"
+                        android:text="전화번호"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/ET_suggestPhoneNum"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="8"
                         android:background="@null"
                         android:ems="10"
                         android:hint="차박지를 한마디로 표현한다면?"
-                        android:inputType="none"
+                        android:inputType="none|phone"
                         android:paddingStart="10dp"
                         android:paddingTop="20dp"
                         android:paddingEnd="10dp"
@@ -267,12 +306,13 @@
                         android:fontFamily="serif-monospace"
                         android:gravity="top|left"
                         android:paddingStart="10dp"
-                        android:text="주의사항"
+                        android:text="특이사항"
                         android:textColor="#000000"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <EditText
+                        android:id="@+id/ET_suggestETC"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="8"
@@ -301,32 +341,33 @@
                 android:layout_marginBottom="10dp"
                 android:background="?android:attr/listDivider" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8"
-                    android:gravity="center" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight="2"
-                    android:background="@drawable/button_border"
-                    android:backgroundTint="#7BF1B7"
-                    android:text="완료"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/BT_suggestComplete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="2"
+            android:background="@drawable/button_border"
+            android:backgroundTint="#7BF1B7"
+            android:text="완료"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
