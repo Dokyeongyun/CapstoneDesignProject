@@ -15,10 +15,14 @@ import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 import com.example.capstonedesignproject.view.Test.ChabakjiData;
+import com.example.capstonedesignproject.view.Test.Utils;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +33,8 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.TV_ChabakjiTitle) TextView TV_ChabakjiTitle;
     @BindView(R.id.TV_ChabakjiAddress) TextView TV_ChabakjiAddress;
     @BindView(R.id.TV_ChabakjiAddress2) TextView TV_ChabakjiAddress2;
+    @BindView(R.id.TV_ChabakjiToilet) TextView TV_ChabakjiToilet;
+    @BindView(R.id.TV_ChabakjiCall) TextView TV_ChabakjiCall;
     @BindView(R.id.mapView2) ViewGroup mapViewContainer;
     @BindView(R.id.BT_ChabakjiImage) ImageButton BT_ChabakjiImage;
     @BindView(R.id.BT_sun) ImageButton sun;
@@ -51,8 +57,28 @@ public class DetailActivity extends AppCompatActivity {
         TV_ChabakjiTitle.setText(chabakjiData.getPlace_name()); // 차박지 이름
         TV_ChabakjiAddress.setText(chabakjiData.getAddress()); // 차박지 주소
         TV_ChabakjiAddress2.setText(chabakjiData.getAddress()); // 차박지 주소
+        TV_ChabakjiCall.setText(chabakjiData.getPhoneNumber()); // 차박지 전화번호
+
+        List<Utils> utils = chabakjiData.getUtils();
+        List<Utils> toiletUtils = new ArrayList<>();
+        for(int i=0; i<utils.size(); i++){
+            if(utils.get(i).getUtil().equals("1"))
+                toiletUtils.add(utils.get(i));
+        }
+
+        if(toiletUtils.size()!=0){
+            TV_ChabakjiToilet.setText("화장실 있음" + "("+toiletUtils.size()+"개)"); // 화장실 개수
+        }else{
+            TV_ChabakjiToilet.setVisibility(View.GONE);
+        }
+
+        String imageURL = chabakjiData.getFilePath();
+        if(!chabakjiData.getFilePath().startsWith("http://")){
+            imageURL = HomeActivity.SERVER_URL + "/" + chabakjiData.getFilePath();
+        }
+
         Glide.with(this)
-                .load("http://211.222.234.14:8080/"+chabakjiData.getFilePath())
+                .load(imageURL)
                 .centerCrop()
                 .placeholder(R.drawable.button_border_gray)
                 .into(BT_ChabakjiImage);
@@ -72,6 +98,21 @@ public class DetailActivity extends AppCompatActivity {
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
         mapView.addPOIItem(marker);
+
+        // 화장실 마커
+        for(int i=0; i<toiletUtils.size(); i++){
+            MapPoint toiletMapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(toiletUtils.get(i).getLat())
+                    , Double.parseDouble(toiletUtils.get(i).getLng()));
+
+            MapPOIItem toiletMarker = new MapPOIItem();
+            toiletMarker.setItemName("화장실");
+            toiletMarker.setTag(0);
+            toiletMarker.setMapPoint(toiletMapPoint);
+
+            toiletMarker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
+            toiletMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+            mapView.addPOIItem(toiletMarker);
+        }
     }
 
     @OnClick(R.id.BT_sun) void SunLike() {

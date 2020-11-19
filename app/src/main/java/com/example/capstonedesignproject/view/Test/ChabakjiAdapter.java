@@ -65,8 +65,14 @@ public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.Chabak
         holder.TV_chabakjiName.setText(item.getPlace_name());
         holder.TV_chabakjiIntro.setText(item.getIntroduce());
         holder.TV_chabakjiRating.setText("3.5");
+
+        String imageURL = item.getFilePath();
+        if(!item.getFilePath().startsWith("http://")){
+            imageURL = HomeActivity.SERVER_URL + "/" + item.getFilePath();
+        }
+
         Glide.with(holder.itemView.getContext())
-                .load(HomeActivity.SERVER_URL + "/" + item.getFilePath())
+                .load(imageURL)
                 .fitCenter()
                 .into(holder.BT_chabakjiImage);
     }
