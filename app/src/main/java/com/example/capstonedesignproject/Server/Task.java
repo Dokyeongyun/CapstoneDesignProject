@@ -73,6 +73,8 @@ public class Task extends AsyncTask<String, Void, String> {
                 sendMsg = "id=" + strings[1] + "&placeName=" + strings[2];
             } else if (strings[0].equals("member/jjim.undo")) {
                 sendMsg = "id=" + strings[1] + "&placeName=" + strings[2];
+            } else if(strings[0].equals("chabak/eval.do")){
+                sendMsg = "mId=" + strings[1] + "&pId=" + strings[2] + "&pName=" + strings[3] + "&eval=" + strings[4];
             }
 
             bw.write(sendMsg);

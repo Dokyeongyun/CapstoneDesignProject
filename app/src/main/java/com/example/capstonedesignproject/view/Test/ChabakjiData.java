@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ChabakjiData implements Serializable {
+    private String id;
     private String place_name;
     private String address;
     private String introduce;
@@ -14,6 +15,7 @@ public class ChabakjiData implements Serializable {
     private String phoneNumber;
     private List<Utils> utils;
 
+    public String getId() { return id; }
     public String getPlace_name () { return place_name; }
     public String getAddress() { return address; }
     public String getIntroduce () { return introduce; }

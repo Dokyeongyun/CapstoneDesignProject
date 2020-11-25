@@ -16,6 +16,7 @@ import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 import com.example.capstonedesignproject.view.Test.ChabakjiData;
 import com.example.capstonedesignproject.view.Test.Utils;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -38,6 +39,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.mapView2) ViewGroup mapViewContainer;
     @BindView(R.id.BT_ChabakjiImage) ImageButton BT_ChabakjiImage;
     @BindView(R.id.BT_sun) ImageButton sun;
+    @BindView(R.id.RB_ratingBar) SimpleRatingBar RB_ratingBar;
 
     ChabakjiData chabakjiData;
 
@@ -113,6 +115,14 @@ public class DetailActivity extends AppCompatActivity {
             toiletMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
             mapView.addPOIItem(toiletMarker);
         }
+
+        // 별점 평가하기 클릭 시
+        RB_ratingBar.setOnRatingBarChangeListener((simpleRatingBar, rating, fromUser) -> {
+            Intent intent1 = new Intent(getApplicationContext(), RatingActivity.class);
+            intent1.putExtra("ChabakjiData", chabakjiData);
+            intent1.putExtra("Rating", RB_ratingBar.getRating());
+            startActivity(intent1);
+        });
     }
 
     @OnClick(R.id.BT_sun) void SunLike() {
