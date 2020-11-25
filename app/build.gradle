@@ -82,4 +82,7 @@ dependencies {
     // RxJava
     implementation 'io.reactivex:rxjava:1.0.17'
     implementation 'io.reactivex:rxandroid:1.1.0'
+
+    // Custom Ratingbar Library
+    implementation 'com.iarcuschin:simpleratingbar:0.1.5'
 }

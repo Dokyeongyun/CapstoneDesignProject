@@ -22,7 +22,7 @@
             android:orientation="vertical" >
 
             <FrameLayout
-                android:id="@+id/frameLayout"
+                android:id="@+id/FL_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +40,7 @@
                     app:srcCompat="@drawable/pic3" />
 
                 <LinearLayout
+                    android:id="@+id/LL_topMenu"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_marginTop="30dp"
@@ -84,15 +85,17 @@
             </FrameLayout>
 
             <LinearLayout
+                android:id="@+id/LL_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+                app:layout_constraintTop_toBottomOf="@+id/FL_image">
 
                 <LinearLayout
+                    android:id="@+id/LL_title"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:orientation="horizontal">
@@ -136,143 +139,208 @@
 
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/divider3"
+                <LinearLayout
+                    android:id="@+id/LL_detailInfo"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="#676767"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/TV_ChabakjiToilet" />
-
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
-                    android:gravity="center|left"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="차박지정보"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
+
+                    <View
+                        android:id="@+id/divider3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="#676767"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TV_ChabakjiToilet" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|left"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="차박지정보"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/TV_ChabakjiAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:drawableStart="@drawable/location_yellow_24dp"
+                            android:gravity="center|left"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="충청북도 제천" />
+
+                        <TextView
+                            android:id="@+id/TV_ChabakjiConvenience"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:drawableStart="@drawable/convenience_store_yellow_24dp"
+                            android:gravity="center|left"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="500m 이내 편의점" />
+
+                        <TextView
+                            android:id="@+id/TV_ChabakjiToilet"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:drawableStart="@drawable/ic_toilet_vector"
+                            android:gravity="center|left"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="공중화장실" />
+
+                        <TextView
+                            android:id="@+id/TV_ChabakjiCall"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:drawableStart="@drawable/phone_yellow_24dp"
+                            android:gravity="center|left"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="043-651-7101" />
+
+                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/TV_ChabakjiAddress"
+                    <View
+                        android:id="@+id/divider19"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:drawableStart="@drawable/location_yellow_24dp"
-                        android:gravity="center|left"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:text="충청북도 제천" />
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:background="#676767"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TV_ChabakjiToilet" />
 
                     <TextView
-                        android:id="@+id/TV_ChabakjiConvenience"
+                        android:id="@+id/textView24"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:drawableStart="@drawable/convenience_store_yellow_24dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
                         android:gravity="center|left"
                         android:paddingStart="20dp"
                         android:paddingEnd="20dp"
-                        android:text="500m 이내 편의점" />
+                        android:text="평가하기"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/TV_ChabakjiToilet"
+                    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+                        android:id="@+id/RB_ratingBar"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:drawableStart="@drawable/ic_toilet_vector"
-                        android:gravity="center|left"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:text="공중화장실" />
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        app:srb_borderColor="#000000"
+                        app:srb_fillColor="#FFD600"
+                        app:srb_numberOfStars="5"
+                        app:srb_rating="0"
+                        app:srb_starSize="40dp"
+                        app:srb_starsSeparation="35dp"
+                        app:srb_stepSize="1" />
+                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/TV_ChabakjiCall"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:drawableStart="@drawable/phone_yellow_24dp"
-                        android:gravity="center|left"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:text="043-651-7101" />
+                <LinearLayout
+                    android:id="@+id/LL_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <View
                         android:id="@+id/divider2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
                         android:background="#676767"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/TV_ChabakjiToilet" />
-                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|left"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="위치"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/button_border"
-                    android:orientation="horizontal">
-
-                    <com.google.android.gms.maps.MapView
-                        android:id="@+id/mapView2"
+                    <TextView
+                        android:id="@+id/textView12"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:background="@drawable/button_border"
-                        tools:visibility="visible" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="80dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/TV_ChabakjiAddress2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="7"
-                        android:drawableStart="@drawable/location_yellow_24dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center|left"
-                        android:paddingLeft="30dp"
-                        android:paddingRight="30dp"
-                        android:text="충북 제천시 모산동 241" />
-
-                    <TextView
-                        android:id="@+id/textView11"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center|right"
-                        android:paddingStart="30dp"
-                        android:paddingEnd="30dp"
-                        android:text="주소복사"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="위치"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/button_border"
+                        android:orientation="horizontal">
+
+                        <com.google.android.gms.maps.MapView
+                            android:id="@+id/mapView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:background="@drawable/button_border"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="80dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/TV_ChabakjiAddress2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:drawableStart="@drawable/location_yellow_24dp"
+                            android:gravity="center|left"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
+                            android:text="충북 제천시 모산동 241" />
+
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center|right"
+                            android:paddingStart="30dp"
+                            android:paddingEnd="30dp"
+                            android:text="주소복사"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
