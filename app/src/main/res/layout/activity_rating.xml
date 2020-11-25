@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".view.ChabakJi.RatingActivity">
+
+    <LinearLayout
+        android:id="@+id/LL_topMenu"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/BT_back_rating"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            app:srcCompat="@drawable/close_black_24dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="center|left"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="차박지 평가하기"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/BT_ratingComplete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="2"
+            android:background="#00FFFFFF"
+            android:text="완료"
+            android:textColor="#52A173"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider23"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LL_topMenu" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/border_all_direction"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider23">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center|left"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="차박지를 평가해주세요."
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TV_chabakjiName"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center|left"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="차박지 이름"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="1 : 매우불만족  | 2 : 불만족  | 3 : 보통  | 4 : 만족  | 5 : 매우만족"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <com.iarcuschin.simpleratingbar.SimpleRatingBar
+            android:id="@+id/RB_ratingBar2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            app:srb_borderColor="#000000"
+            app:srb_fillColor="#FFD600"
+            app:srb_numberOfStars="5"
+            app:srb_rating="0"
+            app:srb_starSize="40dp"
+            app:srb_starsSeparation="35dp"
+            app:srb_stepSize="1" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
