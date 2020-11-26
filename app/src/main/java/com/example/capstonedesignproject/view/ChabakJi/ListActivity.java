@@ -10,15 +10,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.ChabakjiInfoTask;
-import com.example.capstonedesignproject.view.Filter.NoResultActivity;
 import com.example.capstonedesignproject.view.Filter.RegionChoiceActivity;
 
 import java.util.ArrayList;
@@ -35,6 +31,9 @@ public class ListActivity extends AppCompatActivity {
     @BindView(R.id.listToolbar) Toolbar mToolbar;
     @BindView(R.id.BT_regionChoice) Button regionChoice;
 
+    static String[] regionArr;
+    public static List<ChabakjiDAO> list = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +44,7 @@ public class ListActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String search = intent.getStringExtra("Search");
-        String[] regionArr = new String[]{search};
+        regionArr = new String[]{search};
         String requestUrl = "";
         if (Objects.equals(intent.getStringExtra("Type"), "Region"))  {
             requestUrl = "getAds.do";
@@ -60,22 +59,28 @@ public class ListActivity extends AppCompatActivity {
         else if(Objects.equals(intent.getStringExtra("Type"), "Keyword")) requestUrl = "getKey.do";
         else if(Objects.equals(intent.getStringExtra("Type"), "Board")) requestUrl = "getBoard.do";
 
+
+        // TODO 필터 조건만 취득한 후에, HomeFragment 의 load() 메서드의 인자로 넘겨주어 필터링된 차박지만 가져오도록 수정하기
+
         try {
-            List<ChabakjiDAO> list = new ArrayList<>();
             if(requestUrl.equals("getAds.do")){
-                for (String s : regionArr) {
+/*
+                Bundle bundle = new Bundle();
+                bundle.putStringArray("regionArr", regionArr);
+                ChabakjiFragment chabakjiFragment = new ChabakjiFragment();
+                chabakjiFragment.setArguments(bundle);
+*/
+
+/*                for (String s : regionArr) {
                     list.addAll(new ChabakjiInfoTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, s).get());
-                }
+                }*/
             }else{
                 list = new ChabakjiInfoTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, requestUrl, search).get();
             }
-            if(list == null || list.size()==0){
+/*            if(list == null || list.size()==0){
                 Intent intent1 = new Intent(this, NoResultActivity.class);
                 startActivityForResult(intent1, 1);
-            }else{
-                HomeFragment.myDataset.clear();
-                HomeFragment.setChabakjiList(list);
-            }
+            }*/
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -85,7 +90,7 @@ public class ListActivity extends AppCompatActivity {
         // Toolbar
         mToolbar.setTitle("검색결과");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
     }
 
     @OnClick(R.id.BT_regionChoice)

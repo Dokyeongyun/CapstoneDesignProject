@@ -8,17 +8,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
-import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
 import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
-import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.util.Objects;
 
