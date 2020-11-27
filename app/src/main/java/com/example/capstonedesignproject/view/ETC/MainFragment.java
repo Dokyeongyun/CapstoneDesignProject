@@ -25,6 +25,7 @@ import com.example.capstonedesignproject.view.ChabakJi.DetailActivity;
 import com.example.capstonedesignproject.view.Filter.RegionChoiceFragment;
 import com.example.capstonedesignproject.view.Filter.SearchActivity;
 import com.example.capstonedesignproject.view.Login.LoginActivity;
+import com.example.capstonedesignproject.view.MyPage.FavoriteActivity;
 import com.example.capstonedesignproject.view.MyPage.MyPageFragment;
 import com.example.capstonedesignproject.view.Test.ChabakjiAdapter;
 import com.example.capstonedesignproject.view.Test.SetApplication;
@@ -142,6 +143,8 @@ public class MainFragment extends Fragment {
     }
     @OnClick(R.id.TV_goToJJIM) void goToJJIM(){
         // TODO 현재 로그인 회원의 즐겨찾는 차박지 리스트 화면으로 이동
+        Intent intent = new Intent(getActivity(), FavoriteActivity.class);
+        startActivity(intent);
     }
     @OnClick(R.id.TV_goToMypage) void goToMypage(){
         ((HomeActivity) Objects.requireNonNull(getActivity())).replaceFragment(new MyPageFragment(), "마이페이지");

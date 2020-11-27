@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DetailActivity extends AppCompatActivity {
-    static boolean like = false;
+    boolean like = false;
     @BindView(R.id.TV_ChabakjiTitle) TextView TV_ChabakjiTitle;
     @BindView(R.id.TV_ChabakjiAddress) TextView TV_ChabakjiAddress;
     @BindView(R.id.TV_ChabakjiAddress2) TextView TV_ChabakjiAddress2;
@@ -130,12 +130,12 @@ public class DetailActivity extends AppCompatActivity {
             if (like) {
                 like = false;
                 sun.setImageResource(R.drawable.sun_white_24dp);
-                String result = new Task(this).execute("member/jjim.undo", HomeActivity.memberID, chabakjiData.getPlace_name()).get();
+                String result = new Task(this).execute("member/jjim.undo", HomeActivity.memberID, chabakjiData.getPlace_name(), chabakjiData.getId()).get();
                 Toast.makeText(this, result + " " + HomeActivity.memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
             } else {
                 like = true;
                 sun.setImageResource(R.drawable.sun_yellow_24dp);
-                String result = new Task(this).execute("member/jjim.do", HomeActivity.memberID, chabakjiData.getPlace_name()).get();
+                String result = new Task(this).execute("member/jjim.do", HomeActivity.memberID, chabakjiData.getPlace_name(), chabakjiData.getId()).get();
                 Toast.makeText(this, result + " " + HomeActivity.memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
             }
         }catch (Exception e){

@@ -70,9 +70,9 @@ public class Task extends AsyncTask<String, Void, String> {
             } else if (strings[0].equals("member/login.do")) {
                 sendMsg = "id=" + strings[1] + "&password=" + strings[2];
             } else if (strings[0].equals("member/jjim.do")) {
-                sendMsg = "id=" + strings[1] + "&placeName=" + strings[2];
+                sendMsg = "id=" + strings[1] + "&placeName=" + strings[2] + "&placeId=" + strings[3];
             } else if (strings[0].equals("member/jjim.undo")) {
-                sendMsg = "id=" + strings[1] + "&placeName=" + strings[2];
+                sendMsg = "id=" + strings[1] + "&placeName=" + strings[2] + "&placeId=" + strings[3];
             } else if(strings[0].equals("chabak/eval.do")){
                 sendMsg = "mId=" + strings[1] + "&pId=" + strings[2] + "&pName=" + strings[3] + "&eval=" + strings[4];
             } else if(strings[0].equals("chabak/suggest.do")){
