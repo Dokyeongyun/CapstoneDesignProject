@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -15,7 +16,9 @@ import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 import com.example.capstonedesignproject.view.Test.ChabakjiData;
+import com.example.capstonedesignproject.view.Test.SetApplication;
 import com.example.capstonedesignproject.view.Test.Utils;
+import com.google.android.material.snackbar.Snackbar;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 import net.daum.mf.map.api.MapPOIItem;
@@ -24,10 +27,15 @@ import net.daum.mf.map.api.MapView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class DetailActivity extends AppCompatActivity {
     boolean like = false;
@@ -42,6 +50,8 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.RB_ratingBar) SimpleRatingBar RB_ratingBar;
 
     ChabakjiData chabakjiData;
+    String userChabakInfo="";
+    boolean startRating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,11 +128,19 @@ public class DetailActivity extends AppCompatActivity {
 
         // 별점 평가하기 클릭 시
         RB_ratingBar.setOnRatingBarChangeListener((simpleRatingBar, rating, fromUser) -> {
-            Intent intent1 = new Intent(getApplicationContext(), RatingActivity.class);
-            intent1.putExtra("ChabakjiData", chabakjiData);
-            intent1.putExtra("Rating", RB_ratingBar.getRating());
-            startActivity(intent1);
+            if(startRating){
+                startRating = false;
+            }else{
+                Intent intent1 = new Intent(getApplicationContext(), RatingActivity.class);
+                intent1.putExtra("ChabakjiData", chabakjiData);
+                intent1.putExtra("Rating", RB_ratingBar.getRating());
+                startActivity(intent1);
+            }
         });
+
+        // 현재 사용자가 해당 차박지를 찜했으면 찜 이미지 변경
+        // 현재 사용자가 해당 차박지를 평가했으면 평가한 점수로 RatingBar 채우기
+        setJJimAndEvaluated();
     }
 
     @OnClick(R.id.BT_sun) void SunLike() {
@@ -143,6 +161,30 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    public void setJJimAndEvaluated(){
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<String> observable = application.getMemberService().getJJimAndEvaluated(HomeActivity.memberID, chabakjiData.getId());
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        userChabakInfo = s;
+                    }
+                    @Override
+                    public void onError(Throwable e) { e.printStackTrace(); }
+                    @Override
+                    public void onCompleted() {
+                        Toast.makeText(application, userChabakInfo, Toast.LENGTH_SHORT).show();
+                        String[] split = userChabakInfo.split(" ");
+                        if(split[0].equals("1")){
+                            like = true;
+                            sun.setImageResource(R.drawable.sun_yellow_24dp);
+                        }
+                        startRating = true;
+                        RB_ratingBar.setRating(Float.parseFloat(split[1]));
+                    }
+                });
+    }
     public void Back(View view) {
         finish();
     }

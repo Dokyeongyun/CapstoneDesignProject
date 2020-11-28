@@ -16,6 +16,7 @@ public class SetApplication extends Application {
     private Retrofit retrofit;
     private ChabakjiService chabakjiService;
     private ArticleService articleService;
+    private MemberService memberService;
 
     @Override
     public void onCreate() {
@@ -39,13 +40,11 @@ public class SetApplication extends Application {
 
         chabakjiService = retrofit.create(ChabakjiService.class);
         articleService = retrofit.create(ArticleService.class);
+        memberService = retrofit.create(MemberService.class);
     }
 
-    public ChabakjiService getChabakjiService() {
-        return chabakjiService;
-    }
-    public ArticleService getArticleService() {
-        return articleService;
-    }
+    public ChabakjiService getChabakjiService() { return chabakjiService; }
+    public ArticleService getArticleService() { return articleService; }
+    public MemberService getMemberService() { return memberService; }
 
 }
