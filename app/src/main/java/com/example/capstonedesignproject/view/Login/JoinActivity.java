@@ -32,10 +32,10 @@ import butterknife.OnClick;
 
 public class JoinActivity extends AppCompatActivity {
 
-    @BindView(R.id.ET_joinEmail) EditText ET_email;
     @BindView(R.id.ET_joinPassword) EditText ET_password;
     @BindView(R.id.ET_joinPasswordChk) EditText ET_passwordChk;
     @BindView(R.id.ET_nick) EditText ET_nick;
+    @BindView(R.id.ET_joinEmail) EditText ET_joinEmail;
     @BindView(R.id.LL_joinForm) LinearLayout LL_joinForm;
     @BindView(R.id.LL_email) LinearLayout LL_email;
     @BindView(R.id.LL_pw) LinearLayout LL_pw;
@@ -72,12 +72,19 @@ public class JoinActivity extends AppCompatActivity {
         views[2] = LL_join;
     }
 
+    /**
+     * 이전메뉴
+     */
     @OnClick(R.id.BT_previousMenu) void Previous() {
         if (index == 0) index = 1;
         transAnimation(false, views[--index]);
         TV_joinProgress.setText("(" + (index + 1) + " / " + views.length + ")");
         TV_joinProgress.setTextColor(Color.parseColor("#C5C5C5"));
     }
+
+    /**
+     * 다음메뉴
+     */
     @OnClick(R.id.BT_nextMenu) void Next() {
         if (index >= views.length) index = views.length - 1;
         transAnimation(true, views[index++]);
@@ -87,25 +94,54 @@ public class JoinActivity extends AppCompatActivity {
             TV_joinProgress.setTextColor(Color.RED);
         }
     }
+
+    /**
+     * 이메일 중복확인
+     */
     @OnClick(R.id.BT_checkEmail) void CheckEmail() {
-        // TODO DB에서 이메일 중복확인
-        isEmailCheck = true;
-        checkedEmail = ET_email.getText().toString().trim();
-        Toast.makeText(this, checkedEmail, Toast.LENGTH_SHORT).show();
-        Next();
+        checkedEmail = ET_joinEmail.getText().toString().trim();
+
+        String result = "";
+        try{
+            result = new Task(this).execute("member/idDoubleCheck.do", checkedEmail).get();
+        } catch (Exception e){ e.printStackTrace(); }
+
+        if(result.equals("\"1\"")){
+            isEmailCheck = true;
+            Toast.makeText(this, "사용가능한 이메일입니다.", Toast.LENGTH_SHORT).show();
+            Next();
+        }else{
+            Toast.makeText(this, "중복된 이메일입니다.", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    /**
+     * 닉네임 중복확인
+     */
     @OnClick(R.id.BT_checkNick) void CheckNick() {
-        // TODO DB에서 닉네임 중복확인
-        isNickCheck = true;
         checkedNick = ET_nick.getText().toString().trim();
-        Toast.makeText(this, checkedNick, Toast.LENGTH_SHORT).show();
-        Next();
+        String result = "";
+        try{
+            result = new Task(this).execute("member/nickDoubleCheck.do", checkedNick).get();
+        } catch (Exception e){ e.printStackTrace(); }
+
+        if(result.equals("\"1\"")){
+            isNickCheck = true;
+            Toast.makeText(this, "사용가능한 닉네임입니다.", Toast.LENGTH_SHORT).show();
+            Next();
+        }else{
+            Toast.makeText(this, "중복된 닉네임입니다.", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    /**
+     * 회원가입
+     */
     @OnClick(R.id.BT_doJoin) void doJoin()  {
-        String email = ET_email.getText().toString();
-        String password = ET_password.getText().toString();
-        String passwordChk = ET_passwordChk.getText().toString();
-        String nick = ET_nick.getText().toString();
+        String email = ET_joinEmail.getText().toString().trim();
+        String password = ET_password.getText().toString().trim();
+        String passwordChk = ET_passwordChk.getText().toString().trim();
+        String nick = ET_nick.getText().toString().trim();
         if (!isEmailCheck || !checkedEmail.equals(email)) {
             Toast.makeText(this, "이메일 중복확인을 해주세요!", Toast.LENGTH_SHORT).show();
             return;

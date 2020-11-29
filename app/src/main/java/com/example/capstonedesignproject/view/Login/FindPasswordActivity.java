@@ -31,6 +31,7 @@ public class FindPasswordActivity extends AppCompatActivity {
     @BindView(R.id.ET_verificationCode) EditText ET_verificationCode;
 
     String authCode;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +48,12 @@ public class FindPasswordActivity extends AppCompatActivity {
 
     @OnClick(R.id.BT_back) void BackToLogin() { finish(); }
     @OnClick(R.id.BT_findPassword) void SendAuthCode() {
+        email = ET_email.getText().toString().trim();
         try {
             GMailSender gMailSender = new GMailSender("aservmz@gmail.com", "ehruddbs4$");
             authCode = gMailSender.getEmailCode();
             //GMailSender.sendMail(제목, 본문내용, 받는사람);
-            gMailSender.sendMail("이메일 인증요청", "인증번호 : " + authCode, ET_email.getText().toString());
+            gMailSender.sendMail("이메일 인증요청", "인증번호 : " + authCode, email);
             Toast.makeText(getApplicationContext(), "이메일을 성공적으로 보냈습니다.", Toast.LENGTH_SHORT).show();
             LL_findPassword.setVisibility(View.GONE);
             LL_sendVerification.setVisibility(View.VISIBLE);
@@ -68,6 +70,7 @@ public class FindPasswordActivity extends AppCompatActivity {
             if(authCode.equals(ET_verificationCode.getText().toString())){
                 Toast.makeText(this, "확인되었습니다!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, ChangePasswordActivity.class);
+                intent.putExtra("Email", email);
                 startActivity(intent);
                 // TODO 액티비티 스택 관리
             }else{

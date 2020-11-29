@@ -78,7 +78,18 @@ public class Task extends AsyncTask<String, Void, String> {
             } else if(strings[0].equals("chabak/suggest.do")){
                 sendMsg = "placeName=" + strings[1] + "&address=" + strings[2] + "&introduce=" + strings[3] + "&phone=" + strings[4]
                         + "&fileName=" + strings[5] + "&latitude=" + strings[6] + "&longitude=" + strings[7];
+            } else if(strings[0].equals("member/changePassword.do")){
+                sendMsg = "memberId=" + strings[1] + "&password=" + strings[2];
+            } else if(strings[0].equals("member/changeNickname.do")){
+                sendMsg = "memberId=" + strings[1] + "&nickName=" + strings[2];
+            } else if(strings[0].equals("member/nickDoubleCheck.do")){
+                sendMsg = "nickName=" + strings[1];
+            } else if(strings[0].equals("member/idDoubleCheck.do")){
+                sendMsg = "memberId=" + strings[1];
+            } else if(strings[0].equals("member/withdraw.do")){
+                sendMsg = "memberId=" + strings[1];
             }
+
             bw.write(sendMsg);
             bw.flush();
 
