@@ -152,6 +152,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/LL_commentList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -164,13 +165,51 @@
                 android:layout_gravity="center"
                 android:indeterminate="false"
                 android:indeterminateBehavior="repeat"
-                android:indeterminateTint="#B14375" />
+                android:indeterminateTint="#B14375"
+                tools:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RV_comment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LL_commentInput"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/ET_comment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="8"
+            android:background="@drawable/button_border_gray"
+            android:ems="10"
+            android:hint="댓글을 입력해주세요."
+            android:inputType="textUri|textShortMessage|textLongMessage"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/IB_commentInput"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:tint="#4CCD82"
+            app:srcCompat="@drawable/pencil_black_24dp" />
 
     </LinearLayout>
 
