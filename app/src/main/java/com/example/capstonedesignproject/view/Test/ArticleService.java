@@ -25,4 +25,7 @@ public interface ArticleService {
 
   @POST("/article/writeComment.do")
   Observable<String> writeComment(@Query("articleId") int num, @Query("memberId") String memberId, @Query("content") String content);
+
+  @POST("/article/getArticles.do")
+  Observable<List<ArticleData>> getArticles(@Query("memberId") String memberId);
 }

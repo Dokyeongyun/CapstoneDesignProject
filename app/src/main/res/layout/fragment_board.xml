@@ -29,15 +29,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/border1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#BCBCBC"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/TL_board"
             android:layout_width="match_parent"
@@ -68,12 +59,11 @@
                 android:orientation="vertical"
                 android:visibility="visible">
 
-                <ListView
-                    android:id="@+id/LV_board"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RV_board"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent" />
 
-                </ListView>
             </LinearLayout>
 
             <LinearLayout

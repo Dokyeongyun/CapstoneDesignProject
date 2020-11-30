@@ -14,7 +14,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginBottom="4dp"
         card:cardCornerRadius="5dp"
-        card:cardElevation="2.5dp"
+        card:cardElevation="1.5dp"
         card:cardMaxElevation="5dp"
         card:layout_constraintBottom_toBottomOf="parent"
         card:layout_constraintEnd_toEndOf="parent"
@@ -132,6 +132,12 @@
                             android:textStyle="bold" />
 
                     </LinearLayout>
+
+                    <View
+                        android:id="@+id/divider20"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -24,12 +24,9 @@ import butterknife.ButterKnife;
  * 이 클래스로 RecyclerView의 아이템의 뷰를 생성하고, 뷰에 데이터를 넣는다
  */
 public class ChabakjiAdapter_Favorite extends RecyclerView.Adapter<ChabakjiAdapter_Favorite.ChabakjiViewHolder> {
-    private final Context context;
     private List<ChabakjiData> items = new ArrayList<>();
 
-    public ChabakjiAdapter_Favorite(Context context) {
-        this.context = context;
-    }
+    public ChabakjiAdapter_Favorite() { }
 
     /**
      * 차박지 리스트에 데이터를 추가한 후 갱신한다
@@ -50,7 +47,7 @@ public class ChabakjiAdapter_Favorite extends RecyclerView.Adapter<ChabakjiAdapt
      */
     @Override
     public ChabakjiViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.favorite_cardview, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.favorite_cardview, parent, false);
         return new ChabakjiViewHolder(view);
     }
 

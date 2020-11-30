@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,21 +16,19 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.capstonedesignproject.Adapter.ArticleAdapter;
 import com.example.capstonedesignproject.Data.ArticleData;
+import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.GetArticleTask;
+import com.example.capstonedesignproject.view.ChabakJi.DetailActivity;
 import com.example.capstonedesignproject.view.Test.SetApplication;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,21 +44,18 @@ public class BoardFragment extends Fragment {
     @BindView(R.id.LL_notification) LinearLayout LL_notification;
     @BindView(R.id.TL_board) TabLayout TL_board;
     @BindView(R.id.FAB_writePost) FloatingActionButton FAB_writePost;
-    @BindView(R.id.LV_board) ListView LV_board;
+    @BindView(R.id.RV_board) RecyclerView RV_board;
     @BindView(R.id.LV_notification) ListView LV_notification;
     @BindView(R.id.PB_board) ProgressBar PB_board;
     @BindView(R.id.CL_snackContainer) ConstraintLayout CL_snackContainer;
 
-    private ArticleAdapter articleAdapter;
+    private ArticleAdapter articleAdapter = new ArticleAdapter();
     private int page = 1;
 
     public BoardFragment() { }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
+    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,9 +83,27 @@ public class BoardFragment extends Fragment {
             }
         });
 
+        // 리싸이클러뷰 클릭 리스너
+        RV_board.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), RV_board, (view, position) -> {
+            Intent intent = new Intent(getActivity(), ShowPostActivity.class);
+            intent.putExtra("articleID", articleAdapter.getItemAt(position).getArticleId());
+            startActivity(intent);
+        }));
         return v;
     }
 
+    /**
+     * 초기 설정
+     */
+    private void Init(){
+        RV_board.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        RV_board.setHasFixedSize(true);
+        RV_board.setAdapter(articleAdapter);
+    }
+
+    /**
+     * 게시글 목록 읽어오기
+     */
     private void load(){
         PB_board.setVisibility(View.VISIBLE);
         final SetApplication application = (SetApplication) Objects.requireNonNull(getActivity()).getApplication();
@@ -116,11 +131,9 @@ public class BoardFragment extends Fragment {
                 });
     }
 
-    private void Init(){
-        articleAdapter = new ArticleAdapter(getContext());
-        LV_board.setAdapter(articleAdapter);
-    }
-
+    /**
+     * TabLayout
+     */
     private void changeView(int pos) {
         switch (pos) {
             case 0:
@@ -134,13 +147,9 @@ public class BoardFragment extends Fragment {
         }
     }
 
-
-    @OnItemClick(R.id.LV_board) void ClickPost(AdapterView<?> parent, View view, int position, long id){
-        Intent intent = new Intent(getActivity(), ShowPostActivity.class);
-        intent.putExtra("articleID", articleAdapter.getItem(position).getArticleId());
-        startActivity(intent);
-    }
-
+    /**
+     * 게시글 작성 버튼
+     */
     @OnClick(R.id.FAB_writePost) void ClickWritePost(){
         Intent intent = new Intent(getActivity(), WritePostActivity.class);
         startActivityForResult(intent, 1);

@@ -111,6 +111,7 @@
                     android:text="커뮤니티 관리" />
 
                 <Button
+                    android:id="@+id/BT_getArticles"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#00FFFFFF"
@@ -129,6 +130,7 @@
                     android:text="리뷰 관리" />
 
                 <Button
+                    android:id="@+id/BT_favorites"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#00FFFFFF"

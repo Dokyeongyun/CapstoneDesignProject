@@ -23,6 +23,8 @@ import butterknife.OnClick;
 public class MyPageFragment extends Fragment {
     @BindView(R.id.BT_manageProfile) Button BT_manageProfile;
     @BindView(R.id.BT_withdraw) Button BT_withdraw;
+    @BindView(R.id.BT_getArticles) Button BT_getArticles;
+    @BindView(R.id.BT_favorites) Button BT_favorites;
 
     public MyPageFragment() { }
 
@@ -65,5 +67,23 @@ public class MyPageFragment extends Fragment {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+    }
+
+    /**
+     * 현재 사용자가 작성한 게시글 읽기
+     */
+    @OnClick(R.id.BT_getArticles) void getArticles(){
+        Intent intent = new Intent(getActivity(), ManageCommunity.class);
+        intent.putExtra("Type", "Articles");
+        startActivity(intent);
+    }
+
+    /**
+     * 현재 사용자가 즐겨찾는 차박지 목록
+     */
+    @OnClick(R.id.BT_favorites) void getFavorites(){
+        Intent intent = new Intent(getActivity(), ManageCommunity.class);
+        intent.putExtra("Type", "Favorites");
+        startActivity(intent);
     }
 }
