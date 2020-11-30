@@ -1,5 +1,6 @@
 package com.example.capstonedesignproject.view.Test;
 import com.example.capstonedesignproject.Data.ArticleData;
+import com.example.capstonedesignproject.Data.CommentVO;
 
 import java.util.List;
 
@@ -18,4 +19,10 @@ public interface ArticleService {
 
   @POST("/article/get.do")
   Observable<List<ArticleData>> getArticleList(@Query("num") int num);
+
+  @POST("/article/getComments.do")
+  Observable<List<CommentVO>> getComments(@Query("articleId") int num);
+
+  @POST("/article/writeComment.do")
+  Observable<String> writeComment(@Query("articleId") int num, @Query("memberId") String memberId, @Query("content") String content);
 }
