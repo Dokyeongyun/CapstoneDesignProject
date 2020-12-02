@@ -219,6 +219,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/LL_rating"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
@@ -236,7 +237,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/TV_ChabakjiToilet" />
 
                     <TextView
-                        android:id="@+id/textView24"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginBottom="10dp"
@@ -315,7 +315,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:layout_marginBottom="80dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -344,6 +344,41 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/LL_reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:id="@+id/divider20"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="#676767"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|left"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="후기"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/RV_reviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
                 <View
                     android:id="@+id/divider4"
                     android:layout_width="match_parent"
@@ -356,5 +391,15 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/snackContainer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
