@@ -46,8 +46,8 @@ public class FilterActivity extends AppCompatActivity {
         Init();
     }
 
-    @OnClick(R.id.TV_fishingSpot) void ClickFishingSpot() { CheckOption(0); }
-    @OnClick(R.id.TV_toilet) void ClickToilet() { CheckOption(1); }
+    @OnClick(R.id.TV_toilet) void ClickToilet() { CheckOption(0); }
+    @OnClick(R.id.TV_fishingSpot) void ClickFishingSpot() { CheckOption(1); }
     @OnClick(R.id.TV_convenience) void ClickConvenience() { CheckOption(2); }
     @OnClick(R.id.TV_pay) void ClickPay() { CheckOption(3); }
     @OnClick(R.id.TV_free) void ClickFree() { CheckOption(4); }
@@ -71,12 +71,10 @@ public class FilterActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 툴바에 뒤로가기버튼 추가
 
-        optionArr = new TextView[]{TV_fishingSpot, TV_toilet, TV_convenience, TV_pay, TV_free};
-        checkedImage = new int[]{R.drawable.fishing_spot_blue,
-                R.drawable.toilet_blue, R.drawable.convenience_blue,
+        optionArr = new TextView[]{TV_toilet, TV_fishingSpot, TV_convenience, TV_pay, TV_free};
+        checkedImage = new int[]{R.drawable.toilet_blue, R.drawable.fishing_spot_blue, R.drawable.convenience_blue,
                 R.drawable.cash_red, R.drawable.cash_blue};
-        notCheckedImage = new int[]{R.drawable.fishing_spot,
-                R.drawable.toilet, R.drawable.convenience,
+        notCheckedImage = new int[]{R.drawable.toilet, R.drawable.fishing_spot, R.drawable.convenience,
                 R.drawable.cash_black, R.drawable.cash_black};
     }
 
