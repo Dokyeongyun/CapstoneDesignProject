@@ -1,10 +1,12 @@
 package com.example.capstonedesignproject.view.ChabakJi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -12,9 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.capstonedesignproject.Adapter.ReviewAdapter;
+import com.example.capstonedesignproject.Data.ReviewVO;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
+import com.example.capstonedesignproject.view.Test.ChabakjiAdapter;
 import com.example.capstonedesignproject.view.Test.ChabakjiData;
 import com.example.capstonedesignproject.view.Test.SetApplication;
 import com.example.capstonedesignproject.view.Test.Utils;
@@ -48,7 +53,10 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.BT_ChabakjiImage) ImageButton BT_ChabakjiImage;
     @BindView(R.id.BT_sun) ImageButton sun;
     @BindView(R.id.RB_ratingBar) SimpleRatingBar RB_ratingBar;
+    @BindView(R.id.RV_reviews) RecyclerView RV_reviews;
+    @BindView(R.id.snackContainer) ConstraintLayout snackContainer;
 
+    private ReviewAdapter reviewAdapter;
     ChabakjiData chabakjiData;
     String userChabakInfo="";
     boolean startRating = false;
@@ -138,29 +146,38 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        // 현재 사용자가 해당 차박지를 찜했으면 찜 이미지 변경
-        // 현재 사용자가 해당 차박지를 평가했으면 평가한 점수로 RatingBar 채우기
         setJJimAndEvaluated();
+
+        Init();
+        getReviews();
     }
 
     @OnClick(R.id.BT_sun) void SunLike() {
+        String result = "";
         try{
             if (like) {
+                result = new Task(this).execute("member/jjim.undo", HomeActivity.memberID, chabakjiData.getPlace_name(), chabakjiData.getId()).get();
+            } else {
+                result = new Task(this).execute("member/jjim.do", HomeActivity.memberID, chabakjiData.getPlace_name(), chabakjiData.getId()).get();
+            }
+        }catch (Exception e){ e.printStackTrace(); }
+        if(!result.equals("\"false\"")){
+            if(like){
                 like = false;
                 sun.setImageResource(R.drawable.sun_white_24dp);
-                String result = new Task(this).execute("member/jjim.undo", HomeActivity.memberID, chabakjiData.getPlace_name(), chabakjiData.getId()).get();
-                Toast.makeText(this, result + " " + HomeActivity.memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
-            } else {
+            }else{
                 like = true;
                 sun.setImageResource(R.drawable.sun_yellow_24dp);
-                String result = new Task(this).execute("member/jjim.do", HomeActivity.memberID, chabakjiData.getPlace_name(), chabakjiData.getId()).get();
-                Toast.makeText(this, result + " " + HomeActivity.memberID + " " + chabakjiData.getPlace_name(), Toast.LENGTH_SHORT).show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
+        }else{
+            Toast.makeText(this, "잠시 후 다시 시도해주세요..ㅠㅠ", Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * 현재 사용자가 해당 차박지를 찜했으면 찜 이미지 변경
+     * 현재 사용자가 해당 차박지를 평가했으면 평가한 점수로 RatingBar 채우기
+     */
     public void setJJimAndEvaluated(){
         final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
         Observable<String> observable = application.getMemberService().getJJimAndEvaluated(HomeActivity.memberID, chabakjiData.getId());
@@ -181,13 +198,46 @@ public class DetailActivity extends AppCompatActivity {
                             sun.setImageResource(R.drawable.sun_yellow_24dp);
                         }
                         startRating = true;
-                        RB_ratingBar.setRating(Float.parseFloat(split[1]));
+                        if(!split[1].equals("Error")){
+                            RB_ratingBar.setRating(Float.parseFloat(split[1]));
+                        }
                     }
                 });
     }
-    public void Back(View view) {
-        finish();
+
+    /**
+     * 해당 차박지에 등록된 리뷰 읽어오기
+     */
+    public void getReviews(){
+        reviewAdapter.clear();
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<List<ReviewVO>> observable = application.getChabakjiService().getReviews(chabakjiData.getId());
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<ReviewVO>>() {
+                    @Override
+                    public void onNext(List<ReviewVO> items) {
+                        for(int i=0; i<items.size(); i++){
+                            reviewAdapter.setItemsAndRefresh(items.get(i));
+                        }
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Snackbar.make(snackContainer, "리뷰 데이터를 읽어올 수 없습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    }
+                    @Override
+                    public void onCompleted() { }
+                });
     }
+
+    private void Init(){
+        RV_reviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        reviewAdapter = new ReviewAdapter();
+        RV_reviews.setHasFixedSize(true);
+        RV_reviews.setAdapter(reviewAdapter);
+    }
+
+    public void Back(View view) { finish(); }
 
     public void Share(View view) {
         // TODO 해당 차박지 정보 공유하기
