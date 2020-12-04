@@ -84,6 +84,8 @@ public class ListActivity extends AppCompatActivity {
         } else if(Objects.equals(intent.getStringExtra("Type"), "Keyword")){
             requestUrl = "getKey.do";
             BT_regionChoice.setVisibility(View.GONE);
+        } else if(Objects.equals(intent.getStringExtra("Type"), "FromMap")){
+            // TODO 특별시, 광역시, 도 단위 지역검색
         }
 
 

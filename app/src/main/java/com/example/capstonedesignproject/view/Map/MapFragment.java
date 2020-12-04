@@ -1,5 +1,7 @@
-package com.example.capstonedesignproject.view.Congestion;
+package com.example.capstonedesignproject.view.Map;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,25 +9,27 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
-import net.daum.mf.map.api.MapView;
-
-import java.util.Objects;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class CongestionFragment extends Fragment {
-//    @BindView(R.id.mapView) ViewGroup mapViewContainer;
+public class MapFragment extends Fragment {
     @BindView(R.id.webView) WebView webView;
-    public CongestionFragment() { }
+    public Context context;
+    public MapFragment() { }
 
     private WebSettings webSettings; //웹뷰세팅
     @Override
@@ -35,13 +39,12 @@ public class CongestionFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_congestion, container, false);
+        View v = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, v);
-//        MapView mapView = new MapView(Objects.requireNonNull(getContext()));
-//        mapViewContainer.addView(mapView);
+        context = this.getContext();
 
         // 웹뷰 시작
-        webView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
+        webView.setWebViewClient(new WebViewClientClass()); // 클릭시 새창 안뜨게
         webSettings = webView.getSettings(); //세부 세팅 등록
         webSettings.setJavaScriptEnabled(true); // 웹페이지 자바스크립트 허용 여부
         webSettings.setSupportMultipleWindows(false); // 새창 띄우기 허용 여부
@@ -56,8 +59,33 @@ public class CongestionFragment extends Fragment {
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
 
-        webView.loadUrl(HomeActivity.SERVER_IP+"8082"); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
-
+        webView.loadUrl(HomeActivity.SERVER_URL+"/map/"); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
         return v;
+    }
+
+    private class WebViewClientClass extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            String url = request.getUrl().toString();
+            try {
+                url =  URLDecoder.decode(url,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            if(url.startsWith("app://")){
+                String searchRegion = url.split("_")[1];
+                Toast.makeText(context, searchRegion, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context.getApplicationContext(), ListActivity.class);
+                intent.putExtra("FromMap", searchRegion);
+                intent.putExtra("Type", "FromMap");
+
+                startActivity(intent);
+                return true;
+            }else{
+                view.loadUrl(url);
+                return true;
+            }
+        }
     }
 }
