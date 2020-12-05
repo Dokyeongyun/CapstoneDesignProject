@@ -86,7 +86,7 @@ public class MainFragment extends Fragment {
     private void Init(){
         // Recycler View
         RV_main.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        chabakjiAdapter = new ChabakjiAdapter(getContext());
+        chabakjiAdapter = new ChabakjiAdapter();
         RV_main.setHasFixedSize(true);
         RV_main.setAdapter(chabakjiAdapter);
     }

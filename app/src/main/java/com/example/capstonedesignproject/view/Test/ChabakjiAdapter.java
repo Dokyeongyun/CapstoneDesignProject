@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,12 +26,9 @@ import butterknife.ButterKnife;
  * 이 클래스로 RecyclerView의 아이템의 뷰를 생성하고, 뷰에 데이터를 넣는다
  */
 public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.ChabakjiViewHolder> {
-    private final Context context;
     private List<ChabakjiData> items = new ArrayList<>();
 
-    public ChabakjiAdapter(Context context) {
-        this.context = context;
-    }
+    public ChabakjiAdapter() {}
 
     /**
      * 차박지 리스트에 데이터를 추가한 후 갱신한다
@@ -49,9 +47,10 @@ public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.Chabak
     /**
      * RecyclerView의 아이템 뷰 생성과 뷰를 유지할 ViewHolder를 생성
      */
+    @NonNull
     @Override
-    public ChabakjiViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.small_cardview, parent, false);
+    public ChabakjiViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.small_cardview, parent, false);
         return new ChabakjiViewHolder(view);
     }
 
@@ -62,9 +61,9 @@ public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.Chabak
     @Override
     public void onBindViewHolder(final ChabakjiViewHolder holder, final int position) {
         final ChabakjiData item = getItemAt(position);
-        holder.TV_chabakjiName.setText(item.getPlace_name());
+        holder.TV_chabakjiName.setText(item.getPlaceName());
         holder.TV_chabakjiIntro.setText(item.getIntroduce());
-        holder.TV_chabakjiRating.setText("3.5");
+        holder.TV_chabakjiRating.setText(String.valueOf(item.getAvg_point()));
 
         String imageURL = item.getFilePath();
         if(!item.getFilePath().startsWith("http://")){

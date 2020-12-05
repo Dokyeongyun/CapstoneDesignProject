@@ -58,8 +58,8 @@ public class ChabakjiAdapter_Favorite extends RecyclerView.Adapter<ChabakjiAdapt
     @Override
     public void onBindViewHolder(final ChabakjiViewHolder holder, final int position) {
         final ChabakjiData item = getItemAt(position);
-        holder.TV_chabakjiName.setText(item.getPlace_name());
-        holder.TV_chabakjiRating.setText("3.5");
+        holder.TV_chabakjiName.setText(item.getPlaceName());
+        holder.TV_chabakjiRating.setText(String.valueOf(item.getAvg_point()));
         holder.TV_favoriteCount.setText(item.getJjim());
         holder.TV_chabakjiAddress.setText(item.getAddress());
 

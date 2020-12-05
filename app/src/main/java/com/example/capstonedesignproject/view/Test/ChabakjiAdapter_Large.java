@@ -65,12 +65,12 @@ public class ChabakjiAdapter_Large extends RecyclerView.Adapter<ChabakjiAdapter_
     @Override
     public void onBindViewHolder(final ChabakjiViewHolder holder, final int position) {
         final ChabakjiData item = getItemAt(position);
-        holder.TV_chabakjiName.setText(item.getPlace_name());
+        holder.TV_chabakjiName.setText(item.getPlaceName());
         holder.TV_chabakjiIntro.setText(item.getIntroduce());
         holder.TV_chabakjiAddr.setText(item.getAddress());
-        holder.TV_chabakjiRating.setText("3.5");
+        holder.TV_chabakjiRating.setText(String.valueOf(item.getAvg_point()));
 
-        // Utility
+/*        // Utility
         List<Utils> utils = item.getUtils();
         int[] utility = new int[1];
         for(int i=0; i<utils.size(); i++){
@@ -80,7 +80,7 @@ public class ChabakjiAdapter_Large extends RecyclerView.Adapter<ChabakjiAdapter_
         }
         if(utility[0] != 0){
             holder.TV_chabakjiUtil.setText("500m 이내 화장실("+utility[0]+")개 있음");
-        }
+        }*/
 
         // 사진
         String imageURL = item.getFilePath();

@@ -53,7 +53,7 @@ public class RatingActivity extends AppCompatActivity {
         // 차박지 이름
         chabakjiData = (ChabakjiData) intent.getSerializableExtra("ChabakjiData");
         if(chabakjiData!=null){
-            TV_chabakjiName.setText("["+chabakjiData.getPlace_name()+"]");
+            TV_chabakjiName.setText("["+chabakjiData.getPlaceName()+"]");
         }
 
         // 사용자가 입력한 별점 가져와 초기세팅
@@ -76,8 +76,8 @@ public class RatingActivity extends AppCompatActivity {
 
         // DB에 평가정보 삽입 [ 사용자ID, 차박지ID, 차박지이름 , 평가점수, 리뷰내용 ]
         final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
-        Observable<String> observable = application.getChabakjiService().eval(HomeActivity.memberID, chabakjiData.getId(),
-                chabakjiData.getPlace_name(), String.valueOf(chabakjiRating), review);
+        Observable<String> observable = application.getChabakjiService().eval(HomeActivity.memberID, chabakjiData.getPlaceId(),
+                chabakjiData.getPlaceName(), chabakjiRating, review);
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<String>() {
                     @Override
