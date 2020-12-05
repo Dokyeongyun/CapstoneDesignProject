@@ -203,7 +203,21 @@
                             android:gravity="center|left"
                             android:paddingStart="20dp"
                             android:paddingEnd="20dp"
-                            android:text="공중화장실" />
+                            android:text="공중화장실"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/TV_ChabakjiFishing"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:drawableStart="@drawable/fishing_spot_36dp"
+                            android:gravity="center|left"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="낚시터"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
                         <TextView
                             android:id="@+id/TV_ChabakjiCall"
