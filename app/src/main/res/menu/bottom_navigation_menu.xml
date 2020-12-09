@@ -3,26 +3,29 @@
 
     <item
         android:id="@+id/home_menu"
-        android:icon="@android:drawable/ic_menu_call"
-        android:title="home_menu" />
+        android:icon="@drawable/bottom_menu_home_72dp"
+        android:title="홈" />
 
     <item
         android:id="@+id/list_menu"
-        android:icon="@android:drawable/ic_menu_camera"
-        android:title="list_menu" />
+        android:icon="@drawable/location_yellow_24dp"
+        android:iconTint="#020202"
+        android:title="지역 검색" />
 
     <item
-        android:id="@+id/congestion_menu"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="congestion_menu" />
+        android:id="@+id/map_menu"
+        android:icon="@drawable/bottom_menu_map_72dp"
+        android:iconTint="#000000"
+        android:title="지도 검색" />
 
     <item
         android:id="@+id/board_menu"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="board_menu" />
+        android:icon="@drawable/bottom_menu_board_72dp"
+        android:iconTint="#000000"
+        android:title="게시판" />
 
     <item
         android:id="@+id/myPage_menu"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="myPage_menu" />
+        android:icon="@drawable/person_black_48dp"
+        android:title="마이페이지" />
 </menu>
