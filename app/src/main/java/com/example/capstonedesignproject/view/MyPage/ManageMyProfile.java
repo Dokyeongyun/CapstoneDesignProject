@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.Task;
+import com.example.capstonedesignproject.view.ETC.CustomDialog;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 import com.example.capstonedesignproject.view.Login.LoginActivity;
 
@@ -44,6 +45,7 @@ public class ManageMyProfile extends AppCompatActivity {
     @BindView(R.id.BT_changeNickOK) Button BT_changeNickOK;
     @BindView(R.id.BT_duplicateChk) Button BT_duplicateChk;
     @BindView(R.id.BT_withdraw) Button BT_withdraw;
+    private CustomDialog customDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +154,13 @@ public class ManageMyProfile extends AppCompatActivity {
      * 회원 탈퇴
      */
     @OnClick(R.id.BT_withdraw) void ClickWithdraw() {
-        // TODO Dialog 띄워서 한번 더 확인시키고, 동의하면 회원탈퇴 -> 로그인화면으로 이동
+        customDialog = new CustomDialog(this,
+                "회원 탈퇴", "정말 탈퇴하시겠습니까? \n삭제된 계정은 복구할 수 없습니다.",
+                okListener, cancelListener);
+        customDialog.show();
+    }
+
+    private View.OnClickListener okListener = v -> {
         String autoCheck = LoginActivity.autoLoginFile.getString("autoLogin","");
         if(autoCheck.equals("true")){
             LoginActivity.editor.putString("autoLogin", "false");
@@ -164,12 +172,16 @@ public class ManageMyProfile extends AppCompatActivity {
         } catch (Exception e){ e.printStackTrace(); }
 
         if(!result.equals("\"-1\"")){
-            Toast.makeText(ManageMyProfile.this, "이용해주셔서 감사합니다__^^__", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(ManageMyProfile.this, LoginActivity.class);
+            Toast.makeText(this, "이용해주셔서 감사합니다__^^__", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-    }
+    };
+
+    private View.OnClickListener cancelListener = v -> {
+        customDialog.dismiss();
+    };
 
     // 툴바에 메뉴 인플레이트
     @Override

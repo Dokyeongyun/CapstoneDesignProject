@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.Task;
+import com.example.capstonedesignproject.view.ETC.CustomDialog;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 import com.example.capstonedesignproject.view.Login.LoginActivity;
 
@@ -25,6 +26,7 @@ public class MyPageFragment extends Fragment {
     @BindView(R.id.BT_withdraw) Button BT_withdraw;
     @BindView(R.id.BT_getArticles) Button BT_getArticles;
     @BindView(R.id.BT_favorites) Button BT_favorites;
+    private CustomDialog customDialog;
 
     public MyPageFragment() { }
 
@@ -51,6 +53,13 @@ public class MyPageFragment extends Fragment {
      */
     @OnClick(R.id.BT_withdraw) void withdraw(){
         // TODO Dialog 띄워서 한번 더 확인시키고, 동의하면 회원탈퇴 -> 로그인화면으로 이동
+        customDialog = new CustomDialog(getActivity(),
+                "회원 탈퇴", "정말 탈퇴하시겠습니까? \n삭제된 계정은 복구할 수 없습니다.",
+                okListener, cancelListener);
+        customDialog.show();
+    }
+
+    private View.OnClickListener okListener = v -> {
         String autoCheck = LoginActivity.autoLoginFile.getString("autoLogin","");
         if(autoCheck.equals("true")){
             LoginActivity.editor.putString("autoLogin", "false");
@@ -67,7 +76,11 @@ public class MyPageFragment extends Fragment {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-    }
+    };
+
+    private View.OnClickListener cancelListener = v -> {
+        customDialog.dismiss();
+    };
 
     /**
      * 현재 사용자가 작성한 게시글 읽기
@@ -86,4 +99,6 @@ public class MyPageFragment extends Fragment {
         intent.putExtra("Type", "Favorites");
         startActivity(intent);
     }
+
+
 }
