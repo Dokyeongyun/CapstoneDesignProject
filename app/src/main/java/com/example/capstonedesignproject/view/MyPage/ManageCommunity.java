@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.capstonedesignproject.Adapter.ArticleAdapter;
-import com.example.capstonedesignproject.Data.ArticleData;
+import com.example.capstonedesignproject.Data.ArticleVO;
 import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.Board.ShowPostActivity;
@@ -49,7 +49,6 @@ public class ManageCommunity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_community);
         ButterKnife.bind(this);
 
-
         Intent intent = getIntent();
         if(intent.getStringExtra("Type").equals("Favorites")){
             Init(chabakjiAdapter, "즐겨찾는 차박지");
@@ -65,12 +64,10 @@ public class ManageCommunity extends AppCompatActivity {
             recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, (view, position) -> {
                 Intent intent2 = new Intent(this, ShowPostActivity.class);
                 intent2.putExtra("articleID", articleAdapter.getItemAt(position).getArticleId());
+                intent2.putExtra("memberID", articleAdapter.getItemAt(position).getMemberId());
                 startActivity(intent2);
             }));
         }
-
-
-
     }
     /**
      * 초기 설정
@@ -118,11 +115,11 @@ public class ManageCommunity extends AppCompatActivity {
     private void ArticlesLoad(){
         PB_favorite.setVisibility(View.VISIBLE);
         final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
-        Observable<List<ArticleData>> observable = application.getArticleService().getArticles(HomeActivity.memberID);
+        Observable<List<ArticleVO>> observable = application.getArticleService().getArticles(HomeActivity.memberID);
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ArticleData>>() {
+                .subscribe(new Subscriber<List<ArticleVO>>() {
                     @Override
-                    public void onNext(List<ArticleData> items) {
+                    public void onNext(List<ArticleVO> items) {
                         Log.d("수신", "총 수신 개수: "+items.size());
                         for(int i=0; i<items.size(); i++){
                             Log.d("수신", String.valueOf(items.get(i)));

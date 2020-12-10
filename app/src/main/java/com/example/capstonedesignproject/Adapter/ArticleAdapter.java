@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.capstonedesignproject.Data.ArticleData;
+import com.example.capstonedesignproject.Data.ArticleVO;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
@@ -21,20 +21,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
-    private List<ArticleData> items = new ArrayList<>();
+    private List<ArticleVO> items = new ArrayList<>();
 
     public ArticleAdapter() { }
 
-    public ArticleData getItemAt(int position) { return items.get(position); }
+    public ArticleVO getItemAt(int position) { return items.get(position); }
 
-    public void setItemsAndRefresh(ArticleData items) {
+    public void setItemsAndRefresh(ArticleVO items) {
         this.items.add(items);
         notifyDataSetChanged();
     }
 
-    public void clear(){
-        this.items.clear();
-    }
+    public void clear(){ this.items.clear(); }
 
     @NonNull
     @Override
@@ -54,9 +52,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final ArticleData item = getItemAt(position);
+        final ArticleVO item = getItemAt(position);
 
-        String detail = item.getMemberId() + "  " + item.getCreateTime();
+        String detail = item.getNickName() + "  " + item.getCreateTime();
         holder.TV_postTitle.setText(item.getTitle());
         holder.TV_postContent.setText(item.getContent());
         holder.TV_postDetail.setText(detail);

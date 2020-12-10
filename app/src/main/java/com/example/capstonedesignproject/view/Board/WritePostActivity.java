@@ -11,22 +11,29 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.capstonedesignproject.Data.ArticleVO;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.FileDownloadTask;
 import com.example.capstonedesignproject.Server.FileUploadTask;
 import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
+import com.example.capstonedesignproject.view.Test.SetApplication;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -34,31 +41,59 @@ import java.util.concurrent.ExecutionException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class WritePostActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 0;
     @BindView(R.id.IB_photo) ImageButton IB_photo;
     @BindView(R.id.ET_title) EditText ET_title;
     @BindView(R.id.ET_content) EditText ET_content;
+    @BindView(R.id.TV_title) TextView TV_title;
     Uri photoUri;
+    String writeMode = "";
+    ArticleVO articleData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_post);
         ButterKnife.bind(this);
+
+        Intent intent = getIntent();
+        writeMode = intent.getStringExtra("writeMode");
+
+        if(writeMode.equals("UPDATE")){
+            TV_title.setText("글 수정하기");
+            articleData = (ArticleVO) intent.getSerializableExtra("articleData");
+            ET_title.setText(articleData.getTitle());
+            ET_content.setText(articleData.getContent());
+            if(articleData.getUrlPath().equals("")){
+                IB_photo.setVisibility(View.GONE);
+            }
+            Glide.with(this)
+                    .load(HomeActivity.SERVER_URL + articleData.getUrlPath())
+                    .placeholder(R.drawable.button_border_gray)
+                    .into(IB_photo);
+        }
     }
 
+    /**
+     * 사진 첨부하기
+     */
     @OnClick(R.id.BT_addPhoto) void AddPhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    @OnClick(R.id.IB_photo) void ChangePhoto() {
-        AddPhoto();
-    }
+    @OnClick(R.id.IB_photo) void ChangePhoto() { AddPhoto(); }
 
+    /**
+     * 글 쓰기 OR 글 수정하기
+     */
     @OnClick(R.id.BT_complete) void writeComplete() {
         if (ET_title.getText().toString().equals("") || ET_title.getText() == null) {
             Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -69,57 +104,89 @@ public class WritePostActivity extends AppCompatActivity {
             return;
         }
 
+        // DB에 삽입할 데이터 정리
         String id = HomeActivity.memberID;
         String title = ET_title.getText().toString();
         String content = ET_content.getText().toString();
-        String fileName = new Date().getTime() + ".jpg";
-
-        String result = "";
-        String fileUploadResult = "";
+        String fileName = id + "_" + new Date().getTime() + ".jpg";
 
         boolean isAttached = false;
-        try {
-            if (photoUri != null) { // 이미지 첨부하여 게시글 작성 시
-                isAttached = true;
-                File file = new File(getPathFromUri(photoUri));
-                try { fileUploadResult = new FileUploadTask(this).execute(id, file, fileName).get();
-                } catch (Exception e) { Toast.makeText(this, "게시글 작성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                } finally { result = new Task(this).execute("article/insert.do", id, title, content, "true", fileName).get();
-                }
-            } else { // 이미지 첨부 없이 게시글 작성 시
-                result = new Task(this).execute("article/insert.do", id, title, content, "", "").get();
+
+        if (photoUri != null) { // 이미지 첨부하여 게시글 작성 및 수정 시 파일 업로드 먼저하기
+            isAttached = true;
+            File file = new File(getPathFromUri(photoUri));
+
+            try {
+                new FileUploadTask(this).execute(id, file, fileName);
+            } catch (Exception e) {
+                Toast.makeText(this, "게시글 작성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                return;
             }
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            if(isAttached){ checkResult(true, fileUploadResult, result); } else{ checkResult(false, result); }
+        }
+
+        if(!writeMode.equals("UPDATE")){ // 새로운 글 작성
+            writeArticle(id, title, content, fileName, isAttached);
+        }else{ // 글 수정
+            updateArticle(articleData.getArticleId(), title, content, fileName, isAttached);
         }
     }
 
-    private void checkResult(boolean isAttached, String... result){
-        if(result[0] == null){
-            Toast.makeText(this, "네트워크 상태가 불안정합니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(isAttached){
-            if(result[0].equals("Success") && result[1].equals("\"success\"")){
-                Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
-                finish();
-            } else{
-                Toast.makeText(this, "다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            }
-        }
+    /**
+     * 새로운 글 작성하기
+     */
+    private void writeArticle(String memberId, String title, String content, String fileName, boolean isAttached){
         if(!isAttached){
-            if(result[0].equals("\"success\"")){
-                Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
-                finish();
-            }else{
-                Toast.makeText(this, "다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            }
+            fileName = "";
         }
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<String> observable = application.getArticleService().writeArticle(memberId, title, content, fileName);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) {
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(application, "게시글 작성에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onCompleted() {
+                        setResult(1);
+                        finish();
+                    }
+                });
     }
 
-    /* Uri를 입력받아 파일의 절대경로를 리턴하는 메서드 */
+    /**
+     * 글 수정하기
+     */
+    private void updateArticle(int articleId, String title, String content, String fileName, boolean isAttached){
+        if(!isAttached){
+            fileName = "";
+        }
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<String> observable = application.getArticleService().updateArticle(articleId, title, content, fileName);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) {
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(application, "게시글 작성에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onCompleted() {
+                        setResult(1);
+                        finish();
+                    }
+                });
+    }
+
+    /**
+     *  Uri를 입력받아 파일의 절대경로를 리턴하는 메서드 */
     public String getPathFromUri(Uri uri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, proj, null, null, null);

@@ -3,6 +3,7 @@ package com.example.capstonedesignproject.view.Board;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,16 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.example.capstonedesignproject.Adapter.ArticleAdapter;
-import com.example.capstonedesignproject.Data.ArticleData;
+import com.example.capstonedesignproject.Data.ArticleVO;
 import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.view.ChabakJi.DetailActivity;
 import com.example.capstonedesignproject.view.Test.SetApplication;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -33,7 +32,6 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -49,7 +47,7 @@ public class BoardFragment extends Fragment {
     @BindView(R.id.PB_board) ProgressBar PB_board;
     @BindView(R.id.CL_snackContainer) ConstraintLayout CL_snackContainer;
 
-    private ArticleAdapter articleAdapter = new ArticleAdapter();
+    private ArticleAdapter articleAdapter;
     private int page = 1;
 
     public BoardFragment() { }
@@ -62,9 +60,10 @@ public class BoardFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_board, container, false);
         ButterKnife.bind(this, v);
 
+        // 초기 설정
         Init();
+        // 게시글 목록 읽어오기
         load();
-
         // 탭 클릭 리스너
         TL_board.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -82,12 +81,12 @@ public class BoardFragment extends Fragment {
                 // TODO : 이미 선택된 tab이 다시 선택될 때 호출
             }
         });
-
         // 리싸이클러뷰 클릭 리스너
         RV_board.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), RV_board, (view, position) -> {
             Intent intent = new Intent(getActivity(), ShowPostActivity.class);
             intent.putExtra("articleID", articleAdapter.getItemAt(position).getArticleId());
-            startActivity(intent);
+            intent.putExtra("memberID", articleAdapter.getItemAt(position).getMemberId());
+            startActivityForResult(intent, 2);
         }));
         return v;
     }
@@ -96,6 +95,7 @@ public class BoardFragment extends Fragment {
      * 초기 설정
      */
     private void Init(){
+        articleAdapter = new ArticleAdapter();
         RV_board.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         RV_board.setHasFixedSize(true);
         RV_board.setAdapter(articleAdapter);
@@ -105,13 +105,14 @@ public class BoardFragment extends Fragment {
      * 게시글 목록 읽어오기
      */
     private void load(){
+        articleAdapter.clear();
         PB_board.setVisibility(View.VISIBLE);
         final SetApplication application = (SetApplication) Objects.requireNonNull(getActivity()).getApplication();
-        Observable<List<ArticleData>> observable = application.getArticleService().getArticleList(page);
+        Observable<List<ArticleVO>> observable = application.getArticleService().getArticleList(page);
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ArticleData>>() {
+                .subscribe(new Subscriber<List<ArticleVO>>() {
                     @Override
-                    public void onNext(List<ArticleData> items) {
+                    public void onNext(List<ArticleVO> items) {
                         Log.d("수신", "총 수신 개수: "+items.size());
                         for(int i=0; i<items.size(); i++){
                             Log.d("수신", String.valueOf(items.get(i)));
@@ -152,6 +153,19 @@ public class BoardFragment extends Fragment {
      */
     @OnClick(R.id.FAB_writePost) void ClickWritePost(){
         Intent intent = new Intent(getActivity(), WritePostActivity.class);
+        intent.putExtra("writeMode", "NEW");
         startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            if(resultCode == 1){
+                load();
+            }
+        }else if(requestCode == 2){
+            load();
+        }
     }
 }
