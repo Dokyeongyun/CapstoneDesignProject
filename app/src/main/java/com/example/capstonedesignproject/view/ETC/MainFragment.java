@@ -58,13 +58,10 @@ public class MainFragment extends Fragment {
     private ChabakjiAdapter chabakjiAdapter;
     private static int page = 0;
 
-    public MainFragment() {
-    }
+    public MainFragment() { }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

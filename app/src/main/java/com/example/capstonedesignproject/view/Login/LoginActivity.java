@@ -10,8 +10,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -36,10 +39,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.ET_email) EditText ET_email;
     @BindView(R.id.ET_password) EditText ET_password;
-    @BindView(R.id.BT_member) Button BT_member;
-    @BindView(R.id.BT_guest) Button BT_guest;
+    @BindView(R.id.BT_login) Button BT_login;
     @BindView(R.id.CB_autoLogin) CheckBox CB_autoLogin;
-    boolean isMember = true, autoLogin = false;
+    boolean autoLogin = false;
     String autoCheck;
     public static SharedPreferences autoLoginFile;
     public static SharedPreferences.Editor editor;
@@ -50,14 +52,45 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // TODO 이메일, 비밀번호 입력 안하면 로그인 버튼 비활성화
-        // TODO 로그인 작업 처리 중 프로그레스 바 띄우기
         // TODO 카카오톡, 구글, 페이스북으로 로그인하기 추가
         Log.d("Debug Key", Objects.requireNonNull(getSignature(getApplicationContext())));
 
         ButterKnife.bind(this);
         AutoLogin();
+        ET_email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() >= 1) {
+                    ET_password.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                }else{
+                    ET_password.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#6E6E71")));
+                    BT_login.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#6E6E71")));
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+        ET_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() >= 1) {
+                    BT_login.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#96EAC1")));
+                }else{
+                    BT_login.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#6E6E71")));
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
     }
 
+    /**
+     * 자동로그인
+     */
     @SuppressLint("CommitPrefEdits")
     void AutoLogin(){
         autoLoginFile = getSharedPreferences("autoLoginFile", Activity.MODE_PRIVATE);
@@ -71,66 +104,54 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.CB_autoLogin) void AutoLoginCheck(){
-        autoLogin = CB_autoLogin.isChecked();
-    }
+    /**
+     * 자동로그인 체크박스 선택/해제
+     */
+    @OnClick(R.id.CB_autoLogin) void AutoLoginCheck(){ autoLogin = CB_autoLogin.isChecked(); }
 
-    @OnClick(R.id.BT_guest) void Guest(View view) {
-        isMember = false;
-        BT_guest.setBackgroundColor(Color.parseColor("#D30C0B0E"));
-        BT_member.setBackgroundColor(Color.WHITE);
-        BT_guest.setTextColor(Color.WHITE);
-        BT_member.setTextColor(Color.BLACK);
-    }
-
-    @OnClick(R.id.BT_member) void Member(View view) {
-        isMember = true;
-        BT_member.setBackgroundColor(Color.parseColor("#D30C0B0E"));
-        BT_guest.setBackgroundColor(Color.WHITE);
-        BT_member.setTextColor(Color.WHITE);
-        BT_guest.setTextColor(Color.BLACK);
-    }
-
-    @OnClick(R.id.BT_login) void Login(View view) {
-        if (!isMember) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        } else {
-            String id = ET_email.getText().toString();
-            String password = ET_password.getText().toString();
-            String result = "";
-            try {
-                result = new Task(this).execute("member/login.do", id, password).get();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                if(result != null) {
-                    if (result.equals("\"" + id + "\"")) {
-                        if (autoLogin) {
-                            editor.putString("autoLogin", "true");
-                            editor.putString("id", id);
-                            editor.apply();
-                        }
-                        Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(this, HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("memberID", id);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(this, "아이디 또는 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
+    /**
+     * 로그인 작업 수행
+     */
+    @OnClick(R.id.BT_login) void Login() {
+        String id = ET_email.getText().toString();
+        String password = ET_password.getText().toString();
+        String result = "";
+        try {
+            result = new Task(this).execute("member/login.do", id, password).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(result != null) {
+                if (result.equals("\"" + id + "\"")) {
+                    if (autoLogin) {
+                        editor.putString("autoLogin", "true");
+                        editor.putString("id", id);
+                        editor.apply();
                     }
+                    Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("memberID", id);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "아이디 또는 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
     }
 
-    @OnClick(R.id.BT_doJoin) void Join(View view) {
+    /**
+     * 회원가입 페이지로 이동
+     */
+    @OnClick(R.id.BT_doJoin) void Join() {
         Intent intent = new Intent(this, JoinActivity.class);
         startActivity(intent);
     }
 
-    @OnClick(R.id.BT_findPassword) void FindPassword(View view) {
+    /**
+     * 비밀번호 찾기 페이지로 이동
+     */
+    @OnClick(R.id.BT_findPassword) void FindPassword() {
         Intent intent = new Intent(this, FindPasswordActivity.class);
         startActivity(intent);
     }

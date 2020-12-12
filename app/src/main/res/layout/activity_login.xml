@@ -4,75 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#053247"
     tools:context=".view.Login.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/LL_loginText"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-
-            <TextView
-                android:id="@+id/TV_login"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:gravity="center"
-                android:text="LOGIN"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/LL_userType"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/BT_member"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#D30C0B0E"
-                android:text="회원"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/BT_guest"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#FFFFFF"
-                android:text="비회원" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/chabak_logo" />
 
         <LinearLayout
             android:id="@+id/LL_email"
@@ -90,7 +40,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/border_all_direction"
+                android:background="@drawable/button_border"
                 android:ems="10"
                 android:hint="이메일"
                 android:inputType="textEmailAddress"
@@ -115,7 +65,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/border_all_direction"
+                android:background="@drawable/button_border"
+                android:backgroundTint="#6E6E71"
                 android:ems="10"
                 android:hint="비밀번호"
                 android:inputType="textPassword"
@@ -138,7 +89,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="30dp"
                 android:layout_weight="1"
-                android:text="자동 로그인" />
+                android:background="#00FFFFFF"
+                android:text="자동 로그인"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <LinearLayout
@@ -157,7 +110,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#D30C0B0E"
+                android:background="@drawable/button_border_gray"
+                android:backgroundTint="#6E6E71"
                 android:text="로그인"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
@@ -178,16 +132,18 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/border_right"
-                android:text="회원가입" />
+                android:background="#00FFFFFF"
+                android:text="회원가입"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/BT_findPassword"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#FFFFFF"
-                android:text="비밀번호찾기" />
+                android:background="#00FFFFFF"
+                android:text="비밀번호찾기"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>
 
