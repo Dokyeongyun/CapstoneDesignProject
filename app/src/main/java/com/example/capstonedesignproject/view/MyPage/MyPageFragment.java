@@ -25,6 +25,7 @@ public class MyPageFragment extends Fragment {
     @BindView(R.id.BT_manageProfile) Button BT_manageProfile;
     @BindView(R.id.BT_withdraw) Button BT_withdraw;
     @BindView(R.id.BT_getArticles) Button BT_getArticles;
+    @BindView(R.id.BT_getReviews) Button BT_getReviews;
     @BindView(R.id.BT_favorites) Button BT_favorites;
     private CustomDialog customDialog;
 
@@ -52,13 +53,15 @@ public class MyPageFragment extends Fragment {
      * 회원 탈퇴
      */
     @OnClick(R.id.BT_withdraw) void withdraw(){
-        // TODO Dialog 띄워서 한번 더 확인시키고, 동의하면 회원탈퇴 -> 로그인화면으로 이동
         customDialog = new CustomDialog(getActivity(),
                 "회원 탈퇴", "정말 탈퇴하시겠습니까? \n삭제된 계정은 복구할 수 없습니다.",
                 okListener, cancelListener);
         customDialog.show();
     }
 
+    /**
+     * 회원탈퇴 확인 리스너
+     */
     private View.OnClickListener okListener = v -> {
         String autoCheck = LoginActivity.autoLoginFile.getString("autoLogin","");
         if(autoCheck.equals("true")){
@@ -78,6 +81,9 @@ public class MyPageFragment extends Fragment {
         }
     };
 
+    /**
+     * 회원탈퇴 취소 리스너
+     */
     private View.OnClickListener cancelListener = v -> {
         customDialog.dismiss();
     };
@@ -100,5 +106,12 @@ public class MyPageFragment extends Fragment {
         startActivity(intent);
     }
 
-
+    /**
+     * 현재 사용자가 즐겨찾는 차박지 목록
+     */
+    @OnClick(R.id.BT_getReviews) void getReviews(){
+        Intent intent = new Intent(getActivity(), ManageCommunity.class);
+        intent.putExtra("Type", "Reviews");
+        startActivity(intent);
+    }
 }

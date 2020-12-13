@@ -13,7 +13,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.capstonedesignproject.Adapter.ArticleAdapter;
+import com.example.capstonedesignproject.Adapter.ReviewAdapter;
 import com.example.capstonedesignproject.Data.ArticleVO;
+import com.example.capstonedesignproject.Data.ReviewVO;
 import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.Board.ShowPostActivity;
@@ -42,6 +44,8 @@ public class ManageCommunity extends AppCompatActivity {
 
     private ChabakjiAdapter_Favorite chabakjiAdapter = new ChabakjiAdapter_Favorite();
     private ArticleAdapter articleAdapter = new ArticleAdapter();
+    private ReviewAdapter reviewAdapter = new ReviewAdapter();
+    private ChabakjiData chabakjiData = new ChabakjiData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +54,33 @@ public class ManageCommunity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        if(intent.getStringExtra("Type").equals("Favorites")){
-            Init(chabakjiAdapter, "즐겨찾는 차박지");
-            FavoritesLoad();
-            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, (view, position) -> {
-                Intent intent2 = new Intent(this, DetailActivity.class);
-                intent2.putExtra("Chabakji", chabakjiAdapter.getItemAt(position));
-                startActivity(intent2);
-            }));
-        } else if(intent.getStringExtra("Type").equals("Articles")){
-            Init(articleAdapter, "내가 작성한 게시글");
-            ArticlesLoad();
-            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, (view, position) -> {
-                Intent intent2 = new Intent(this, ShowPostActivity.class);
-                intent2.putExtra("articleID", articleAdapter.getItemAt(position).getArticleId());
-                intent2.putExtra("memberID", articleAdapter.getItemAt(position).getMemberId());
-                startActivity(intent2);
-            }));
+        switch (intent.getStringExtra("Type")) {
+            case "Favorites":
+                Init(chabakjiAdapter, "즐겨찾는 차박지");
+                FavoritesLoad();
+                recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, (view, position) -> {
+                    Intent intent2 = new Intent(this, DetailActivity.class);
+                    intent2.putExtra("Chabakji", chabakjiAdapter.getItemAt(position));
+                    startActivity(intent2);
+                }));
+                break;
+            case "Articles":
+                Init(articleAdapter, "내가 작성한 게시글");
+                ArticlesLoad();
+                recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, (view, position) -> {
+                    Intent intent2 = new Intent(this, ShowPostActivity.class);
+                    intent2.putExtra("articleID", articleAdapter.getItemAt(position).getArticleId());
+                    intent2.putExtra("memberID", articleAdapter.getItemAt(position).getMemberId());
+                    startActivity(intent2);
+                }));
+                break;
+            case "Reviews":
+                Init(reviewAdapter, "내가 작성한 리뷰");
+                ReviewsLoad();
+                recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, (view, position) -> {
+                    getChabakInfo(Integer.parseInt(reviewAdapter.getItemAt(position).getPlaceId()));
+                }));
+                break;
         }
     }
     /**
@@ -136,6 +150,62 @@ public class ManageCommunity extends AppCompatActivity {
                     }
                     @Override
                     public void onCompleted() { }
+                });
+    }
+
+    /**
+     * 작성한 리뷰 목록 읽기
+     */
+    private void ReviewsLoad(){
+        PB_favorite.setVisibility(View.VISIBLE);
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<List<ReviewVO>> observable = application.getMemberService().getUsersReview(HomeActivity.memberID);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<ReviewVO>>() {
+                    @Override
+                    public void onNext(List<ReviewVO> items) {
+                        Log.d("수신", "총 수신 개수: "+items.size());
+                        for(int i=0; i<items.size(); i++){
+                            Log.d("수신", String.valueOf(items.get(i)));
+                            reviewAdapter.setItemsAndRefresh(items.get(i));
+                        }
+                        PB_favorite.setVisibility(View.GONE);
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("수신","수신실패");
+                        e.printStackTrace();
+                        Snackbar.make(snackContainer, "데이터를 읽어올 수 없습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        PB_favorite.setVisibility(View.GONE);
+                    }
+                    @Override
+                    public void onCompleted() { }
+                });
+    }
+
+    /**
+     * 차박지 정보 읽기
+     */
+    private void getChabakInfo(int placeId){
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<List<ChabakjiData>> observable = application.getChabakjiService().getChabakInfo(placeId);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<ChabakjiData>>() {
+                    @Override
+                    public void onNext(List<ChabakjiData> items) {
+                        chabakjiData = items.get(0);
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Snackbar.make(snackContainer, "데이터를 읽어올 수 없습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    }
+                    @Override
+                    public void onCompleted() {
+                        Intent intent2 = new Intent(application, DetailActivity.class);
+                        intent2.putExtra("Chabakji", chabakjiData);
+                        startActivity(intent2);
+                    }
                 });
     }
 }

@@ -27,7 +27,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     public ReviewAdapter() { }
 
-    private ReviewVO getItemAt(int position) { return items.get(position); }
+    public ReviewVO getItemAt(int position) { return items.get(position); }
 
     public void setItemsAndRefresh(ReviewVO items) {
         this.items.add(items);

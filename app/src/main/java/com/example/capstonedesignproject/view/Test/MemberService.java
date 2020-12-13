@@ -1,6 +1,10 @@
 package com.example.capstonedesignproject.view.Test;
 
 
+import com.example.capstonedesignproject.Data.ReviewVO;
+
+import java.util.List;
+
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -13,4 +17,7 @@ public interface MemberService {
 
   @POST("/member/getJJimAndEvaluated.do")
   Observable<String> getJJimAndEvaluated(@Query("memberId") String memberId, @Query("placeId") String placeId);
+
+  @POST("/member/getUsersReview.do")
+  Observable<List<ReviewVO>> getUsersReview(@Query("memberId") String memberId);
 }

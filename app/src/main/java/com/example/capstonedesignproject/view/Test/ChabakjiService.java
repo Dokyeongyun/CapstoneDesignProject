@@ -17,6 +17,12 @@ public interface ChabakjiService {
     @POST("/chabak/get.do")
     Observable<List<ChabakjiData>> getChabakjiList();
 
+    @POST("/chabak/getOne.do")
+    Observable<List<ChabakjiData>> getChabakInfo(@Query("placeId") int placeId);
+
+    @POST("/chabak/getPopularList.do")
+    Observable<List<ChabakjiData>> getPopularList();
+
     @POST("/member/getJJim.do")
     Observable<List<ChabakjiData>> getFavorite(@Query("id") String memberId);
 
@@ -41,4 +47,7 @@ public interface ChabakjiService {
 
     @POST("/chabak/getFishings.do")
     Observable<List<FishingVO>> getFishings(@Query("placeId") int placeId);
+
+    @POST("/chabak/getProvinceChabakList.do")
+    Observable<List<ChabakjiData>> getProvinceChabakList(@Query("province") String province);
 }

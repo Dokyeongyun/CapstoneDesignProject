@@ -50,6 +50,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.TV_ChabakjiToilet) TextView TV_ChabakjiToilet;
     @BindView(R.id.TV_ChabakjiFishing) TextView TV_ChabakjiFishing;
     @BindView(R.id.TV_ChabakjiCall) TextView TV_ChabakjiCall;
+    @BindView(R.id.TV_reviewCount) TextView TV_reviewCount;
     @BindView(R.id.mapView2) ViewGroup mapViewContainer;
     @BindView(R.id.BT_ChabakjiImage) ImageButton BT_ChabakjiImage;
     @BindView(R.id.BT_sun) ImageButton sun;
@@ -240,7 +241,9 @@ public class DetailActivity extends AppCompatActivity {
                         Snackbar.make(snackContainer, "리뷰 데이터를 읽어올 수 없습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     }
                     @Override
-                    public void onCompleted() { }
+                    public void onCompleted() {
+                        TV_reviewCount.setText(reviewAdapter.getItemCount() + "개의 후기");
+                    }
                 });
     }
 
