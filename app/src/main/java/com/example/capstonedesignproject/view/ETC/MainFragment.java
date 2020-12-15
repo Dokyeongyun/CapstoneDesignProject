@@ -3,8 +3,11 @@ package com.example.capstonedesignproject.view.ETC;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,7 +94,7 @@ public class MainFragment extends Fragment {
     private void load(){
         progressBar.setVisibility(View.VISIBLE);
         final SetApplication application = (SetApplication) Objects.requireNonNull(getActivity()).getApplication();
-        Observable<List<com.example.capstonedesignproject.view.Test.ChabakjiData>> observable = application.getChabakjiService().getChabakjiList();
+        Observable<List<com.example.capstonedesignproject.view.Test.ChabakjiData>> observable = application.getChabakjiService().getPopularList();
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<com.example.capstonedesignproject.view.Test.ChabakjiData>>() {
             @Override
@@ -126,7 +129,7 @@ public class MainFragment extends Fragment {
     @OnClick(R.id.TV_searchBoard) void searchBoard(){
         Intent intent = new Intent(getActivity(), SearchActivity.class);
         intent.putExtra("FromMain", "Board");
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
     @OnClick(R.id.TV_goToBoard) void goToBoard(){
         ((HomeActivity) Objects.requireNonNull(getActivity())).replaceFragment(new BoardFragment(), "게시판");
@@ -159,5 +162,19 @@ public class MainFragment extends Fragment {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            if(resultCode == 1){
+                String keyword = data.getStringExtra("SearchKeyword");
+                Bundle bundle = new Bundle();
+                bundle.putString("SearchKeyword", keyword);
+                HomeActivity.boardFragment.setArguments(bundle);
+                ((HomeActivity)getActivity()).searchBoard(HomeActivity.boardFragment);
+            }
+        }
     }
 }

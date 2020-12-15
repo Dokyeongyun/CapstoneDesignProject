@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.capstonedesignproject.Adapter.ArticleAdapter;
 import com.example.capstonedesignproject.Data.ArticleVO;
@@ -49,8 +50,14 @@ public class BoardFragment extends Fragment {
 
     private ArticleAdapter articleAdapter;
     private int page = 1;
+    String keyword = "";
+    String temp = "";
 
     public BoardFragment() { }
+
+    public static Fragment newInstance() {
+        return new BoardFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
@@ -60,10 +67,19 @@ public class BoardFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_board, container, false);
         ButterKnife.bind(this, v);
 
+        Bundle bundle = getArguments();
+
+        if (bundle != null && bundle.getString("SearchKeyword") != null) {
+            keyword = bundle.getString("SearchKeyword");
+        }
         // 초기 설정
         Init();
         // 게시글 목록 읽어오기
-        load();
+        if(!keyword.equals(temp)){
+            load("getArticleByKeyword", keyword);
+        }else{
+            load("", "");
+        }
         // 탭 클릭 리스너
         TL_board.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -104,11 +120,16 @@ public class BoardFragment extends Fragment {
     /**
      * 게시글 목록 읽어오기
      */
-    private void load(){
+    private void load(String type, String key){
         articleAdapter.clear();
         PB_board.setVisibility(View.VISIBLE);
         final SetApplication application = (SetApplication) Objects.requireNonNull(getActivity()).getApplication();
-        Observable<List<ArticleVO>> observable = application.getArticleService().getArticleList(page);
+        Observable<List<ArticleVO>> observable;
+        if(type.equals("getArticleByKeyword")){
+            observable = application.getArticleService().getArticleByKeyword(key);
+        } else{
+            observable = application.getArticleService().getArticleList(page);
+        }
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<ArticleVO>>() {
                     @Override
@@ -128,7 +149,9 @@ public class BoardFragment extends Fragment {
                         PB_board.setVisibility(View.GONE);
                     }
                     @Override
-                    public void onCompleted() { }
+                    public void onCompleted() {
+                        temp = keyword;
+                    }
                 });
     }
 
@@ -162,10 +185,10 @@ public class BoardFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1){
             if(resultCode == 1){
-                load();
+                load("", "");
             }
         }else if(requestCode == 2){
-            load();
+            load("", "");
         }
     }
 }

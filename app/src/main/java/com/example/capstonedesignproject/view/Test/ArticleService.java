@@ -35,4 +35,7 @@ public interface ArticleService {
 
   @POST("/article/deleteArticle.do")
   Observable<String> deleteArticle(@Query("articleId") int articleId);
+
+  @POST("/article/getArticleByKeyword.do")
+  Observable<List<ArticleVO>> getArticleByKeyword(@Query("key") String key);
 }

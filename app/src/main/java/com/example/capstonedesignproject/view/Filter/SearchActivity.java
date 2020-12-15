@@ -2,6 +2,7 @@ package com.example.capstonedesignproject.view.Filter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 
 import com.example.capstonedesignproject.R;
+import com.example.capstonedesignproject.view.Board.BoardFragment;
 import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 
 import java.util.Objects;
@@ -45,7 +47,6 @@ public class SearchActivity extends AppCompatActivity {
             searchType = intent.getStringExtra("FromMain");
             ChangeColor(searchType);
         }
-        // TODO TableLayout 에 인기 검색 키워드 버튼 동적으로 생성, 클릭리스너 구현해야함
     }
 
     @OnClick(R.id.BT_searchRegion) void ClickSearchRegion(){ ChangeColor("Region"); }
@@ -53,10 +54,17 @@ public class SearchActivity extends AppCompatActivity {
     @OnClick(R.id.BT_searchBoard) void ClickSearchBoard(){ ChangeColor("Board"); }
     @OnClick(R.id.BT_searchExec) void ClickSearchExec(){
         String search = ET_searchMessage.getText().toString();
-        Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-        intent.putExtra("Search", search);
-        intent.putExtra("Type", searchType);
-        startActivity(intent);
+        if(searchType.equals("Board")){
+            Intent intent = new Intent();
+            intent.putExtra("SearchKeyword", search);
+            setResult(1, intent);
+            finish();
+        }else{
+            Intent intent = new Intent(getApplicationContext(), ListActivity.class);
+            intent.putExtra("Search", search);
+            intent.putExtra("Type", searchType);
+            startActivity(intent);
+        }
     }
 
     private void Init(){

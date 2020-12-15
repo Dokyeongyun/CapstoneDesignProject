@@ -50,4 +50,7 @@ public interface ChabakjiService {
 
     @POST("/chabak/getProvinceChabakList.do")
     Observable<List<ChabakjiData>> getProvinceChabakList(@Query("province") String province);
+
+    @POST("/chabak/getByKey.do")
+    Observable<List<ChabakjiData>> getByKey(@Query("key") String key);
 }

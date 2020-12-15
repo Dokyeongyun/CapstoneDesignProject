@@ -89,6 +89,5 @@ public class RegionChoiceFragment extends Fragment {
         cityList.add("평창");
         cityList.add("홍천/횡성");
         cityList.add("화천/철원/인제/양구");
-        cityList.add("울산/포항/고성/고창");
     }
 }

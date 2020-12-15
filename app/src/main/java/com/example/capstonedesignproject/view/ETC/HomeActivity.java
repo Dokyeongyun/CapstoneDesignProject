@@ -1,6 +1,5 @@
 package com.example.capstonedesignproject.view.ETC;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,32 +8,28 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.capstonedesignproject.Data.ChabakjiDAO;
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.ChabakjiInfoTask;
 import com.example.capstonedesignproject.view.Board.BoardFragment;
-import com.example.capstonedesignproject.view.ChabakJi.HomeFragment;
-import com.example.capstonedesignproject.view.Congestion.CongestionFragment;
+import com.example.capstonedesignproject.view.Map.MapFragment;
 import com.example.capstonedesignproject.view.Filter.RegionChoiceFragment;
 import com.example.capstonedesignproject.view.MyPage.MyPageFragment;
 import com.example.capstonedesignproject.view.Filter.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
-    public static final String SERVER_IP = "http://211.222.234.14:";
+//    public static final String SERVER_IP = "http://211.222.234.14:";
+//    public static final String PORT_NUMBER = "8080";
+    public static final String SERVER_IP = "http://59.17.26.162:";
+//    public static final String SERVER_IP = "http://210.126.40.133:";
     public static final String PORT_NUMBER = "8080";
     public static final int CONNECT_TIME_OUT = 5000;
     public static String SERVER_URL = SERVER_IP + PORT_NUMBER;
@@ -42,13 +37,12 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.homeToolbar) Toolbar mToolbar;
     @BindView(R.id.bottomNavigationView) BottomNavigationView bottomNavigationView;
     private long backKeyPressedTime = 0;
-    private FragmentManager fragmentManager = getSupportFragmentManager();
-    private HomeFragment homeFragment = new HomeFragment();
-    private RegionChoiceFragment regionChoiceFragment = new RegionChoiceFragment();
-    private CongestionFragment congestionFragment = new CongestionFragment();
-    private BoardFragment boardFragment = new BoardFragment();
-    private MyPageFragment myPageFragment = new MyPageFragment();
-    private MainFragment mainFragment = new MainFragment();
+    public FragmentManager fragmentManager = getSupportFragmentManager();
+    public RegionChoiceFragment regionChoiceFragment = new RegionChoiceFragment();
+    public MapFragment mapFragment = new MapFragment();
+    public static BoardFragment boardFragment = new BoardFragment();
+    public MyPageFragment myPageFragment = new MyPageFragment();
+    public MainFragment mainFragment = new MainFragment();
 
     public static String memberID;
     @Override
@@ -61,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
         memberID = intent.getStringExtra("memberID");
 
         // Toolbar
-        mToolbar.setTitle("차박러 모여라");
+        mToolbar.setTitle("차박, 여기서");
         setSupportActionBar(mToolbar);
 
         // BottomNavigationView
@@ -78,8 +72,8 @@ public class HomeActivity extends AppCompatActivity {
                     replaceFragment(regionChoiceFragment, "지역선택");
                     break;
                 }
-                case R.id.congestion_menu: {
-                    replaceFragment(congestionFragment, "혼잡도");
+                case R.id.map_menu: {
+                    replaceFragment(mapFragment, "지도 검색");
                     break;
                 }
                 case R.id.board_menu: {
@@ -102,6 +96,13 @@ public class HomeActivity extends AppCompatActivity {
         mToolbar.setTitle(toolbarTitle);
     }
 
+    public void searchBoard(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame, fragment).commit();
+        mToolbar.setTitle("게시판");
+    }
+
     // 툴바에 메뉴 인플레이트
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.app_bar_search:
                 Intent intent = new Intent(this, SearchActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -131,6 +132,24 @@ public class HomeActivity extends AppCompatActivity {
         }
         if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
             finish();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            if(resultCode == 1){
+                String keyword = data.getStringExtra("SearchKeyword");
+                Bundle bundle = new Bundle();
+                bundle.putString("SearchKeyword", keyword);
+                boardFragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_frame, boardFragment).commit();
+                mToolbar.setTitle("게시판");
+            }
         }
     }
 }
