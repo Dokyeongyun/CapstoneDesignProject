@@ -3,8 +3,12 @@ package com.example.capstonedesignproject.view.Login;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +33,8 @@ public class FindPasswordActivity extends AppCompatActivity {
     @BindView(R.id.LL_sendVerification) LinearLayout LL_sendVerification;
     @BindView(R.id.ET_email) EditText ET_email;
     @BindView(R.id.ET_verificationCode) EditText ET_verificationCode;
+    @BindView(R.id.BT_checkVerificationCode) Button BT_checkVerificationCode;
+    @BindView(R.id.BT_resend) Button BT_resend;
 
     String authCode;
     String email;
@@ -43,7 +49,35 @@ public class FindPasswordActivity extends AppCompatActivity {
                 .permitDiskReads()
                 .permitDiskWrites()
                 .permitNetwork().build());
-        // TODO 이메일 입력 안되면 완료버튼 비활성화
+
+        ET_email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() >= 1) {
+                    findPassword.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#96EAC1")));
+                }else{
+                    findPassword.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#6E6E71")));
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+        ET_verificationCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() >= 1) {
+                    BT_checkVerificationCode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#96EAC1")));
+                }else{
+                    BT_checkVerificationCode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#6E6E71")));
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
     }
 
     @OnClick(R.id.BT_back) void BackToLogin() { finish(); }

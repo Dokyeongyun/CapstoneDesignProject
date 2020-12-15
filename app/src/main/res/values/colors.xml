@@ -6,4 +6,6 @@
     <color name="mainMenuIcon">#000000</color>
     <color name="mainMenuSecondary">#007DB5</color>
     <color name="borderGray">#DADADA</color>
+    <color name="inActivation">#6E6E71</color>
+    <color name="mainNavy">#053247</color>
 </resources>
