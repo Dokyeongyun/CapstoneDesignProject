@@ -9,14 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstonedesignproject.Data.CommentVO;
-import com.example.capstonedesignproject.Data.ReviewVO;
+import com.example.capstonedesignproject.VO.ReviewVO;
 import com.example.capstonedesignproject.R;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;

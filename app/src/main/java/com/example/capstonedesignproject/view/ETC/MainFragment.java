@@ -6,8 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.capstonedesignproject.VO.ChabakjiVO;
 import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.Board.BoardFragment;
@@ -28,8 +27,8 @@ import com.example.capstonedesignproject.view.Filter.SearchActivity;
 import com.example.capstonedesignproject.view.Login.LoginActivity;
 import com.example.capstonedesignproject.view.MyPage.ManageCommunity;
 import com.example.capstonedesignproject.view.MyPage.MyPageFragment;
-import com.example.capstonedesignproject.view.Test.ChabakjiAdapter;
-import com.example.capstonedesignproject.view.Test.SetApplication;
+import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -94,11 +93,11 @@ public class MainFragment extends Fragment {
     private void load(){
         progressBar.setVisibility(View.VISIBLE);
         final SetApplication application = (SetApplication) Objects.requireNonNull(getActivity()).getApplication();
-        Observable<List<com.example.capstonedesignproject.view.Test.ChabakjiData>> observable = application.getChabakjiService().getPopularList();
+        Observable<List<ChabakjiVO>> observable = application.getChabakjiService().getPopularList();
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<com.example.capstonedesignproject.view.Test.ChabakjiData>>() {
+                .subscribe(new Subscriber<List<ChabakjiVO>>() {
             @Override
-            public void onNext(List<com.example.capstonedesignproject.view.Test.ChabakjiData> items) {
+            public void onNext(List<ChabakjiVO> items) {
                 Log.d("수신", "총 수신 개수: "+items.size());
                 for(int i=0; i<items.size(); i++){
                     Log.d("수신", String.valueOf(items.get(i)));

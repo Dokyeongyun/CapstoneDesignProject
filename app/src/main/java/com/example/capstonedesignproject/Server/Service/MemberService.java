@@ -1,11 +1,10 @@
-package com.example.capstonedesignproject.view.Test;
+package com.example.capstonedesignproject.Server.Service;
 
 
-import com.example.capstonedesignproject.Data.ReviewVO;
+import com.example.capstonedesignproject.VO.ReviewVO;
 
 import java.util.List;
 
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;

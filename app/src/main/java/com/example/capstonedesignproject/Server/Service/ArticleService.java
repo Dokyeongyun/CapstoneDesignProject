@@ -1,6 +1,6 @@
-package com.example.capstonedesignproject.view.Test;
-import com.example.capstonedesignproject.Data.ArticleVO;
-import com.example.capstonedesignproject.Data.CommentVO;
+package com.example.capstonedesignproject.Server.Service;
+import com.example.capstonedesignproject.VO.ArticleVO;
+import com.example.capstonedesignproject.VO.CommentVO;
 
 import java.util.List;
 

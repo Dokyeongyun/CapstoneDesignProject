@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.capstonedesignproject.Data.ArticleVO;
+import com.example.capstonedesignproject.VO.ArticleVO;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 

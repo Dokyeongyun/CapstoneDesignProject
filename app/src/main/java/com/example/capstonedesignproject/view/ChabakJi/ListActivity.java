@@ -17,15 +17,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 import com.example.capstonedesignproject.view.Filter.FilterActivity;
-import com.example.capstonedesignproject.view.Test.ChabakjiAdapter_Large;
-import com.example.capstonedesignproject.view.Test.ChabakjiData;
-import com.example.capstonedesignproject.view.Test.SetApplication;
+import com.example.capstonedesignproject.Adapter.ChabakjiAdapter_Large;
+import com.example.capstonedesignproject.VO.ChabakjiVO;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -82,18 +81,14 @@ public class ListActivity extends AppCompatActivity {
                 BT_regionChoice.setText(region);
             }
         } else if(Objects.equals(intent.getStringExtra("Type"), "Keyword")){
-            requestUrl = "getKey.do";
+            requestUrl = "getByKey.do";
             BT_regionChoice.setVisibility(View.GONE);
-        } else if(Objects.equals(intent.getStringExtra("Type"), "FromMap")){
-            // TODO 특별시, 광역시, 도 단위 지역검색
         }
 
-
-        // TODO 필터 조건만 취득한 후에, HomeFragment 의 load() 메서드의 인자로 넘겨주어 필터링된 차박지만 가져오도록 수정하기
         if(requestUrl.equals("getAds.do")){
             load("getAds.do", region, "F/F");
-        }else if(requestUrl.equals("getKey.do")){
-            load("getKey.do", search, "F/F");
+        }else if(requestUrl.equals("getByKey.do")){
+            load("getByKey.do", search, "");
         }
 
         // CardView 아이템 클릭 리스너
@@ -124,17 +119,17 @@ public class ListActivity extends AppCompatActivity {
         LL_searchResult.setVisibility(View.VISIBLE);
         final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
 
-        Observable<List<ChabakjiData>> observable = null;
+        Observable<List<ChabakjiVO>> observable = null;
         if(requestUrl.equals("getAds.do")){
             observable = application.getChabakjiService().filter(addressOrKeyword, filter);
-        }else if(requestUrl.equals("getKey.do")){
-            observable = application.getChabakjiService().getKey(addressOrKeyword);
+        }else if(requestUrl.equals("getByKey.do")){
+            observable = application.getChabakjiService().getByKey(addressOrKeyword);
         }
 
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ChabakjiData>>() {
+                .subscribe(new Subscriber<List<ChabakjiVO>>() {
                     @Override
-                    public void onNext(List<com.example.capstonedesignproject.view.Test.ChabakjiData> items) {
+                    public void onNext(List<ChabakjiVO> items) {
                         Log.d("수신", "총 수신 개수: "+items.size());
                         for(int i=0; i<items.size(); i++){
                             Log.d("수신", String.valueOf(items.get(i)));
@@ -190,8 +185,6 @@ public class ListActivity extends AppCompatActivity {
                     for (int i=0; i<2; i++) {
                         if(filterArr[i]){ flags.append("T/"); }else{ flags.append("F/"); }
                     }
-                    Toast.makeText(this, flags, Toast.LENGTH_SHORT).show();
-
                     // TODO 선택된 조건을 이용하여 검색 수행 및 결과 띄우기
                     load("getAds.do", region, flags.toString());
                 }

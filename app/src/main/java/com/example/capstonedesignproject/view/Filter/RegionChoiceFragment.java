@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 import com.example.capstonedesignproject.Adapter.CityAdapter;
 import com.example.capstonedesignproject.Adapter.ProvinceAdapter;
-import com.example.capstonedesignproject.Data.ProvinceData;
+import com.example.capstonedesignproject.VO.ProvinceData;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 

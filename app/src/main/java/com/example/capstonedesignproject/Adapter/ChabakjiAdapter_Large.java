@@ -1,4 +1,4 @@
-package com.example.capstonedesignproject.view.Test;
+package com.example.capstonedesignproject.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
+import com.example.capstonedesignproject.VO.ChabakjiVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,21 +28,19 @@ import butterknife.ButterKnife;
  */
 public class ChabakjiAdapter_Large extends RecyclerView.Adapter<ChabakjiAdapter_Large.ChabakjiViewHolder> {
     private final Context context;
-    private List<ChabakjiData> items = new ArrayList<>();
+    private List<ChabakjiVO> items = new ArrayList<>();
 
     public ChabakjiAdapter_Large(Context context) { this.context = context; }
 
     /**
-     * 차박지 리스트에 데이터를 추가한 후 갱신한다
-     *
-     * @param items
+     * 차박지 리스트에 데이터를 추가한 후 갱신
      */
-    public void setItemsAndRefresh(ChabakjiData items) {
+    public void setItemsAndRefresh(ChabakjiVO items) {
         this.items.add(items);
         notifyDataSetChanged();
     }
 
-    public ChabakjiData getItemAt(int position) { return items.get(position); }
+    public ChabakjiVO getItemAt(int position) { return items.get(position); }
 
     public void clear() {
         items.clear();
@@ -64,7 +63,7 @@ public class ChabakjiAdapter_Large extends RecyclerView.Adapter<ChabakjiAdapter_
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final ChabakjiViewHolder holder, final int position) {
-        final ChabakjiData item = getItemAt(position);
+        final ChabakjiVO item = getItemAt(position);
         holder.TV_chabakjiName.setText(item.getPlaceName());
         holder.TV_chabakjiIntro.setText(item.getIntroduce());
         holder.TV_chabakjiAddr.setText(item.getAddress());

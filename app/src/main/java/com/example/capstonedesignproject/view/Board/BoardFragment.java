@@ -16,13 +16,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.capstonedesignproject.Adapter.ArticleAdapter;
-import com.example.capstonedesignproject.Data.ArticleVO;
+import com.example.capstonedesignproject.VO.ArticleVO;
 import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.view.Test.SetApplication;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;

@@ -1,32 +1,21 @@
 package com.example.capstonedesignproject.Server;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.FileUtils;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
-import com.example.capstonedesignproject.Data.ChabakjiDAO;
-import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static com.example.capstonedesignproject.view.ETC.HomeActivity.CONNECT_TIME_OUT;
 

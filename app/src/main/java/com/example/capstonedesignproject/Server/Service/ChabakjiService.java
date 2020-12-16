@@ -1,7 +1,8 @@
-package com.example.capstonedesignproject.view.Test;
-import com.example.capstonedesignproject.Data.FishingVO;
-import com.example.capstonedesignproject.Data.ReviewVO;
-import com.example.capstonedesignproject.Data.ToiletVO;
+package com.example.capstonedesignproject.Server.Service;
+import com.example.capstonedesignproject.VO.FishingVO;
+import com.example.capstonedesignproject.VO.ReviewVO;
+import com.example.capstonedesignproject.VO.ToiletVO;
+import com.example.capstonedesignproject.VO.ChabakjiVO;
 
 import java.util.List;
 
@@ -15,25 +16,25 @@ import rx.Observable;
 public interface ChabakjiService {
 
     @POST("/chabak/get.do")
-    Observable<List<ChabakjiData>> getChabakjiList();
+    Observable<List<ChabakjiVO>> getChabakjiList();
 
     @POST("/chabak/getOne.do")
-    Observable<List<ChabakjiData>> getChabakInfo(@Query("placeId") int placeId);
+    Observable<List<ChabakjiVO>> getChabakInfo(@Query("placeId") int placeId);
 
     @POST("/chabak/getPopularList.do")
-    Observable<List<ChabakjiData>> getPopularList();
+    Observable<List<ChabakjiVO>> getPopularList();
 
     @POST("/member/getJJim.do")
-    Observable<List<ChabakjiData>> getFavorite(@Query("id") String memberId);
+    Observable<List<ChabakjiVO>> getFavorite(@Query("id") String memberId);
 
     @POST("/chabak/getAds.do")
-    Observable<List<ChabakjiData>> getAds(@Query("address") String address);
+    Observable<List<ChabakjiVO>> getAds(@Query("address") String address);
 
     @POST("/chabak/getKey.do")
-    Observable<List<ChabakjiData>> getKey(@Query("key") String key);
+    Observable<List<ChabakjiVO>> getKey(@Query("key") String key);
 
     @POST("/chabak/filter.do")
-    Observable<List<ChabakjiData>> filter(@Query("add") String address, @Query("flags") String flags);
+    Observable<List<ChabakjiVO>> filter(@Query("add") String address, @Query("flags") String flags);
 
     @POST("/chabak/eval.do")
     Observable<String> eval(@Query("mId") String memberId, @Query("pId") int placeId, @Query("pName") String placeName,
@@ -49,8 +50,8 @@ public interface ChabakjiService {
     Observable<List<FishingVO>> getFishings(@Query("placeId") int placeId);
 
     @POST("/chabak/getProvinceChabakList.do")
-    Observable<List<ChabakjiData>> getProvinceChabakList(@Query("province") String province);
+    Observable<List<ChabakjiVO>> getProvinceChabakList(@Query("province") String province);
 
     @POST("/chabak/getByKey.do")
-    Observable<List<ChabakjiData>> getByKey(@Query("key") String key);
+    Observable<List<ChabakjiVO>> getByKey(@Query("key") String key);
 }

@@ -1,4 +1,4 @@
-package com.example.capstonedesignproject.Data;
+package com.example.capstonedesignproject.VO;
 
 public class ReviewVO {
     private String placeId;

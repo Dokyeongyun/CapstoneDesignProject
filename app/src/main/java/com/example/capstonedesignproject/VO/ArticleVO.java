@@ -1,4 +1,4 @@
-package com.example.capstonedesignproject.Data;
+package com.example.capstonedesignproject.VO;
 
 import java.io.Serializable;
 

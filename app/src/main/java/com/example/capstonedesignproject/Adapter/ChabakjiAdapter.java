@@ -1,7 +1,5 @@
-package com.example.capstonedesignproject.view.Test;
+package com.example.capstonedesignproject.Adapter;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
+import com.example.capstonedesignproject.VO.ChabakjiVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,23 +25,21 @@ import butterknife.ButterKnife;
  * 이 클래스로 RecyclerView의 아이템의 뷰를 생성하고, 뷰에 데이터를 넣는다
  */
 public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.ChabakjiViewHolder> {
-    private List<ChabakjiData> items = new ArrayList<>();
+    private List<ChabakjiVO> items = new ArrayList<>();
 
     public ChabakjiAdapter() {}
 
     /**
-     * 차박지 리스트에 데이터를 추가한 후 갱신한다
-     *
-     * @param items
+     * 차박지 리스트에 데이터를 추가한 후 갱신
      */
-    public void setItemsAndRefresh(ChabakjiData items) {
+    public void setItemsAndRefresh(ChabakjiVO items) {
         this.items.add(items);
         notifyDataSetChanged();
     }
 
     public void clear(){ items.clear(); }
 
-    public ChabakjiData getItemAt(int position) {
+    public ChabakjiVO getItemAt(int position) {
         return items.get(position);
     }
 
@@ -62,7 +59,7 @@ public class ChabakjiAdapter extends RecyclerView.Adapter<ChabakjiAdapter.Chabak
      */
     @Override
     public void onBindViewHolder(final ChabakjiViewHolder holder, final int position) {
-        final ChabakjiData item = getItemAt(position);
+        final ChabakjiVO item = getItemAt(position);
         holder.TV_chabakjiName.setText(item.getPlaceName());
         holder.TV_chabakjiIntro.setText(item.getIntroduce());
         holder.TV_chabakjiRating.setText(String.valueOf(item.getAvg_point()));

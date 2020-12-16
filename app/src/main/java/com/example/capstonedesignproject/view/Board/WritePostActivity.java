@@ -2,8 +2,6 @@ package com.example.capstonedesignproject.view.Board;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,24 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.capstonedesignproject.Data.ArticleVO;
+import com.example.capstonedesignproject.VO.ArticleVO;
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.FileDownloadTask;
 import com.example.capstonedesignproject.Server.FileUploadTask;
-import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
-import com.example.capstonedesignproject.view.Test.SetApplication;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.capstonedesignproject.Server.SetApplication;
 
 import java.io.File;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

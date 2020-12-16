@@ -1,10 +1,9 @@
-package com.example.capstonedesignproject.view.Test;
+package com.example.capstonedesignproject.VO;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
-public class ChabakjiData implements Serializable {
+public class ChabakjiVO implements Serializable {
     private int placeId;
     private String placeName;
     private String address;

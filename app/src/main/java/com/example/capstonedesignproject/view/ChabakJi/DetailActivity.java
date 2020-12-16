@@ -15,14 +15,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.capstonedesignproject.Adapter.ReviewAdapter;
-import com.example.capstonedesignproject.Data.FishingVO;
-import com.example.capstonedesignproject.Data.ReviewVO;
-import com.example.capstonedesignproject.Data.ToiletVO;
+import com.example.capstonedesignproject.VO.FishingVO;
+import com.example.capstonedesignproject.VO.ReviewVO;
+import com.example.capstonedesignproject.VO.ToiletVO;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
-import com.example.capstonedesignproject.view.Test.ChabakjiData;
-import com.example.capstonedesignproject.view.Test.SetApplication;
+import com.example.capstonedesignproject.VO.ChabakjiVO;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.google.android.material.snackbar.Snackbar;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
@@ -51,6 +51,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.TV_ChabakjiFishing) TextView TV_ChabakjiFishing;
     @BindView(R.id.TV_ChabakjiCall) TextView TV_ChabakjiCall;
     @BindView(R.id.TV_reviewCount) TextView TV_reviewCount;
+    @BindView(R.id.TV_rating) TextView TV_rating;
     @BindView(R.id.mapView2) ViewGroup mapViewContainer;
     @BindView(R.id.BT_ChabakjiImage) ImageButton BT_ChabakjiImage;
     @BindView(R.id.BT_sun) ImageButton sun;
@@ -60,7 +61,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private boolean like = false;
     private ReviewAdapter reviewAdapter;
-    private ChabakjiData chabakjiData;
+    private ChabakjiVO chabakjiData;
     private String userChabakInfo="";
     private boolean startRating = false;
     private Map<String, Integer> utils;
@@ -138,13 +139,14 @@ public class DetailActivity extends AppCompatActivity {
     private void Binding(){
         // 인텐트로 전달된 데이터 받기
         Intent intent = getIntent();
-        chabakjiData = (ChabakjiData) intent.getSerializableExtra("Chabakji");
+        chabakjiData = (ChabakjiVO) intent.getSerializableExtra("Chabakji");
 
         // 데이터 바인딩
         TV_ChabakjiTitle.setText(chabakjiData.getPlaceName()); // 차박지 이름
         TV_ChabakjiAddress.setText(chabakjiData.getAddress()); // 차박지 주소
         TV_ChabakjiAddress2.setText(chabakjiData.getAddress()); // 차박지 주소2
         TV_ChabakjiCall.setText(chabakjiData.getPhone_number()); // 차박지 전화번호
+        TV_rating.setText(String.valueOf(chabakjiData.getAvg_point()));
         utils = chabakjiData.getUtilityCount(); // 차박지 주변시설 (화장실, 낚시터)
 
         int toiletCount = utils.get("toilet");

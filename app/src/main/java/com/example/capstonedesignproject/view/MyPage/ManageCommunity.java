@@ -14,16 +14,16 @@ import android.widget.TextView;
 
 import com.example.capstonedesignproject.Adapter.ArticleAdapter;
 import com.example.capstonedesignproject.Adapter.ReviewAdapter;
-import com.example.capstonedesignproject.Data.ArticleVO;
-import com.example.capstonedesignproject.Data.ReviewVO;
+import com.example.capstonedesignproject.VO.ArticleVO;
+import com.example.capstonedesignproject.VO.ReviewVO;
 import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.Board.ShowPostActivity;
 import com.example.capstonedesignproject.view.ChabakJi.DetailActivity;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
-import com.example.capstonedesignproject.view.Test.ChabakjiAdapter_Favorite;
-import com.example.capstonedesignproject.view.Test.ChabakjiData;
-import com.example.capstonedesignproject.view.Test.SetApplication;
+import com.example.capstonedesignproject.Adapter.ChabakjiAdapter_Favorite;
+import com.example.capstonedesignproject.VO.ChabakjiVO;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -45,7 +45,7 @@ public class ManageCommunity extends AppCompatActivity {
     private ChabakjiAdapter_Favorite chabakjiAdapter = new ChabakjiAdapter_Favorite();
     private ArticleAdapter articleAdapter = new ArticleAdapter();
     private ReviewAdapter reviewAdapter = new ReviewAdapter();
-    private ChabakjiData chabakjiData = new ChabakjiData();
+    private ChabakjiVO chabakjiData = new ChabakjiVO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,11 +99,11 @@ public class ManageCommunity extends AppCompatActivity {
     private void FavoritesLoad(){
         PB_favorite.setVisibility(View.VISIBLE);
         final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
-        Observable<List<ChabakjiData>> observable = application.getChabakjiService().getFavorite(HomeActivity.memberID);
+        Observable<List<ChabakjiVO>> observable = application.getChabakjiService().getFavorite(HomeActivity.memberID);
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ChabakjiData>>() {
+                .subscribe(new Subscriber<List<ChabakjiVO>>() {
                     @Override
-                    public void onNext(List<com.example.capstonedesignproject.view.Test.ChabakjiData> items) {
+                    public void onNext(List<ChabakjiVO> items) {
                         Log.d("수신", "총 수신 개수: "+items.size());
                         for(int i=0; i<items.size(); i++){
                             Log.d("수신", String.valueOf(items.get(i)));
@@ -188,11 +188,11 @@ public class ManageCommunity extends AppCompatActivity {
      */
     private void getChabakInfo(int placeId){
         final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
-        Observable<List<ChabakjiData>> observable = application.getChabakjiService().getChabakInfo(placeId);
+        Observable<List<ChabakjiVO>> observable = application.getChabakjiService().getChabakInfo(placeId);
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ChabakjiData>>() {
+                .subscribe(new Subscriber<List<ChabakjiVO>>() {
                     @Override
-                    public void onNext(List<ChabakjiData> items) {
+                    public void onNext(List<ChabakjiVO> items) {
                         chabakjiData = items.get(0);
                     }
                     @Override

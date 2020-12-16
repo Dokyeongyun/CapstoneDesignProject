@@ -1,4 +1,4 @@
-package com.example.capstonedesignproject.view.Test;
+package com.example.capstonedesignproject.Server;
 
 import android.app.Application;
 import android.util.Log;

@@ -24,11 +24,10 @@ import android.widget.Toast;
 import com.example.capstonedesignproject.Listener.RecyclerTouchListener;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ChabakJi.DetailActivity;
-import com.example.capstonedesignproject.view.ChabakJi.ListActivity;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
-import com.example.capstonedesignproject.view.Test.ChabakjiAdapter;
-import com.example.capstonedesignproject.view.Test.ChabakjiData;
-import com.example.capstonedesignproject.view.Test.SetApplication;
+import com.example.capstonedesignproject.Adapter.ChabakjiAdapter;
+import com.example.capstonedesignproject.VO.ChabakjiVO;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.UnsupportedEncodingException;
@@ -117,11 +116,11 @@ public class MapFragment extends Fragment {
         TV_regionName.setVisibility(View.VISIBLE);
         TV_regionName.setText(province);
         final SetApplication application = (SetApplication) Objects.requireNonNull(getActivity()).getApplication();
-        Observable<List<ChabakjiData>> observable = application.getChabakjiService().getProvinceChabakList(province);
+        Observable<List<ChabakjiVO>> observable = application.getChabakjiService().getProvinceChabakList(province);
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ChabakjiData>>() {
+                .subscribe(new Subscriber<List<ChabakjiVO>>() {
                     @Override
-                    public void onNext(List<com.example.capstonedesignproject.view.Test.ChabakjiData> items) {
+                    public void onNext(List<ChabakjiVO> items) {
                         Log.d("수신", "총 수신 개수: "+items.size());
                         for(int i=0; i<items.size(); i++){
                             Log.d("수신", String.valueOf(items.get(i)));

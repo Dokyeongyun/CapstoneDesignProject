@@ -1,7 +1,6 @@
 package com.example.capstonedesignproject.view.ChabakJi;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,13 +12,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.capstonedesignproject.Adapter.ReviewAdapter;
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
-import com.example.capstonedesignproject.view.Test.ChabakjiAdapter;
-import com.example.capstonedesignproject.view.Test.ChabakjiData;
-import com.example.capstonedesignproject.view.Test.SetApplication;
+import com.example.capstonedesignproject.VO.ChabakjiVO;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 import java.util.Objects;
@@ -40,7 +36,7 @@ public class RatingActivity extends AppCompatActivity {
     @BindView(R.id.ET_review) EditText ET_review;
     @BindView(R.id.PB_rating) ProgressBar PB_rating;
 
-    ChabakjiData chabakjiData;
+    ChabakjiVO chabakjiData;
     float chabakjiRating;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +47,7 @@ public class RatingActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         // 차박지 이름
-        chabakjiData = (ChabakjiData) intent.getSerializableExtra("ChabakjiData");
+        chabakjiData = (ChabakjiVO) intent.getSerializableExtra("ChabakjiData");
         if(chabakjiData!=null){
             TV_chabakjiName.setText("["+chabakjiData.getPlaceName()+"]");
         }
@@ -67,7 +63,6 @@ public class RatingActivity extends AppCompatActivity {
      * 별점 및 리뷰 작성
      */
     @OnClick(R.id.BT_ratingComplete) void ratingComplete(){
-        Toast.makeText(this, chabakjiRating+"", Toast.LENGTH_SHORT).show();
         String review = ET_review.getText().toString().trim();
         if(review.equals("")){
             Toast.makeText(this, "리뷰를 작성해주세요.", Toast.LENGTH_SHORT).show();

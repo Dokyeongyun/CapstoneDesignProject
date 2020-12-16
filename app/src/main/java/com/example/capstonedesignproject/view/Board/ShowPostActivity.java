@@ -23,11 +23,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.capstonedesignproject.Adapter.CommentAdapter;
-import com.example.capstonedesignproject.Data.ArticleVO;
-import com.example.capstonedesignproject.Data.CommentVO;
+import com.example.capstonedesignproject.VO.ArticleVO;
+import com.example.capstonedesignproject.VO.CommentVO;
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
-import com.example.capstonedesignproject.view.Test.SetApplication;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
