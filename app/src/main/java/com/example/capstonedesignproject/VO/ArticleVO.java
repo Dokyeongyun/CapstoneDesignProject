@@ -2,7 +2,7 @@ package com.example.capstonedesignproject.VO;
 
 import java.io.Serializable;
 
-public class ArticleVO implements Serializable {
+public class -ArticleVO implements Serializable {
     private int articleId;
     private String memberId;
     private String nickName;
