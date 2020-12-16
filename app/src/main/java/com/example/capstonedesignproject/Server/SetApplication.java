@@ -3,6 +3,9 @@ package com.example.capstonedesignproject.view.Test;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.capstonedesignproject.Server.Service.ArticleService;
+import com.example.capstonedesignproject.Server.Service.ChabakjiService;
+import com.example.capstonedesignproject.Server.Service.MemberService;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import okhttp3.OkHttpClient;

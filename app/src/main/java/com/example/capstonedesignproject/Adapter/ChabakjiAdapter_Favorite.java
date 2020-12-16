@@ -60,7 +60,7 @@ public class ChabakjiAdapter_Favorite extends RecyclerView.Adapter<ChabakjiAdapt
         final ChabakjiData item = getItemAt(position);
         holder.TV_chabakjiName.setText(item.getPlaceName());
         holder.TV_chabakjiRating.setText(String.valueOf(item.getAvg_point()));
-        holder.TV_favoriteCount.setText(item.getJjim());
+        holder.TV_favoriteCount.setText(String.valueOf(item.getJjim()));
         holder.TV_chabakjiAddress.setText(item.getAddress());
 
         String imageURL = item.getFilePath();
