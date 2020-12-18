@@ -19,7 +19,6 @@ import com.example.capstonedesignproject.VO.FishingVO;
 import com.example.capstonedesignproject.VO.ReviewVO;
 import com.example.capstonedesignproject.VO.ToiletVO;
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.Task;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 import com.example.capstonedesignproject.VO.ChabakjiVO;
 import com.example.capstonedesignproject.Server.SetApplication;
@@ -67,6 +66,7 @@ public class DetailActivity extends AppCompatActivity {
     private Map<String, Integer> utils;
     private List<ToiletVO> toiletList = new ArrayList<>();
     private List<FishingVO> fishingList = new ArrayList<>();
+    String jjimResult = "";
     MapView mapView;
 
     @Override
@@ -100,15 +100,36 @@ public class DetailActivity extends AppCompatActivity {
      * 찜 / 찜 취소
      */
     @OnClick(R.id.BT_sun) void SunLike() {
-        String result = "";
-        try{
-            if (like) {
-                result = new Task(this).execute("member/jjim.undo", HomeActivity.memberID, chabakjiData.getPlaceName(), String.valueOf(chabakjiData.getPlaceId())).get();
-            } else {
-                result = new Task(this).execute("member/jjim.do", HomeActivity.memberID, chabakjiData.getPlaceName(), String.valueOf(chabakjiData.getPlaceId())).get();
-            }
-        }catch (Exception e){ e.printStackTrace(); }
-        if(!result.equals("\"false\"")){
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<String> observable;
+        if (like) {
+            observable = application.getMemberService().
+                    jjimCancel(HomeActivity.memberID, chabakjiData.getPlaceName(), String.valueOf(chabakjiData.getPlaceId()));
+        } else {
+            observable = application.getMemberService().
+                    jjim(HomeActivity.memberID, chabakjiData.getPlaceName(), String.valueOf(chabakjiData.getPlaceId()));
+        }
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) { jjimResult = s; }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(application, "잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onCompleted() {
+                        jjimComplete();
+                    }
+                });
+    }
+
+    /**
+     * 찜/찜 취소 결과에 따른 처리
+     */
+    private void jjimComplete(){
+        if(!jjimResult.equals("false")){
             if(like){
                 like = false;
                 sun.setImageResource(R.drawable.sun_white_24dp);

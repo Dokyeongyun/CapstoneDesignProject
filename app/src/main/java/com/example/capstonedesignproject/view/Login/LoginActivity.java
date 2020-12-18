@@ -17,14 +17,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.Task;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 
 import java.security.MessageDigest;
@@ -34,6 +33,10 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.BT_login) Button BT_login;
     @BindView(R.id.CB_autoLogin) CheckBox CB_autoLogin;
     boolean autoLogin = false;
-    String autoCheck;
+    String autoCheck, loginResult = "";
     public static SharedPreferences autoLoginFile;
     public static SharedPreferences.Editor editor;
 
@@ -115,29 +118,36 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.BT_login) void Login() {
         String id = ET_email.getText().toString();
         String password = ET_password.getText().toString();
-        String result = "";
-        try {
-            result = new Task(this).execute("member/login.do", id, password).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            if(result != null) {
-                if (result.equals("\"" + id + "\"")) {
-                    if (autoLogin) {
-                        editor.putString("autoLogin", "true");
-                        editor.putString("id", id);
-                        editor.apply();
+
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<String> observable = application.getMemberService().login(id, password);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) { loginResult = s; }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(application, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                     }
-                    Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("memberID", id);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(this, "아이디 또는 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
+                    @Override
+                    public void onCompleted() {
+                        if (loginResult.equals(id)) {
+                            if (autoLogin) {
+                                editor.putString("autoLogin", "true");
+                                editor.putString("id", id);
+                                editor.apply();
+                            }
+                            Toast.makeText(application, "로그인 성공!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(application, HomeActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra("memberID", id);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(application, "아이디 또는 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     /**

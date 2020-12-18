@@ -19,16 +19,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.Task;
-
-import org.json.JSONObject;
+import com.example.capstonedesignproject.Server.SetApplication;
 
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -46,6 +47,7 @@ public class JoinActivity extends AppCompatActivity {
 
     static boolean isEmailCheck = false, isNickCheck = false;
     static String checkedEmail = "", checkedNick = "";
+    String joinResult = "", nickDoubleCheckResult = "", idDoubleCheckResult = "";
     View[] views;
     int index = 0;
 
@@ -101,18 +103,28 @@ public class JoinActivity extends AppCompatActivity {
     @OnClick(R.id.BT_checkEmail) void CheckEmail() {
         checkedEmail = ET_joinEmail.getText().toString().trim();
 
-        String result = "";
-        try{
-            result = new Task(this).execute("member/idDoubleCheck.do", checkedEmail).get();
-        } catch (Exception e){ e.printStackTrace(); }
-
-        if(result.equals("\"1\"")){
-            isEmailCheck = true;
-            Toast.makeText(this, "사용가능한 이메일입니다.", Toast.LENGTH_SHORT).show();
-            Next();
-        }else{
-            Toast.makeText(this, "중복된 이메일입니다.", Toast.LENGTH_SHORT).show();
-        }
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<String> observable = application.getMemberService().idDoubleCheck(checkedEmail);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) { idDoubleCheckResult = s; }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(application, "잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onCompleted() {
+                        if(idDoubleCheckResult.equals("1")){
+                            isEmailCheck = true;
+                            Toast.makeText(application, "사용가능한 이메일입니다.", Toast.LENGTH_SHORT).show();
+                            Next();
+                        }else{
+                            Toast.makeText(application, "중복된 이메일입니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     /**
@@ -120,18 +132,28 @@ public class JoinActivity extends AppCompatActivity {
      */
     @OnClick(R.id.BT_checkNick) void CheckNick() {
         checkedNick = ET_nick.getText().toString().trim();
-        String result = "";
-        try{
-            result = new Task(this).execute("member/nickDoubleCheck.do", checkedNick).get();
-        } catch (Exception e){ e.printStackTrace(); }
-
-        if(result.equals("\"1\"")){
-            isNickCheck = true;
-            Toast.makeText(this, "사용가능한 닉네임입니다.", Toast.LENGTH_SHORT).show();
-            Next();
-        }else{
-            Toast.makeText(this, "중복된 닉네임입니다.", Toast.LENGTH_SHORT).show();
-        }
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<String> observable = application.getMemberService().nickDoubleCheck(checkedNick);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) { nickDoubleCheckResult = s; }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(application, "잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onCompleted() {
+                        if(nickDoubleCheckResult.equals("1")){
+                            isNickCheck = true;
+                            Toast.makeText(application, "사용가능한 닉네임입니다.", Toast.LENGTH_SHORT).show();
+                            Next();
+                        }else{
+                            Toast.makeText(application, "중복된 닉네임입니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     /**
@@ -150,24 +172,33 @@ public class JoinActivity extends AppCompatActivity {
             Toast.makeText(this, "닉네임 중복확인을 해주세요!", Toast.LENGTH_SHORT).show();
             return;
         }
-        try{
             if (password.equals("") || nick.equals("") || email.equals("")) {
                 Toast.makeText(this, "입력되지 않은 값이 있습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
             } else if(!password.equals(passwordChk)){
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
             } else {
-                String result = new Task(this).execute("member/insert.do", email, nick, password).get();
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-                if(result.equals("\"success\"")){
-                    Toast.makeText(this, "회원가입에 성공했습니다. 환영합니다!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }else{
-                    Toast.makeText(this, "실패! 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                }
+                final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+                Observable<String> observable = application.getMemberService().join(email, nick, password);
+                observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<String>() {
+                            @Override
+                            public void onNext(String s) { joinResult = s; }
+                            @Override
+                            public void onError(Throwable e) {
+                                Toast.makeText(application, "잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                            @Override
+                            public void onCompleted() {
+                                if(joinResult.equals("success")){
+                                    Toast.makeText(application, "회원가입에 성공했습니다. 환영합니다!", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }else{
+                                    Toast.makeText(application, "실패! 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
-        } catch (Exception e){
-            Toast.makeText(this, "서버 연결이 불안정합니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     // View 애니메이션 효과

@@ -26,11 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
-//    public static final String SERVER_IP = "http://211.222.234.14:";
-//    public static final String PORT_NUMBER = "8080";
-//    public static final String SERVER_IP = "http://59.17.26.162:";
-    public static final String SERVER_IP = "http://192.168.43.128:";
-//    public static final String SERVER_IP = "http://210.126.40.133:";
+    public static final String SERVER_IP = "http://61.84.105.95:";
     public static final String PORT_NUMBER = "8083";
     public static final int CONNECT_TIME_OUT = 5000;
     public static String SERVER_URL = SERVER_IP + PORT_NUMBER;

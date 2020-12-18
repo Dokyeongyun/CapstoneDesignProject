@@ -12,14 +12,20 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.Task;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.example.capstonedesignproject.view.ETC.CustomDialog;
 import com.example.capstonedesignproject.view.ETC.HomeActivity;
 import com.example.capstonedesignproject.view.Login.LoginActivity;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MyPageFragment extends Fragment {
     @BindView(R.id.BT_manageProfile) Button BT_manageProfile;
@@ -28,6 +34,7 @@ public class MyPageFragment extends Fragment {
     @BindView(R.id.BT_getReviews) Button BT_getReviews;
     @BindView(R.id.BT_favorites) Button BT_favorites;
     private CustomDialog customDialog;
+    String withdrawResult = "";
 
     public MyPageFragment() { }
 
@@ -68,17 +75,27 @@ public class MyPageFragment extends Fragment {
             LoginActivity.editor.putString("autoLogin", "false");
             LoginActivity.editor.apply();
         }
-        String result = "";
-        try {
-            result = new Task(getActivity()).execute("member/withdraw.do", HomeActivity.memberID).get();
-        } catch (Exception e){ e.printStackTrace(); }
-
-        if(!result.equals("\"-1\"")){
-            Toast.makeText(getActivity(), "이용해주셔서 감사합니다__^^__", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
+        final SetApplication application = (SetApplication) Objects.requireNonNull(getActivity()).getApplication();
+        Observable<String> observable = application.getMemberService().withdraw(HomeActivity.memberID);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) { withdrawResult = s; }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(application, "잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onCompleted() {
+                        if(!withdrawResult.equals("-1")){
+                            Toast.makeText(application, "이용해주셔서 감사합니다__^^__", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(application, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    }
+                });
     };
 
     /**

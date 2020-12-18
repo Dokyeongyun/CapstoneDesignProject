@@ -27,12 +27,6 @@ public interface ChabakjiService {
     @POST("/member/getJJim.do")
     Observable<List<ChabakjiVO>> getFavorite(@Query("id") String memberId);
 
-    @POST("/chabak/getAds.do")
-    Observable<List<ChabakjiVO>> getAds(@Query("address") String address);
-
-    @POST("/chabak/getKey.do")
-    Observable<List<ChabakjiVO>> getKey(@Query("key") String key);
-
     @POST("/chabak/filter.do")
     Observable<List<ChabakjiVO>> filter(@Query("add") String address, @Query("flags") String flags);
 
@@ -54,4 +48,10 @@ public interface ChabakjiService {
 
     @POST("/chabak/getByKey.do")
     Observable<List<ChabakjiVO>> getByKey(@Query("key") String key);
+
+    @POST("/chabak/suggest.do")
+    Observable<String> suggest(@Query("placeName") String placeName, @Query("address") String address,
+                                         @Query("introduce") String introduce, @Query("phone") String phone,
+                                         @Query("fileName") String fileName, @Query("latitude") String latitude,
+                                         @Query("longitude") String longitude);
 }

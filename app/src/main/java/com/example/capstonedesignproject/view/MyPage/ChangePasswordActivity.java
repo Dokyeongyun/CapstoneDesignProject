@@ -13,12 +13,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
-import com.example.capstonedesignproject.Server.Task;
+import com.example.capstonedesignproject.Server.SetApplication;
 import com.example.capstonedesignproject.view.Login.LoginActivity;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -27,7 +33,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     @BindView(R.id.ET_changePw) EditText ET_changePw;
     @BindView(R.id.ET_changePwChk) EditText ET_changePwChk;
 
-    String email;
+    String email, changePwResult = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,19 +62,29 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return;
         }
 
-        String result = "";
-        try {
-            result = new Task(this).execute("member/changePassword.do", email, password).get();
-        } catch (Exception e){ e.printStackTrace(); }
-
-        if(result.equals("\"1\"")){
-            Toast.makeText(this, "비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인해주세요.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, "실패! 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-        }
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<String> observable = application.getMemberService().changePassword(email, password);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) { changePwResult = s; }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(application, "잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onCompleted() {
+                        if(changePwResult.equals("1")){
+                            Toast.makeText(application, "비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인해주세요.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(application, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(application, "실패! 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     // 툴바에 메뉴 인플레이트

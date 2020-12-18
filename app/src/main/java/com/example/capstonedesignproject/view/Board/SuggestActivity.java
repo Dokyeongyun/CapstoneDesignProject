@@ -16,16 +16,20 @@ import android.widget.Toast;
 
 import com.example.capstonedesignproject.R;
 import com.example.capstonedesignproject.Server.FileUploadTask;
-import com.example.capstonedesignproject.Server.Task;
+import com.example.capstonedesignproject.Server.SetApplication;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class SuggestActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 101;
@@ -39,6 +43,7 @@ public class SuggestActivity extends AppCompatActivity {
     @BindView(R.id.ET_suggestETC) EditText ET_suggestETC;
     @BindView(R.id.BT_suggestComplete) Button BT_suggestComplete;
 
+    String suggestResult = "";
     String[] suggestInfo = new String[5];
     Uri photoUri;
 
@@ -58,41 +63,48 @@ public class SuggestActivity extends AppCompatActivity {
 
     @OnClick(R.id.BT_back_suggest) void back() { finish(); }
     @OnClick(R.id.BT_suggestComplete) void suggestComplete() {
-        if(CheckEditText()){
-            // TODO DB 삽입
-            String result = "";
-            String fileUploadResult = "";
-            String fileName = new Date().getTime() + ".jpg";
-            File file = new File(getPathFromUri(photoUri));
-
-            // 이미지 파일 먼저 업로드
-            try {
-                fileUploadResult = new FileUploadTask(this).execute("suggest", file, fileName).get();
-            } catch (Exception e) {
-                Toast.makeText(this, "이미지 업로드에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // 이미지 파일 업로드 되면 나머지 정보 DB 삽입
-            if(fileUploadResult.equals("Success")){
-                try{
-                    result = new Task(this).execute("chabak/suggest.do",
-                            suggestInfo[0], suggestInfo[1], suggestInfo[2], suggestInfo[3], fileName, String.valueOf(37.665), String.valueOf(125.668)).get();
-                } catch (Exception e){
-                    Toast.makeText(this, "차박지 등록에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }else{
-                return;
-            }
-
-            if(result.equals("\"success\"")){
-                Toast.makeText(this, "참여해주셔서 감사합니다.", Toast.LENGTH_SHORT).show();
-                finish();
-            }else{
-                Toast.makeText(this, "차박지 등록에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            }
+        if(!CheckEditText()) {
+            return;
         }
+        String fileUploadResult = "";
+        String fileName = new Date().getTime() + ".jpg";
+        File file = new File(getPathFromUri(photoUri));
+
+        // 이미지 파일 먼저 업로드
+        try {
+            fileUploadResult = new FileUploadTask(this).execute("suggest", file, fileName).get();
+        } catch (Exception e) {
+            Toast.makeText(this, "이미지 업로드에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 이미지 파일 업로드 되면 나머지 정보 DB 삽입
+        if(!fileUploadResult.equals("Success")) {
+            return;
+        }
+
+        final SetApplication application = (SetApplication) Objects.requireNonNull(this).getApplication();
+        Observable<String> observable = application.getChabakjiService().
+                suggest(suggestInfo[0], suggestInfo[1], suggestInfo[2], suggestInfo[3], fileName, String.valueOf(37.665), String.valueOf(125.668));
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onNext(String s) { suggestResult = s; }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(application, "잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onCompleted() {
+                        if(suggestResult.equals("\"success\"")){
+                            Toast.makeText(application, "참여해주셔서 감사합니다.", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }else{
+                            Toast.makeText(application, "차박지 등록에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private boolean CheckEditText(){
